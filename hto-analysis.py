@@ -1,4 +1,6 @@
 """Algorithm for generating the question-choice data structure"""
+import math
+from collections import Counter
 import pandas as pd
 import json
 
@@ -49,6 +51,18 @@ data["risk"] = data["hto_mg"].apply(convert_to_low_medium_and_high_risk)
 
 
 """Step 2. Require question-list ;; ((Q1 G(1)) (Qn G(n))) initially null scores"""
+
+
+def calculate_entropy(class_list):
+    class_counts = Counter(class_list)
+    total_samples = len(class_list)
+    
+    entropy = 0
+    for count in class_counts.values():
+        probability = count / total_samples
+        entropy -= probability * math.log2(probability)
+    
+    return entropy
 
 
 # Calculated Gini Impurity for given List of Risk Labels
