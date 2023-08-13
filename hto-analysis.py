@@ -3,18 +3,20 @@ import math
 from collections import Counter
 import pandas as pd
 import json
+from pprint import pprint
 
 
 # reading the question mapping data from json file
-def get_question_mapping_data(filename):
-    file = open(filename)
-    data = json.load(file)
-    file.close()
+def load_json_file(filename):
+    with open(filename) as file:
+        data = json.load(file)
     return data
 
 
 # Using JSON mapper to show actual Question Instead on Column Name when asking a question.
-question_mapping = get_question_mapping_data("questions_mapping.json")
+question_mapping = load_json_file("questions_mapping.json")
+
+parsed_questionaire = load_json_file("parsed_dict.json")
 
 """step 1.Require training-set"""
 
@@ -56,12 +58,12 @@ data["risk"] = data["hto_mg"].apply(convert_to_low_medium_and_high_risk)
 def calculate_entropy(class_list):
     class_counts = Counter(class_list)
     total_samples = len(class_list)
-    
+
     entropy = 0
     for count in class_counts.values():
         probability = count / total_samples
         entropy -= probability * math.log2(probability)
-    
+
     return entropy
 
 
@@ -125,15 +127,29 @@ def get_question_list(data):
         if question in ["hto_mg", "risk"]:
             continue
         unique_answers = list(data[question].unique())
-        question_score = get_aggregated_gini_impurity(question, unique_answers, data)
+        if len(unique_answers) > 1:
+            question_score = get_aggregated_gini_impurity(question, unique_answers, data)
 
-        # adding response to the question_list array
-        # question_list datatype = List of Dictionary
-        question_list.append(question_score)
+            # adding response to the question_list array
+            # question_list datatype = List of Dictionary
+            question_list.append(question_score)
     return question_list
 
 
-question_list = get_question_list(data)
+#################################################################
+###################### ADDING CHANGES HERE ######################
+#################################################################
+root_questions = parsed_questionaire["hto_mg"]
+root_questions.append("risk")
+for question in root_questions:
+    if question not in data.columns:
+        root_questions.drop(question)
+question_list = get_question_list(data[root_questions])
+
+asked_questions = []
+questions_queue = question_list
+
+
 
 
 """Step 3. sort-questions in order of Gini score, high to low"""
@@ -159,15 +175,11 @@ Step 4. answer-questions := nil ;; empty list that will hold the
 given answers and associated question gini score
 """
 question_answer_list = None
-
-
 """Step 5.min-sample ;; 100 x number-of-answers"""
 min_sample = 100
-
-
 """ Step 6. min-gini-change ;; change in gini from the previous answer """
 min_gini_change = 0.001
-
+gini_percentile_threshold = 0.4
 
 """ 
 Step 7.	score-questions (question-list answers training-set);; 
@@ -276,7 +288,22 @@ def get_score_questions(
     return questions_scores, subset
 
 
-gini_percentile_threshold = 0.4
+
+
+def has_child(parsed_questionaire, question):
+    if parsed_questionaire[question]:
+        return True
+    else:
+        return False
+"""
+Creating a loop to check a child level question is there or not
+If not then end the Questionaire
+"""
+while len(asked_questions) < 20 and len(questions_queue) > 0:
+    pass
+#################################################################
+
+
 
 score_questions, subset = get_score_questions(
     data,
@@ -287,11 +314,9 @@ score_questions, subset = get_score_questions(
     question_mapping,
 )
 
-import pprint
-
 # printing the data in Table format for better and easy understanding
 # pprint stands for pretty print which prettify the output printed.
-pprint.pprint(score_questions, width=80)
+pprint(score_questions, width=80)
 
 # printing subset with exactly same answers (If any)
 print(subset)

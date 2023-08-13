@@ -1,9 +1,3 @@
-import requests
-
-def get_xml_data():
-    XML = requests.get("https://www.secure.egrist.org/panel/mhexperts/mh-dss-portal/java-tool/load-knowledge.php?SID=2ek597v3vbp025ba48159b25lm&patient-id=131279&assessment-id=765274&resume=1&warned=null&_=1691852723706")
-    return XML
-
 def codehyphenstounderscores(node):
     if "code" in node:
         node["code"] = node["code"].replace("-", "_")
@@ -11,10 +5,13 @@ def codehyphenstounderscores(node):
         codehyphenstounderscores(child)
     return node
 
+
+# what are concepts in here??? As I am unable to see any word named "concept" or "concepts" in the XML data
 def getconcepts(node):
     concepts = []
     getconcepts_recursive(node, concepts)
     return concepts
+
 
 def getconcepts_recursive(node, concepts):
     children = node.get("elements", [])
@@ -22,6 +19,7 @@ def getconcepts_recursive(node, concepts):
         concepts.append(node["code"])
         for child in children:
             getconcepts_recursive(child, concepts)
+
 
 def getdescendantsallconcepts(node):
     conceptsanddescendants = {}
@@ -31,6 +29,7 @@ def getdescendantsallconcepts(node):
         conceptnode = getnode(node, nodecode)
         conceptsanddescendants[nodecode] = getdescendants(conceptnode)
     return conceptsanddescendants
+
 
 def getdescendants(node):
     descendants = set()
@@ -42,6 +41,7 @@ def getdescendants(node):
             getdescendants_recursive(child, descendants)
     return descendants
 
+
 def getdescendants_recursive(node, descendants):
     children = node.get("elements", [])
     if len(children) > 0:
@@ -50,10 +50,12 @@ def getdescendants_recursive(node, descendants):
             descendants.add(code)
             getdescendants_recursive(child, descendants)
 
+
 def isdescendant(ancestor, nodename, catdescendants):
     if ancestor in catdescendants:
         return nodename in catdescendants[ancestor]
     return False
+
 
 def getsibcodes(siblings):
     sibnames = []
@@ -61,12 +63,14 @@ def getsibcodes(siblings):
         sibnames.append(sibling["code"].upper())
     return sibnames
 
+
 def getnode(tree, nodecode):
     if tree.get("code") == nodecode:
         return tree
     else:
         foundnode = findnode(tree, nodecode)
         return foundnode
+
 
 def findnode(tree, nodecode):
     children = tree.get("elements", [])
@@ -79,6 +83,7 @@ def findnode(tree, nodecode):
                 if foundnode:
                     return foundnode
 
+
 def getallnodecodes(node):
     riskcodes = []
     if "code" in node:
@@ -88,11 +93,13 @@ def getallnodecodes(node):
         getnodecodes_recursive(child, riskcodes)
     return riskcodes
 
+
 def getnodecodes_recursive(node, riskcodes):
     riskcodes.append(node["code"])
     children = node.get("elements", [])
     for child in children:
         getnodecodes_recursive(child, riskcodes)
+
 
 def getquestioncodes(node, qt, nolayers):
     nodecodes = getallnodecodes(node)
@@ -107,6 +114,7 @@ def getquestioncodes(node, qt, nolayers):
         elif qtcode in nodecodes:
             questioncodes.append(qtcode)
     return questioncodes
+
 
 def showpatientdata(df):
     for col in df.columns:
