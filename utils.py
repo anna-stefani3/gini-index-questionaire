@@ -34,7 +34,7 @@ def string_replacer(string):
         "-": "_",
     }
     for key in replacer_dict:
-        string.replace(key, replacer_dict[key])
+        string = string.replace(key, replacer_dict[key])
     return string
 
 
@@ -56,13 +56,30 @@ def get_question_mapper(filename):
     return result
 
 
+def get_question_mapper(xml_string):
+    root = ET.fromstring(xml_string)
+    result = {}
+    for child in root:
+        code = child.attrib["code"]
+        question = child.attrib["label"]
+        values = child.attrib["values"]
+        code = string_replacer(code)
+        question = string_replacer(question)
+        if len(child) == 0:
+            result[code + "_mg"] = {"question": question, "values": values}
+        else:
+            result[code + "_mg"] = get_question_mapper(ET.tostring(child))
+    with open("question-data.json", "w") as outfile:
+        json.dump(result, outfile)
+    return result
+
+
 if __name__ == "__main__":
     with open("load-knowledge.xml", "r") as xml_file:
         xml_string = xml_file.read()
 
     # mapping the column with actual question and the value type of that question
     get_question_mapper("question-data.xml")
-
 
     # get the child questions for each question and None in case there is no child question
     result = xml_to_dict("".join(xml_string))
