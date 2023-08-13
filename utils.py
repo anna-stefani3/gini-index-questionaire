@@ -34,7 +34,7 @@ def string_replacer(string):
         "-": "_",
     }
     for key in replacer_dict:
-        string.replace(key, replacer_dict[key])
+        string = string.replace(key, replacer_dict[key])
     return string
 
 

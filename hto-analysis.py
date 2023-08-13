@@ -14,9 +14,9 @@ def load_json_file(filename):
 
 
 # Using JSON mapper to show actual Question Instead on Column Name when asking a question.
-question_mapping = load_json_file("questions_mapping.json")
+question_mapping = load_json_file("question-data.json")
 
-parsed_questionaire = load_json_file("parsed_dict.json")
+child_question_mapper = load_json_file("child_question_mapper.json")
 
 """step 1.Require training-set"""
 
@@ -47,9 +47,15 @@ def convert_to_low_medium_and_high_risk(label):
     else:
         return "high"
 
+# data["risk"] = data["hto_mg"].apply(convert_to_low_medium_and_high_risk)
 
-# getting Risk column
-data["risk"] = data["hto_mg"].apply(convert_to_low_medium_and_high_risk)
+# converts all scale columns to class data
+def convert_scale_columns_to_classes(data, question_mapping=question_mapping):
+    for column in data.columns:
+        if question_mapping[column]["values"] == "scale":
+            data[column] = data[column].apply(convert_to_low_medium_and_high_risk)
+    return data
+
 
 
 """Step 2. Require question-list ;; ((Q1 G(1)) (Qn G(n))) initially null scores"""
@@ -95,7 +101,7 @@ def get_aggregated_gini_impurity(question, unique_answers, df):
         answer_df = df[df[question] == answer]
 
         # Getting labels for previously selected rows
-        labels = answer_df["risk"]
+        labels = answer_df["hto_mg"]
 
         # calculating Gini Impurity Score
         gini_impurity = gini_measure_of_impurity(list(labels.values))
@@ -124,23 +130,23 @@ def get_question_list(data):
     for question in data.columns:
         # hto_mg and risk columns cant be used for getting aggregated gini scores
         # thats why they are ignored
-        if question in ["hto_mg", "risk"]:
+        if question in ["hto_mg"]:
             continue
         unique_answers = list(data[question].unique())
-        if len(unique_answers) > 1:
-            question_score = get_aggregated_gini_impurity(question, unique_answers, data)
+        question_score = get_aggregated_gini_impurity(question, unique_answers, data)
 
-            # adding response to the question_list array
-            # question_list datatype = List of Dictionary
-            question_list.append(question_score)
+        # adding response to the question_list array
+        # question_list datatype = List of Dictionary
+        question_list.append(question_score)
     return question_list
 
 
 #################################################################
 ###################### ADDING CHANGES HERE ######################
 #################################################################
-root_questions = parsed_questionaire["hto_mg"]
-root_questions.append("risk")
+root_questions = child_question_mapper["hto_mg"]
+if "hto_mg" not in root_questions:
+    root_questions.append("hto_mg")
 for question in root_questions:
     if question not in data.columns:
         root_questions.drop(question)
@@ -256,7 +262,7 @@ def get_score_questions(
                         # asking user to answer the question with choices given
                         answer = float(
                             input(
-                                f"""Please Answer : {question_mapper[question]} ?\n"""
+                                f"""Please Answer : {question_mapper[question]["question"]} ?\n"""
                                 f"""Choices are : {answer_options}\n"""
                             )
                         )
@@ -267,20 +273,20 @@ def get_score_questions(
                             subset = get_subset_data(subset, question, answer)
 
                             # getting Gini Score for the given question and answer
-                            labels = list(subset["risk"])
+                            labels = list(subset["hto_mg"])
                             gini_score = gini_measure_of_impurity(labels)
 
                             # adding question and score into question-answer-score
                             questions_scores.append(
                                 {
                                     "column": question,
-                                    "question": question_mapper[question],
+                                    "question": question_mapper[question]["question"],
                                     "answer": answer,
                                     "gini_score": gini_score,
                                 }
                             )
                             filtered_questions.append(question)
-    filtered_questions.append("risk")
+    filtered_questions.append("hto_mg")
 
     # final Subset contains dataset with exactly same answers as given by user.(If Any)
     # this helps to visualize the risk labels
@@ -290,8 +296,8 @@ def get_score_questions(
 
 
 
-def has_child(parsed_questionaire, question):
-    if parsed_questionaire[question]:
+def has_child(child_question_mapper, question):
+    if child_question_mapper[question]:
         return True
     else:
         return False
@@ -299,8 +305,23 @@ def has_child(parsed_questionaire, question):
 Creating a loop to check a child level question is there or not
 If not then end the Questionaire
 """
+
+
+
+def get_score(dataset, question, answer, question_mapping=question_mapping):
+    subset = get_subset_data(dataset, question, answer)
+    subset["hto_mg"]
+
+def get_best_question(dataset, question_queue):
+    new_scores = {}
+    for question in question_queue:
+        score = get_score(dataset, question)
+        new_scores[question] = score
+    return new_scores
+
+
 while len(asked_questions) < 20 and len(questions_queue) > 0:
-    pass
+    break
 #################################################################
 
 
