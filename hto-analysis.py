@@ -47,9 +47,7 @@ def convert_to_low_medium_and_high_risk(label):
     else:
         return "high"
 
-
 # data["risk"] = data["hto_mg"].apply(convert_to_low_medium_and_high_risk)
-
 
 # converts all scale columns to class data
 def convert_scale_columns_to_classes(data, question_mapping=question_mapping):
@@ -57,6 +55,7 @@ def convert_scale_columns_to_classes(data, question_mapping=question_mapping):
         if question_mapping[column]["values"] == "scale":
             data[column] = data[column].apply(convert_to_low_medium_and_high_risk)
     return data
+
 
 
 """Step 2. Require question-list ;; ((Q1 G(1)) (Qn G(n))) initially null scores"""
@@ -293,6 +292,8 @@ def get_score_questions(
     return questions_scores, subset
 
 
+
+
 def has_child(child_question_mapper, question):
     if child_question_mapper[question]:
         return True
@@ -306,12 +307,12 @@ If not then end the Questionaire
 """
 
 
+
 def get_score(dataset, question, answer, question_mapping=question_mapping):
     subset = get_subset_data(dataset, question, answer)
     subset["hto_mg"]
 
-
-def get_new_scores(dataset, question_queue):
+def get_best_question(dataset, question_queue):
     new_scores = {}
     for question in question_queue:
         score = get_score(dataset, question)
