@@ -38,7 +38,6 @@ def get_cleaned_data():
 
 # Defining Threshold values
 MIN_SAMPLE_THRESHOLD = 100
-MIN_GINI_CHANGE = 0.001
 GINI_PERCENTILE_THRESHOLD = 2
 
 
@@ -49,11 +48,9 @@ BACKUP_QUESTION_MAPPER = load_json_file("questions_mapping.json")
 # getting child columns for each column
 QUESTION_CHILD_MAPPER = load_json_file("child_question_mapper.json")
 
-AGGREGATED_GINI_SCORES = {}
+ROOT_QUESTIONS_FOR_HTO = QUESTION_CHILD_MAPPER["hto_mg"]
 
-ROOT_QUESTIONS = QUESTION_CHILD_MAPPER["hto_mg"]
-
-QUESTION_QUEUE = ROOT_QUESTIONS
+QUESTION_QUEUE = ROOT_QUESTIONS_FOR_HTO
 
 ### UTIL FUNCTIONS ###
 
@@ -76,6 +73,7 @@ def convert_scale_columns_to_classes(data):
     return data
 
 
+# gets the choices for each column name for the user to answer
 def get_question_choices_data(dataset):
     question_choices_data = {}
     for column in dataset.columns:
@@ -127,7 +125,6 @@ def get_aggregated_gini_impurity(dataset, question, unique_answers):
     aggregated_score = total_gini_score / len(unique_answers)
 
     # returning required output followed as question, gini_score, num of answers, answer choice
-    AGGREGATED_GINI_SCORES[question] = aggregated_score
     return {
         "question": question,
         "aggregated_gini": aggregated_score,
