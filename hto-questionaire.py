@@ -137,6 +137,7 @@ def get_aggregated_gini_impurity(dataset, question, unique_answers):
 
 
 def has_child(question):
+    # returns if the specific question has child questions or not
     if QUESTION_CHILD_MAPPER[question]:
         return True
     else:
@@ -144,34 +145,66 @@ def has_child(question):
 
 
 def get_sorted_scores_df(subset, choices_dataset):
+    # initializing scores as empty list
     scores = []
+
+    # adding scores for each question in the QUESTION_QUEUE
     for question in QUESTION_QUEUE:
+        # getting Uniques Choices data from choices_dataset
         unique_choices = choices_dataset[question]
+
+        # getting score data for specific question
         score = get_aggregated_gini_impurity(subset, question, unique_choices)
+
+        # appending score into scores list
         scores.append(score)
 
+    # converting to Dataframe
     scores_df = pd.DataFrame(scores)
 
-    # sorting question list in Descending Order
+    # sorting scores_df in Ascending Order
     sorted_scores_df = scores_df.sort_values(by="aggregated_gini", ascending=True)
     return sorted_scores_df
 
 
 def get_rejected_question_list(scores_df, gini_threshold):
+    # filtering from scores_df where score is greater than gini_threshold
     rejected_df = scores_df[scores_df["aggregated_gini"] > gini_threshold]
-    questions_list = list(rejected_df["question"])
+
+    # getting the names of the columns only from filtered data
+    questions_list = list(rejected_df["question"])\
+    
+    # returning rejected questions List
     return questions_list
 
 
 def remove_question(remove_list):
+    # looping through each column name in remove_list
     for question in remove_list:
+        # removing specific question from QUESTION_QUEUE
         QUESTION_QUEUE.remove(question)
 
 
 def add_child_questions(question):
+    """
+    QUESTION_CHILD_MAPPER contains list of child question for a given question
+    Data looks like this
+    {
+        "column_1" : ["column_10", "column_15", "column_21"],
+        "column_2" : ["column_11", "column_18", "column_29", "column_51"],
+        "column_3" : None
+    }
+
+    where None means there is no Child Question for "column_3"
+    """
+    # checking if column name exists in QUESTION_CHILD_MAPPER
     if QUESTION_CHILD_MAPPER.get(question):
+        # if exists then fetch the child columns
         child_question = QUESTION_CHILD_MAPPER.get(question)
+
+        # looping throught each column in the child list
         for question in child_question:
+            # adding each child column into QUESTION_QUEUE
             QUESTION_QUEUE.insert(0, question)
 
 
@@ -210,8 +243,12 @@ if __name__ == "__main__":
         # removing all columns which doesn't fullfil threshold criteria
         # from QUESTION_QUEUE
         remove_question(remove_list)
-        # selecting the best question and removing it from the QUESTION_QUEUE
-        select_question = QUESTION_QUEUE.pop(0)
+
+        # selecting the best question from Sorted scores_df
+        select_question = scores_df.iloc[0]["question"]
+
+        # removing select_question from the QUESTION_QUEUE
+        QUESTION_QUEUE.remove(select_question)
 
         ## checking if select_question map is in QUESTION_MAPPER records
         if QUESTION_MAPPER.get(select_question):
@@ -220,7 +257,7 @@ if __name__ == "__main__":
         else:
             # in case there is no record found for the select_question then
             # getting question map from questions_mapping.json records
-            question = BACKUP_QUESTION_MAPPER[select_question]["question"]
+            question = BACKUP_QUESTION_MAPPER[select_question]
 
         # fetching all possible choices for the select_question
         choices = CHOICES_DATASET[select_question]
