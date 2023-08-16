@@ -174,6 +174,8 @@ def add_child_questions(question):
         for question in child_question:
             QUESTION_QUEUE.insert(0, question)
 
+def get_best_question_using_score(score_df):
+    return score_df.iloc[0]["question"]
 
 if __name__ == "__main__":
     # reads the csv file and cleans it
@@ -210,8 +212,12 @@ if __name__ == "__main__":
         # removing all columns which doesn't fullfil threshold criteria
         # from QUESTION_QUEUE
         remove_question(remove_list)
+        
         # selecting the best question and removing it from the QUESTION_QUEUE
-        select_question = QUESTION_QUEUE.pop(0)
+        select_question = scores_df.iloc[0]["question"]
+
+        # removing select_question from the QUESTION_QUEUE
+        QUESTION_QUEUE.remove(select_question)
 
         ## checking if select_question map is in QUESTION_MAPPER records
         if QUESTION_MAPPER.get(select_question):
@@ -220,7 +226,7 @@ if __name__ == "__main__":
         else:
             # in case there is no record found for the select_question then
             # getting question map from questions_mapping.json records
-            question = BACKUP_QUESTION_MAPPER[select_question]["question"]
+            question = BACKUP_QUESTION_MAPPER[select_question]
 
         # fetching all possible choices for the select_question
         choices = CHOICES_DATASET[select_question]
