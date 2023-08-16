@@ -1,6 +1,10 @@
 import xml.etree.ElementTree as ET
 import json
 
+"""
+NOTE : utils.py is only needed to generate the JSON data file from XML
+    and needs to ran only once to get the JSON files
+"""
 
 """
 load-knowledge.xml file contains the hierarchical struture of the questionaire.
