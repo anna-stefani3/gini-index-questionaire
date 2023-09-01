@@ -50,8 +50,13 @@ QUESTION_CHILD_MAPPER = load_json_file("child_question_mapper.json")
 
 ROOT_QUESTIONS_FOR_HTO = QUESTION_CHILD_MAPPER["hto_mg"]
 
-QUESTION_QUEUE = ROOT_QUESTIONS_FOR_HTO
-
+# making sure to add only columns which are
+# available in QUESTION_MAPPER variable
+# otherwise ignoring them
+QUESTION_QUEUE = []
+for question in ROOT_QUESTIONS_FOR_HTO:
+    if question in QUESTION_MAPPER:
+        QUESTION_QUEUE.append(question)
 ### UTIL FUNCTIONS ###
 
 
@@ -101,9 +106,10 @@ def gini_measure_of_impurity(labels):
 
 
 # Aggregating the Gini Scores for a Given Question
-def get_aggregated_gini_impurity(dataset, question, unique_answers):
-    # initializing total_gini_score = 0
-    total_gini_score = 0
+def get_utility_score(dataset, question, unique_answers):
+    # initializing total_utility_score = 0
+    total_utility_score = 0
+    
     # Adding all Gini Scores for each uniques Answers for the given Question
     for answer in unique_answers:
         # selecting rows where question value == answer
@@ -118,16 +124,26 @@ def get_aggregated_gini_impurity(dataset, question, unique_answers):
         # Calculating answer likelihood
         answer_likelihood = len(labels.values) / dataset.shape[0]
 
-        # adding gini_impurity * answer_likelihood to total_gini_score
-        total_gini_score += gini_impurity * answer_likelihood
+        # adding gini_impurity * (1 - answer_likelihood) to total_utility_score
+
+        """
+        using (1 - answer_likelihood) so that gini score with high probability can be
+        multiplied with low number to increase the chances for that question to
+        be selected
+
+        as we want to reduce the score for high probability answers and vice versa
+
+        as lower score means better question to be ask in gini score case
+        """
+        total_utility_score += gini_impurity * (1 - answer_likelihood)
 
     # Aggregating the gini score
-    aggregated_score = total_gini_score / len(unique_answers)
+    aggregated_score = total_utility_score / len(unique_answers)
 
     # returning required output followed as question, gini_score, num of answers, answer choice
     return {
         "question": question,
-        "aggregated_gini": aggregated_score,
+        "utility_score": aggregated_score,
         "num_of_answers": len(unique_answers),
         "answer_choices": unique_answers,
     }
@@ -141,36 +157,36 @@ def has_child(question):
         return False
 
 
-def get_sorted_scores_df(subset, choices_dataset):
+def get_sorted_utility_scores_df(complete_dataset, choices_dataset):
     # initializing scores as empty list
     scores = []
 
     # adding scores for each question in the QUESTION_QUEUE
     for question in QUESTION_QUEUE:
-        # getting Uniques Choices data from choices_dataset
-        unique_choices = choices_dataset[question]
+        if question in choices_dataset:
+            # getting Uniques Choices data from choices_dataset
+            unique_choices = choices_dataset[question]
 
-        # getting score data for specific question
-        score = get_aggregated_gini_impurity(subset, question, unique_choices)
+            # getting score data for specific question
+            score = get_utility_score(complete_dataset, question, unique_choices)
 
-        # appending score into scores list
-        scores.append(score)
+            # appending score into scores list
+            scores.append(score)
 
     # converting to Dataframe
     scores_df = pd.DataFrame(scores)
 
     # sorting scores_df in Ascending Order
-    sorted_scores_df = scores_df.sort_values(by="aggregated_gini", ascending=True)
+    sorted_scores_df = scores_df.sort_values(by="utility_score", ascending=True)
     return sorted_scores_df
 
 
 def get_rejected_question_list(scores_df, gini_threshold):
     # filtering from scores_df where score is greater than gini_threshold
-    rejected_df = scores_df[scores_df["aggregated_gini"] > gini_threshold]
+    rejected_df = scores_df[scores_df["utility_score"] > gini_threshold]
 
     # getting the names of the columns only from filtered data
-    questions_list = list(rejected_df["question"])\
-    
+    questions_list = list(rejected_df["question"])
     # returning rejected questions List
     return questions_list
 
@@ -201,8 +217,10 @@ def add_child_questions(question):
 
         # looping throught each column in the child list
         for question in child_question:
-            # adding each child column into QUESTION_QUEUE
-            QUESTION_QUEUE.insert(0, question)
+            # if child column exist in QUESTION_MAPPER
+            if QUESTION_MAPPER.get(question):
+                # adding each child column into QUESTION_QUEUE
+                QUESTION_QUEUE.insert(0, question)
 
 
 if __name__ == "__main__":
@@ -226,12 +244,10 @@ if __name__ == "__main__":
     while len(QUESTION_QUEUE) > 0 and subset.shape[0] > MIN_SAMPLE_THRESHOLD:
         # getting gini scores for the columns which are in QUESTION_QUEUE
         # sorted in ascending order
-        scores_df = get_sorted_scores_df(subset, CHOICES_DATASET)
+        scores_df = get_sorted_utility_scores_df(COMPLETE_DATASET, CHOICES_DATASET)
 
         # getting gini_threshold value based on GINI_PERCENTILE_THRESHOLD
-        gini_threshold = (
-            scores_df.iloc[0]["aggregated_gini"] * GINI_PERCENTILE_THRESHOLD
-        )
+        gini_threshold = scores_df.iloc[0]["utility_score"] * GINI_PERCENTILE_THRESHOLD
 
         # getting columns names which needs to be removed as they don't
         # fulfil threshold criteria
@@ -298,6 +314,64 @@ if __name__ == "__main__":
     print("RECORDED QUESTION ANSWERS BELOW:")
     pprint(QUESTION_ANSWER_RECORD)
 
-    # printing the risk associated to the answers given so far
-    print("\n\n\nRisk associated data :\n")
-    pprint(dict(Counter(list(subset["hto_mg"]))))
+
+
+    ##  **********       PRINTING PROBABLE RISK       **********
+
+
+    # getting count for subset data
+    subset_counter = dict(Counter(list(subset["hto_mg"])))
+
+    # getting count for complete data
+    full_data_counter = dict(Counter(list(COMPLETE_DATASET["hto_mg"])))
+
+    # initialising final risk data
+    risk_data = {}
+    highest_risk = 0
+    for risk_class in full_data_counter:
+        # if risk_class in subset_counter
+        if risk_class in subset_counter:
+            # calculating risk based on probability of occurance of the risk class
+            # rounding the score till 2 decimal place
+
+            """
+            inversing the probability for risk_class
+            so that risk_class with less occurance in dataset
+            can be multiplied by higher number
+
+
+            example Suppose there are 100 rows with "high" risk in complete dataset
+            and there are 10000 rows in complete_dataset
+            so probability_of_high = rows with "high" / length_of_complete_dataset
+                                    = 100 / 10000
+                                    = 0.01
+
+
+            risk = subset_counter["high"] * (1 - probability_of_high) = subset_counter["high"] * 0.9
+
+
+            this is basically done to account for imbalance in risk class
+            """
+            normalised_risk = round(
+                subset_counter[risk_class]
+                * (1 - full_data_counter[risk_class] / COMPLETE_DATASET.shape[0]),
+                2,
+            )
+            risk_data[risk_class] = normalised_risk
+            if normalised_risk > highest_risk:
+                highest_risk = normalised_risk
+        else:
+            risk_data[risk_class] = 0
+    if (
+        risk_data["low"] == highest_risk
+        and risk_data["medium"] + risk_data["high"] > risk_data["low"]
+    ):
+        final_risk = "medium"
+    elif risk_data["high"] == highest_risk:
+        final_risk = "high"
+    elif risk_data["medium"] == highest_risk:
+        final_risk = "medium"
+    else:
+        final_risk = "low"
+
+    print("\n\n\nRISK IS PROBABLY :", final_risk)
