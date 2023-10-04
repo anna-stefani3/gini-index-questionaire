@@ -27,10 +27,9 @@ def get_cleaned_data():
     # dropping rows where all the values are Missing Value
     data.dropna(how="all")
 
-    # # replacing Missing Values with -1 constant number
-    data = data.fillna(
-        0
-    )  # there are various other methods we can implement for imputing the missing data
+    # # replacing Missing Values with 0 constant number which will represent
+    # "NO" as an answer for that question
+    data = data.fillna(0)  # there are various other methods we can implement for imputing the missing data
     return data
 
 
@@ -38,7 +37,6 @@ def get_cleaned_data():
 
 # Defining Threshold values
 MIN_SAMPLE_THRESHOLD = 100
-GINI_PERCENTILE_THRESHOLD = 2
 
 
 # getting question mapping for each column
@@ -57,9 +55,9 @@ QUESTION_QUEUE = []
 for question in ROOT_QUESTIONS_FOR_HTO:
     if question in QUESTION_MAPPER:
         QUESTION_QUEUE.append(question)
+
+
 ### UTIL FUNCTIONS ###
-
-
 # converts the scale data into classes "low", "medium", "high"
 def convert_to_low_medium_and_high_risk(label):
     if label < 0.4:
@@ -109,7 +107,7 @@ def gini_measure_of_impurity(labels):
 def get_utility_score(dataset, question, unique_answers):
     # initializing total_utility_score = 0
     total_utility_score = 0
-    
+
     # Adding all Gini Scores for each uniques Answers for the given Question
     for answer in unique_answers:
         # selecting rows where question value == answer
@@ -121,13 +119,13 @@ def get_utility_score(dataset, question, unique_answers):
         # calculating Gini Impurity Score
         gini_impurity = gini_measure_of_impurity(list(labels.values))
 
-        # Calculating answer likelihood
-        answer_likelihood = len(labels.values) / dataset.shape[0]
+        # Calculating probability
+        probability = len(labels.values) / dataset.shape[0]
 
-        # adding gini_impurity * (1 - answer_likelihood) to total_utility_score
+        # adding gini_impurity * (1 - probability) to total_utility_score
 
         """
-        using (1 - answer_likelihood) so that gini score with high probability can be
+        using (1 - probability) so that gini score with high probability can be
         multiplied with low number to increase the chances for that question to
         be selected
 
@@ -135,9 +133,9 @@ def get_utility_score(dataset, question, unique_answers):
 
         as lower score means better question to be ask in gini score case
         """
-        total_utility_score += gini_impurity * (1 - answer_likelihood)
+        total_utility_score += gini_impurity * (1 - probability)
 
-    # Aggregating the gini score
+    # Aggregating or averaging the total_utility_score
     aggregated_score = total_utility_score / len(unique_answers)
 
     # returning required output followed as question, gini_score, num of answers, answer choice
@@ -151,6 +149,7 @@ def get_utility_score(dataset, question, unique_answers):
 
 def has_child(question):
     # returns if the specific question has child questions or not
+    # returns only TRUE or FALSE
     if QUESTION_CHILD_MAPPER[question]:
         return True
     else:
@@ -245,64 +244,50 @@ if __name__ == "__main__":
         # getting gini scores for the columns which are in QUESTION_QUEUE
         # sorted in ascending order
         scores_df = get_sorted_utility_scores_df(COMPLETE_DATASET, CHOICES_DATASET)
-
-        # getting gini_threshold value based on GINI_PERCENTILE_THRESHOLD
-        gini_threshold = scores_df.iloc[0]["utility_score"] * GINI_PERCENTILE_THRESHOLD
-
-        # getting columns names which needs to be removed as they don't
-        # fulfil threshold criteria
-        remove_list = get_rejected_question_list(scores_df, gini_threshold)
-
-        # removing all columns which doesn't fullfil threshold criteria
-        # from QUESTION_QUEUE
-        remove_question(remove_list)
+        print(scores_df)
 
         # selecting the best question from Sorted scores_df
-        select_question = scores_df.iloc[0]["question"]
+        selected_question = scores_df.iloc[0]["question"]
 
-        # removing select_question from the QUESTION_QUEUE
-        QUESTION_QUEUE.remove(select_question)
+        # removing selected_question from the QUESTION_QUEUE
+        QUESTION_QUEUE.remove(selected_question)
 
-        ## checking if select_question map is in QUESTION_MAPPER records
-        if QUESTION_MAPPER.get(select_question):
+        ## checking if selected_question map is in QUESTION_MAPPER records
+        if QUESTION_MAPPER.get(selected_question):
             # getting question map from question-data.json records
-            question = QUESTION_MAPPER[select_question]["question"]
+            question = QUESTION_MAPPER[selected_question]["question"]
         else:
-            # in case there is no record found for the select_question then
+            # in case there is no record found for the selected_question then
             # getting question map from questions_mapping.json records
-            question = BACKUP_QUESTION_MAPPER[select_question]
+            question = BACKUP_QUESTION_MAPPER[selected_question]
 
-        # fetching all possible choices for the select_question
-        choices = CHOICES_DATASET[select_question]
+        # fetching all possible choices for the selected_question
+        choices = CHOICES_DATASET[selected_question]
 
         # Asking user the question to get the user response as asnwer
-        answer = input(
-            f"""Please Answer : {question} ?\n""" f"""Choices are : {choices}\n"""
-        )
+        answer = input(f"""Please Answer : {question} ?\nChoices are : {choices}\n""")
         try:
             # if answer is float then covert to float type
             answer = float(answer)
         except:
             # if above code throws error means the answer is a string type
             answer = str(answer)
-        if type(CHOICES_DATASET[select_question][0]) == str:
+        if type(CHOICES_DATASET[selected_question][0]) == str:
             # filtering data based on string value
-            subset = subset[subset[select_question].str.contains(answer)]
+            subset = subset[subset[selected_question].str.contains(answer)]
         else:
             # filtering data based on float value
-            subset = subset[subset[select_question] == answer]
+            subset = subset[subset[selected_question] == answer]
 
         # this checks if selected question has child(descendent questions) or not
-        if has_child(select_question):
+        if has_child(selected_question):
             # if the answer is not 0(not "No")
             # then adding all the descendent questions to QUESTION_QUEUE
             if answer != 0:
-                add_child_questions(select_question)
+                add_child_questions(selected_question)
 
         # adding user response into QUESTION_ANSWER_RECORD
-        QUESTION_ANSWER_RECORD.append(
-            {"question": QUESTION_MAPPER[select_question]["question"], "answer": answer}
-        )
+        QUESTION_ANSWER_RECORD.append({"question": QUESTION_MAPPER[selected_question]["question"], "answer": answer})
 
     ## Printing the reason why the questionaire got stopped
     if len(QUESTION_QUEUE) == 0:
@@ -353,8 +338,7 @@ if __name__ == "__main__":
             this is basically done to account for imbalance in risk class
             """
             normalised_risk = round(
-                subset_counter[risk_class]
-                * (1 - full_data_counter[risk_class] / COMPLETE_DATASET.shape[0]),
+                subset_counter[risk_class] * (1 - full_data_counter[risk_class] / COMPLETE_DATASET.shape[0]),
                 2,
             )
             risk_data[risk_class] = normalised_risk
@@ -362,10 +346,7 @@ if __name__ == "__main__":
                 highest_risk = normalised_risk
         else:
             risk_data[risk_class] = 0
-    if (
-        risk_data["low"] == highest_risk
-        and risk_data["medium"] + risk_data["high"] > risk_data["low"]
-    ):
+    if risk_data["low"] == highest_risk and risk_data["medium"] + risk_data["high"] > risk_data["low"]:
         final_risk = "medium"
     elif risk_data["high"] == highest_risk:
         final_risk = "high"
