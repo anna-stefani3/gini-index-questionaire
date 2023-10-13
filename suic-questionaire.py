@@ -44,7 +44,7 @@ CHOICES_DATASET = get_question_choices_data(dataset)
 subset = COMPLETE_DATASET
 
 
-def backtrack_question(question_queue, depth=4, ASKED_QUESTION=[], level=0):
+def question_recursion(question_queue, depth=4, ASKED_QUESTION=[], level=0):
     question_queue = [question for question in question_queue if question not in ASKED_QUESTION]
 
     # question_queue is empty of subset is less that MIN_SAMPLE_THRESHOLD then return None
@@ -75,17 +75,21 @@ def backtrack_question(question_queue, depth=4, ASKED_QUESTION=[], level=0):
                 queue = add_child_questions(question, queue, QUESTION_MAPPER, QUESTION_CHILD_MAPPER)
 
             # going to next Level node
-            node = backtrack_question(queue, depth, asked_question, level + 1)
+            node = question_recursion(queue, depth, asked_question, level + 1)
             if node:
                 root.add_child_node(node)
             output.append(root)
     return output
 
 
-data = backtrack_question(QUESTION_QUEUE, depth=4)
+# depth can be changed and played around like 3 or 4 or 5 or 6 and so on
+data = question_recursion(QUESTION_QUEUE, depth=4)
+
+# printing the tree Like structure of the Questionaire Simulation via recursion
 for question in data:
     question.print_()
 
+# printing best scores for the Root Questions using Tree
 for question in data:
     best = question.get_best_score()
     print(question.question, best)
