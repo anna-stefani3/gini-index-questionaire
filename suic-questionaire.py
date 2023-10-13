@@ -46,13 +46,16 @@ subset = COMPLETE_DATASET
 
 def backtrack_question(question_queue, depth=4, ASKED_QUESTION=[], level=0):
     question_queue = [question for question in question_queue if question not in ASKED_QUESTION]
+
+    # question_queue is empty of subset is less that MIN_SAMPLE_THRESHOLD then return None
     if len(question_queue) <= 0 or subset.shape[0] < MIN_SAMPLE_THRESHOLD:
         return None
+    # if level is more than depth size then return None
     elif level > depth:
         return None
     output = []
     for question in question_queue:
-        queue = [question]  # if level <= 0 else question_queue.copy()
+        queue = [question] if level <= 0 else question_queue.copy()
         asked_question = ASKED_QUESTION.copy()
         if question not in asked_question:
             queue.remove(question)
@@ -70,6 +73,8 @@ def backtrack_question(question_queue, depth=4, ASKED_QUESTION=[], level=0):
             # Add Child Question
             if has_child(question, QUESTION_CHILD_MAPPER):
                 queue = add_child_questions(question, queue, QUESTION_MAPPER, QUESTION_CHILD_MAPPER)
+
+            # going to next Level node
             node = backtrack_question(queue, depth, asked_question, level + 1)
             if node:
                 root.add_child_node(node)
@@ -77,7 +82,7 @@ def backtrack_question(question_queue, depth=4, ASKED_QUESTION=[], level=0):
     return output
 
 
-data = backtrack_question(QUESTION_QUEUE, depth=15)
+data = backtrack_question(QUESTION_QUEUE, depth=4)
 for question in data:
     question.print_()
 
