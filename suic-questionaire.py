@@ -1,4 +1,4 @@
-from tree import TREE
+from node import NODE
 from helper import (
     load_json_file,
     get_cleaned_data,
@@ -68,7 +68,7 @@ def question_recursion(question_queue, depth=4, ASKED_QUESTION=[], level=0):
 
             # getting score data for specific question
             score = get_utility_score(COMPLETE_DATASET, question, unique_choices, DATASET_NAME)
-            root = TREE(question, unique_choices, round(score["utility_score"], 3), queue, level)
+            root = NODE(question, unique_choices, round(score["utility_score"], 3), queue, level)
 
             # Add Child Question
             if has_child(question, QUESTION_CHILD_MAPPER):
@@ -90,6 +90,6 @@ for question in data:
     question.print_()
 
 # printing best scores for the Root Questions using Tree
-for question in data:
-    best = question.get_best_score()
-    print(question.question, best)
+for node in data:
+    best = node.get_best_score()
+    print(node.question, best)

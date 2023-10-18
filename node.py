@@ -1,4 +1,4 @@
-class TREE:
+class NODE:
     def __init__(self, question, choices, score, question_queue, level):
         # stores the Column Name
         self.question = question
