@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 
+
 # reading the question mapping data from json file
 def load_json_file(filename):
     with open(filename) as file:
@@ -23,9 +24,9 @@ def get_cleaned_data(base_path, dataset_name):
     # dropping rows where all the values are Missing Value
     data.dropna(how="all")
 
-    # # replacing Missing Values with 0 constant number which will represent
+    # # replacing Missing Values with -999 constant number which will represent
     # "NO" as an answer for that question
-    data = data.fillna(0)  # there are various other methods we can implement for imputing the missing data
+    data = data.fillna(-999)  # there are various other methods we can implement for imputing the missing data
     return data
 
 
@@ -53,18 +54,21 @@ def get_question_choices_data(dataset):
     question_choices_data = {}
     for column in dataset.columns:
         unique_answers = list(dataset[column].unique())
+        if -999 in unique_answers:
+            unique_answers.remove(-999)
         question_choices_data[column] = unique_answers
 
     return question_choices_data
 
 
 # Calculated Gini Impurity for given List of Risk Labels
-def gini_measure_of_impurity(labels):
+def gini_measure_of_impurity(labels, unique_labels={"high", "low", "medium"}):
     total_count = len(labels)
     if total_count == 0:
         return 0
     impurity = 1
-    unique_labels = set(labels)
+    # unique_labels = set(labels)
+    # print(f"UNIQUE LABELS => {unique_labels}")
 
     # Here Labels Represent "high", "medium" and "low" Risk Label
     # Thus Calculating the Gini Impurity based on Label
@@ -82,6 +86,8 @@ def get_utility_score(dataset, question, unique_answers, DATASET_NAME):
 
     # Adding all Gini Scores for each uniques Answers for the given Question
     for answer in unique_answers:
+        if answer == -999:
+            continue
         # selecting rows where question value == answer
         answer_df = dataset[dataset[question] == answer]
 
