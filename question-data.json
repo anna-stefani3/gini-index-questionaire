@@ -1,1 +1,1170 @@
-{"suic_mg": {"question": "In your judgement, what is the risk that the person will attempt suicide?", "values": "scale"}, "sui_specific_mg": {"question": "Do you have reason to be concerned about the person's risk of suicide?", "values": "layer"}, "suic_past_att_mg": {"question": "Has the person ever made a suicide attempt? If yes, the questions about them should be answered with reference to the attempts in general rather than any specific one, unless otherwise stated.", "values": "filter-q"}, "suic_most_rec_mg": {"question": "When was the most recent suicide attempt?", "values": "date-week"}, "suic_patt_att_mg": {"question": "Has there been more than one suicide attempt?", "values": "filter-q"}, "suic_first_occ_mg": {"question": "When was the first suicide attempt?", "values": "date-week"}, "suic_escalate_mg": {"question": "How have the suicide attempts been changing in frequency over the last two years?", "values": "nominal"}, "suic_how_many_mg": {"question": "Approximately how many suicide attempts have there been?", "values": "integer"}, "suic_note_prev_mg": {"question": "Was a suicide note written for any previous or current suicide attempts?", "values": "nominal"}, "suic_discovery_mg": {"question": "Did the person try to hide any suicide attempt, to make sure it was not stopped?", "values": "scale"}, "suic_lethality_mg": {"question": "How lethal was the most serious method used by the person in any of the suicide attempts (i.e. how likely to succeed in killing the person without any intervention)?", "values": "scale"}, "suic_ser_succd_mg": {"question": "Do you believe the person wanted the suicide attempts to succeed at the time?", "values": "scale"}, "suic_regret_mg": {"question": "How much does the person fail to show any regret or remorse over having tried to complete suicide in the past?", "values": "scale"}, "suic_leth_insght_mg": {"question": "Does the person lack awareness about how dangerous the suicide attempts were?", "values": "scale"}, "suic_curr_int_mg": {"question": "Do you have reason to be concerned about the person's current intention to complete suicide?", "values": "layer"}, "suic_plans_mg": {"question": "Does the person have any plans for making a future suicide attempt?", "values": "filter-q"}, "suic_plan_real_mg": {"question": "Can the person easily carry out the suicide plan (consider realism of plan and access to means of putting it into action)?", "values": "scale"}, "suic_steps_takn_mg": {"question": "Has the person taken steps towards carrying out the suicide plan?", "values": "scale"}, "suic_prosp_leth_mg": {"question": "How likely is the chosen method to succeed?", "values": "scale"}, "suic_int_inform_mg": {"question": "Has the person told anyone about an intention to complete suicide?", "values": "nominal"}, "suic_eol_prep_mg": {"question": "Has the person made unexpected end_of_life preparations that cause you concern about suicide risk (eg written a will, sorted finances, put house in order, written suicide note)?", "values": "scale"}, "suic_s_h_behv_mg": {"question": "Does the person have a pattern of self_harming that indicates suicidal intention?", "values": "scale"}, "suic_rel_belief_mg": {"question": "What effect do the person's spiritual/religious values, beliefs, or attitudes to dying have on risk of suicide?", "values": "nominal"}, "suic_int_p_trig_mg": {"question": "Do you have reason to be concerned about anything that could trigger suicide attempts?", "values": "layer"}, "suic_pot_trig_mg": {"question": "Is the person exposed to feelings or circumstances that may trigger a suicide attempt?", "values": "scale"}, "suic_p_trig_mtch_mg": {"question": "Do the person's current feelings or circumstances match those that are known to have triggered any previous suicide attempts?", "values": "scale"}, "suic_fam_hist_mg": {"question": "Has there been any history of suicide attempts in the person's family?", "values": "nominal"}, "suic_ideation_mg": {"question": "Is the person having suicidal thoughts or fantasies?", "values": "filter-q"}, "suic_id_control_mg": {"question": "Does the person lack ability to control suicidal thoughts or fantasies?", "values": "scale"}, "suic_id_hi_risk_mg": {"question": "Does the content of the suicidal thoughts or fantasies make it more likely the person will attempt suicide?", "values": "scale"}, "suic_id_freq_mg": {"question": "How often do the suicidal thoughts or fantasies occur?", "values": "nominal"}, "suic_id_strngth_mg": {"question": "How persistent, intrusive, or intense are the suicidal thoughts or fantasies?", "values": "scale"}, "gen_sh_cuts_mg": {"question": "Does the person display evidence of recent self_harming injuries?", "values": "scale"}, "sn_appearnce_mg": {"question": "Is the person showing signs of self_neglect?", "values": "filter-q"}, "sn_hair_clothes_mg": {"question": "Do the person's hair and clothing indicate self_neglect?", "values": "scale"}, "sn_hygiene_mg": {"question": "Does the person have poor personal hygiene (eg smell, dirty hair and nails)?", "values": "scale"}, "sn_recnt_app_chnge_mg": {"question": "Has there been a recent change in appearance suggestive of self_neglect?", "values": "scale"}, "sn_skin_mg": {"question": "To what extent does the person's skin (condition, lesions, injuries, etc) indicate self_neglect?", "values": "scale"}, "gen_feel_emot_mg": {"question": "Do you have reason to be concerned about risks due to the person's feelings/emotions?", "values": "layer"}, "gen_mood_swings_mg": {"question": "Does the person have sudden mood changes or swings?", "values": "scale"}, "gen_negative_self_mg": {"question": "Does the person have negative feelings about him or herself (eg self_hatred, guilt, shame, humiliation)?", "values": "scale"}, "gen_plans_future_mg": {"question": "Does the person lack any plans for the future?", "values": "scale"}, "gen_life_not_livng_mg": {"question": "Does the person think life is not worth living?", "values": "scale"}, "gen_angry_emotns_mg": {"question": "Is the person displaying anger?", "values": "scale"}, "gen_anx_emotns_mg": {"question": "Is the person anxious or fearful?", "values": "scale"}, "gen_helpless_mg": {"question": "Does the person feel helpless?", "values": "scale"}, "gen_sad_mg": {"question": "Is the person feeling sad or low?", "values": "scale"}, "gen_distress_mg": {"question": "Is the person distressed?", "values": "scale"}, "gen_jealous_mg": {"question": "Is the person feeling jealous?", "values": "scale"}, "gen_self_worth_p_mg": {"question": "Do you have reason to be concerned about risks due to the person's sense of self worth?", "values": "layer"}, "grandiosity_mg": {"question": "Does the person feel special and able to control everything?", "values": "scale"}, "worthlessness_mg": {"question": "Does the person regard him or herself as worthless?", "values": "scale"}, "gen_personality_mg": {"question": "Do you have reason to be concerned about personality factors and their impact on risks?", "values": "layer"}, "gen_assertive_mg": {"question": "How assertive is the person?", "values": "nominal"}, "gen_empathy_abil_mg": {"question": "Does the person lack empathy?", "values": "scale"}, "gen_dependence_mg": {"question": "Is the person overdependent (weak, over_reliant on others, easily influenced, unable to function independently)?", "values": "scale"}, "gen_controlling_mg": {"question": "How organised is the person's general approach to life?", "values": "nominal"}, "gen_coping_abil_mg": {"question": "Does the person lack the ability to cope with major life stresses?", "values": "scale"}, "gen_hostile_mg": {"question": "How hostile is the person?", "values": "scale"}, "gen_impulse_mg": {"question": "How impulsive is the person?", "values": "scale"}, "gen_reliable_mg": {"question": "How unreliable is the person (eg untrustworthy or unpredictable)?", "values": "scale"}, "gen_pers_dis_mg": {"question": "Does the person have a diagnosed personality disorder?", "values": "nominal"}, "ment_fac_mg": {"question": "Is there any impaired cognitive function (thinking processes, memory, concentration) or dementia?", "values": "filter-q"}, "gen_impaird_cog_mg": {"question": "What is the current level of impaired thinking processes and memory?", "values": "nominal"}, "gen_cog_think_mem_mg": {"question": "Have the thinking processes and memory recently got worse?", "values": "scale"}, "gen_concentr_mg": {"question": "Is the person able to concentrate?", "values": "scale"}, "gen_learn_disab_mg": {"question": "Do you believe the person has learning disabilities?", "values": "nominal"}, "insight_resp_mg": {"question": "Do you have reason to be concerned about the person's lack of insight and sense of responsibility?", "values": "layer"}, "gen_insght_behvr_mg": {"question": "Does the person fail to understand the potential consequences of taking risks?", "values": "scale"}, "gen_resp_impct_oth_mg": {"question": "Does the person lack any sense of responsibility for the outcomes of risk_taking behaviour?", "values": "scale"}, "gen_nd_hlp_diff_mg": {"question": "Does the person lack insight about needing help with mental_health issues?", "values": "scale"}, "mental_health_mg": {"question": "Does the person have any history of depression, mania, hallucinations, or delusions?", "values": "filter-q"}, "clin_depression_mg": {"question": "Has the person ever been diagnosed with clinical depression?", "values": "filter-q"}, "gen_dep_stage_mg": {"question": "Select the most appropriate label for the current depression status?", "values": "nominal"}, "gen_mntl_cur_sympt_mg": {"question": "Is the person currently suffering from mania, hallucinations, or delusions?", "values": "filter-q"}, "gen_mania_mg": {"question": "Is the person displaying manic or hypomanic behaviour (fast speech, excessive irritability, recklessness, impulsivity, etc)?", "values": "scale"}, "gen_voice_hal_mg": {"question": "Does the person hear voices that are not present in reality?", "values": "filter-q"}, "gen_voice_dang_s_mg": {"question": "How much do the voices urge the person to harm or endanger him/herself?", "values": "scale"}, "gen_voice_dang_o_mg": {"question": "How much do the voices urge the person to harm/endanger other people?", "values": "scale"}, "gen_prob_act_voice_mg": {"question": "Will the person act on the voices?", "values": "scale"}, "gen_paranoid_del_mg": {"question": "Does the person suffer from delusions (ie clearly incorrect and illogical ideas about his or her life and circumstances)?", "values": "filter-q"}, "gen_paran_del_spec_mg": {"question": "Is the person obsessed about the perceived bad behaviour of particular known people?", "values": "scale"}, "gen_paran_del_pers_mg": {"question": "Is the person obsessed about being harmed or persecuted by particular known people?", "values": "scale"}, "gen_prob_act_par_del_mg": {"question": "How likely is it that the person will act on any delusions?", "values": "scale"}, "gen_phys_hlth_prb_mg": {"question": "Do you have reason to be concerned about risks due to any physical health problems?", "values": "layer"}, "gen_chronic_disease_mg": {"question": "Does the person suffer from any chronic health conditions? If yes, select all those that apply.", "values": "filter-q"}, "tinnitus_mg": {"question": "Is tinnitus one of the chronic health conditions?", "values": "nominal"}, "diabetes_mg": {"question": "Is diabetes one of the chronic health conditions", "values": "nominal"}, "multiple_sclerosis_mg": {"question": "Is multiple sclerosis one of the chronic health conditions?", "values": "nominal"}, "asthma_mg": {"question": "Is asthma one of the chronic health conditions?", "values": "nominal"}, "heart_disease_mg": {"question": "Is heart disease one of the chronic health conditions?", "values": "nominal"}, "kidney_disease_mg": {"question": "Is kidney disease one of the chronic health conditions?", "values": "nominal"}, "lung_disease_mg": {"question": "Is lung disease one of the chronic health conditions?", "values": "nominal"}, "arthritis_mg": {"question": "Is arthritis one of the chronic health conditions?", "values": "nominal"}, "high_blood_pressure_mg": {"question": "Is high blood pressure one of the chronic health conditions?", "values": "nominal"}, "other_mg": {"question": "Are there any other chronic health conditions?", "values": "nominal"}, "gen_phys_hlth_deg_diag_mg": {"question": "If the person has a life_threatening or degenerative illness (eg cancer, multiple sclerosis, Parkinson's, emphysema, HIV), when was it first diagnosed?", "values": "date-month"}, "gen_phys_hlth_pain_mg": {"question": "If the person suffers from chronic or periodic pain, how bad is it?", "values": "scale"}, "gen_phys_hlth_disa_mg": {"question": "Does the person suffer from problems that affect mobility and/or dexterity (eg eyesight, balance, disability due to disease or trauma)?", "values": "scale"}, "gen_com_imp_mg": {"question": "Does the person have trouble communicating as a result of physical health problems (eg hearing, speech)?", "values": "scale"}, "gen_phys_hlth_det_mg": {"question": "Has the person's physical health got worse over the last few months, including temporary or repeating problems?", "values": "scale"}, "gen_meds_therpy_mg": {"question": "Do you have reason to be concerned about the person's concordance with health treatment?", "values": "layer"}, "gen_meds_concord_mg": {"question": "Is the person failing to concord with medication or therapies, either deliberately or due to multiple medications, for example?", "values": "scale"}, "gen_serv_perc_supp_mg": {"question": "Does the person think health or social care services are not supportive?", "values": "scale"}, "gen_med_perc_benft_mg": {"question": "Does the person and/or carer think any medication/therapies are not working properly?", "values": "scale"}, "motive_eng_mg": {"question": "Do you have reason to be concerned about the person's motivation and engagement with the world?", "values": "layer"}, "gen_phys_withd_mg": {"question": "Is the person physically isolated from the world?", "values": "scale"}, "gen_mental_withd_mg": {"question": "Has the person mentally disengaged or withdrawn from the world?", "values": "scale"}, "gen_motivation_mg": {"question": "Does the person lack motivation in general life?", "values": "scale"}, "gen_listless_mg": {"question": "Does the person appear listless or lacking energy and drives (eg loss of enthusiasm and libido)?", "values": "scale"}, "gen_soc_contxt_mg": {"question": "Do you have reason to be concerned about risks due to the person's social context (relationships, living arrangements, finances, employment, any detrimental changes)?", "values": "layer"}, "gen_relatnshps_mg": {"question": "Do you have reason to be concerned about risks due to the person's current relationships?", "values": "layer"}, "gen_net_relat_mg": {"question": "Does the person lack a good network of relationships outside the home?", "values": "scale"}, "gen_relat_supp_mg": {"question": "Does the person lack supportive relationships?", "values": "scale"}, "gen_relat_detr_mg": {"question": "Does the person have detrimental relationships (eg bullied, over_protected) or ones with people who have antisocial behaviours or who take advantage of the person?", "values": "scale"}, "gen_relat_detr_chg_mg": {"question": "Does the person think important relationships have changed for the worse or soon will do (eg divorce, separation, rows, carer's role, bereavement)?", "values": "scale"}, "gen_living_arr_mg": {"question": "Do you have reason to be concerned about risks due to the person's living arrangements?", "values": "layer"}, "gen_move_freq_mg": {"question": "How often does the person's living place change?", "values": "nominal"}, "gen_accom_loss_mg": {"question": "Has the accommodation recently been taken away from the person or is it under threat of being taken away?", "values": "nominal"}, "gen_home_type_mg": {"question": "What type of supported living does the person have?", "values": "nominal"}, "gen_isol_accom_mg": {"question": "Is the person's accommodation isolated from other living abodes and resources?", "values": "scale"}, "gen_neigbrhd_rsky_mg": {"question": "Does the neighbourhood or care environment increase the person's particular risks (eg violent, easy access to drugs and unhelpful temptations)?", "values": "scale"}, "gen_accom_hm_care_mg": {"question": "Is the person's accommodation showing lack of care?", "values": "scale"}, "gen_accom_habitbl_mg": {"question": "Does the person think the accommodation is unfit to live in?", "values": "scale"}, "gen_finance_empl_mg": {"question": "Do you have reason to be concerned about risks due to the person's employment and/or finances?", "values": "layer"}, "gen_perc_debt_anx_mg": {"question": "How anxious is the person about perceived levels of debt?", "values": "scale"}, "gen_poverty_mg": {"question": "Does the person's income fail to cover the essential living costs of the household (food, rent, heating, etc)?", "values": "scale"}, "gen_job_chg_frq_mg": {"question": "How unstable is the person's employment history (eg always changing, poor disciplinary record)?", "values": "scale"}, "gen_rec_bad_job_ch_mg": {"question": "Does the person believe a recent or potential change in employment is detrimental (eg loss of job, retirement, work stress)?", "values": "scale"}, "gen_currnt_bhvr_mg": {"question": "Do you have reason to be concerned about the person's general current behaviour (eg risk_taking, sleep patterns, daily activities, challenging behaviour)?", "values": "layer"}, "gen_rsk_behavr_mg": {"question": "Does the person take reckless risks (eg with sexual behaviour, driving, gambling and other leisure pursuits)?", "values": "scale"}, "gen_unint_risk_behavr_mg": {"question": "Does the person's behaviour lead to unintentional risks (eg fire or harm due to being careless, thoughtless or forgetful; self_injurious behaviour)?", "values": "scale"}, "gen_sleep_dist_mg": {"question": "Does the person experience problems with sleeping?", "values": "scale"}, "gen_unusl_rec_bhvr_mg": {"question": "Has the person been behaving out of character or unpredictably in recent weeks?", "values": "scale"}, "gen_chall_bhvr_mg": {"question": "Does the person display challenging behaviour (eg antisocial, disruptive, resistance to advice, predatory, false accusations)", "values": "scale"}, "gen_day_struct_mg": {"question": "Does the person's day lack any structure?", "values": "scale"}, "gen_day_actvty_lev_mg": {"question": "What is the person's general level of activity?", "values": "nominal"}, "gen_diet_eating_mg": {"question": "Does the person fail to eat a healthy diet?", "values": "scale"}, "gen_diet_weigt_ext_mg": {"question": "Is the person's weight a cause of concern? Select the appropriate description.", "values": "nominal"}, "gen_diet_weigt_chg_mg": {"question": "Has the person experienced weight change in recent months?", "values": "scale"}, "gen_diet_drink_mg": {"question": "Does the person fail to have appropriate fluid intake (too much or too little)?", "values": "scale"}, "gen_subs_misuse_mg": {"question": "Does the person have a history of misusing drugs or alcohol?", "values": "filter-q"}, "gen_alc_misuse_mg": {"question": "Does alcohol currently have a bad effect on the person's life?", "values": "scale"}, "gen_drug_misuse_mg": {"question": "Do drugs currently have a bad effect on the person's life?", "values": "scale"}, "adv_life_event_mg": {"question": "Does the person have any adverse life events (eg suffered abuse, criminal justice proceedings, serious injury, detrimental upbringing/education, eating disorders)?", "values": "filter-q"}, "gen_life_abuse_mg": {"question": "Has the person ever been the victim of any form of abuse (eg physical, sexual, financial, emotional)?", "values": "filter-q"}, "gen_life_sex_abuse_mg": {"question": "Has the person ever been sexually abused?", "values": "filter-q"}, "gen_sex_abse_last_mg": {"question": "When was the most recent episode of sexual abuse?", "values": "date-year"}, "gen_sex_abse_as_ch_mg": {"question": "Was the first episode of sexual abuse during childhood or early adolescence?", "values": "nominal"}, "gen_phys_abse_mg": {"question": "Has the person ever been physically abused?", "values": "filter-q"}, "gen_phys_abse_last_mg": {"question": "When was the most recent episode of physical abuse?", "values": "date-month"}, "gen_phy_abse_as_ch_mg": {"question": "Was the first episode of physical abuse during childhood or early adolescence?", "values": "nominal"}, "gen_emot_abse_mg": {"question": "Has the person ever been emotionally abused due to, for example, race, religion, sexual orientation, appearance?", "values": "filter-q"}, "gen_emot_abse_last_mg": {"question": "When was the most recent episode of emotional abuse?", "values": "date-month"}, "gen_emo_abse_as_ch_mg": {"question": "Was the first episode of emotional abuse during childhood or early adolescence?", "values": "nominal"}, "gen_financial_abuse_mg": {"question": "Has the person ever been financially abused?", "values": "nominal"}, "gen_forensic_proc_mg": {"question": "Has the person ever faced serious criminal justice proceedings (court cases, custodial sentences, etc)?", "values": "filter-q"}, "gen_forensic_proc_curr_mg": {"question": "Are the serious criminal justice proceedings current?", "values": "nominal"}, "gen_env_grew_up_mg": {"question": "Did the person grow up in emotionally disturbed or disruptive environments?", "values": "scale"}, "gen_eating_dis_mg": {"question": "Has the person suffered from eating disorders in the past?", "values": "scale"}, "gen_educ_expr_mg": {"question": "Did the person have a bad time at school?", "values": "scale"}, "serious_injury_mg": {"question": "Has the person ever had a serious injury?", "values": "scale"}, "gen_presentation_mg": {"question": "Are you concerned about the person's behavioural presentation with respect to potential risks (eg verbal and physical behaviour, uneasy `gut' feeling in yourself)?", "values": "filter-q"}, "gen_engagement_mg": {"question": "Are you concerned about the person's engagement with you during the assessment?", "values": "filter-q"}, "gen_rapport_mg": {"question": "How difficult is it to have rapport with the person?", "values": "scale"}, "gen_responsve_mg": {"question": "Is the person unwilling to communicate or respond to questions?", "values": "scale"}, "gen_gut_assmnt_mg": {"question": "Do you have an uneasy 'gut' feeling about the person (eg about the person's honesty, something doesn't quite add up, something missing)?", "values": "scale"}, "gen_risk_verbal_mg": {"question": "Are you concerned about verbal indicators of risk?", "values": "filter-q"}, "gen_risk_aggrsv_mg": {"question": "How aggressive/hostile is the person's tone of voice?", "values": "scale"}, "gen_risk_upbeat_mg": {"question": "How depressed and downbeat is the person's tone of voice?", "values": "scale"}, "gen_coherence_mg": {"question": "Is the person failing to make sense (eg incoherent, irrational)?", "values": "scale"}, "gen_body_face_mg": {"question": "Are you concerned about the person's body language and expression?", "values": "filter-q"}, "gen_distrss_b_lang_mg": {"question": "Does the person's body language indicate distress?", "values": "scale"}, "gen_low_mood_mg": {"question": "Do the person's movements, posture, and facial expression indicate a low, downbeat, or gloomy mood?", "values": "scale"}, "gen_threat_move_mg": {"question": "How aggressive or threatening are the person's movements and posture?", "values": "scale"}, "gen_detached_mg": {"question": "Does the person appear detached or preoccupied?", "values": "scale"}, "gen_avoid_eye_contact_mg": {"question": "Does the person avoid eye contact?", "values": "scale"}, "gen_eye_movement_mg": {"question": "How would you describe the person's general eye movement?", "values": "nominal"}, "gen_congruence_mg": {"question": "How inconsistent are the person's physical, verbal, and emotional presentations (lack of congruence)?", "values": "scale"}, "gen_age_mg": {"question": "Date of birth", "values": "date-year"}, "gen_gender_mg": {"question": "Gender", "values": "nominal"}, "gen_marital_status_mg": {"question": "Does the person have a partner?", "values": "filter-q"}, "partner_share_acc_mg": {"question": "Does the person live with his or her partner?", "values": "nominal"}, "gen_accom_share_mg": {"question": "Does the person share the living accommodation with anyone who is not the partner?", "values": "filter-q"}, "gen_accom_depndnts_mg": {"question": "Does the person live with dependents (relatives or children)?", "values": "filter-q"}, "gen_accom_num_dep_mg": {"question": "How many dependents does the person live with", "values": "integer"}, "gen_dep_ygnst_age_mg": {"question": "What is the age of the youngest dependent?", "values": "integer"}, "gen_accm_share_nd_mg": {"question": "How many non_dependents share the living accommodation", "values": "integer"}, "gen_ethnicity_mg": {"question": "What is the person's ethnic group?", "values": "nominal"}, "mappa_mg": {"question": "Does the person have any Multi_Agency Public Protection Arrangements (MAPPA)?", "values": "nominal"}, "sh_mg": {"question": "In your judgement, what is the risk that the person will self_harm?", "values": "scale"}, "sh_specific_mg": {"question": "Do you have reason to be concerned about the person's risk of self_harming?", "values": "layer"}, "sh_past_curr_ep_mg": {"question": "Has the person ever engaged in self_harming behaviour? If yes, the questions about them should be answered with reference to the general episodes rather than any specific one, unless otherwise stated.", "values": "filter-q"}, "sh_most_rec_ep_mg": {"question": "When was the most recent self_harm episode?", "values": "date-day"}, "sh_patt_of_eps_mg": {"question": "Has there been more than one self_harm episode?", "values": "filter-q"}, "sh_first_time_ep_mg": {"question": "When was the first self_harm episode?", "values": "date-week"}, "sh_freq_eps_mg": {"question": "How often do the episodes of self_harm occur?", "values": "nominal"}, "sh_incrse_eps_mg": {"question": "Have the self_harm episodes changed in frequency over the last year?", "values": "nominal"}, "sh_hlp_after_mg": {"question": "Does the person try to hide any self_harming?", "values": "scale"}, "sh_lethality_mth_mg": {"question": "In general, how likely is it that the chosen self_harm methods could lead to death?", "values": "scale"}, "sh_change_mth_mg": {"question": "Have the self_harming methods suddenly changed?", "values": "nominal"}, "sh_for_hlp_diff_mg": {"question": "How much are the self_harming episodes more than a cry for help (driven by the underlying problem rather than trying to get help with it)", "values": "scale"}, "sh_hlp_cope_diff_mg": {"question": "Did the self_harm episodes help the person cope with difficulties?", "values": "nominal"}, "sh_pot_triggs_p_mg": {"question": "Do you have reason to be concerned about anything that could trigger self_harm?", "values": "layer"}, "sh_pot_triggs_mg": {"question": "Is the person exposed to feelings or circumstances that may trigger self_harming?", "values": "scale"}, "sh_pot_trigs_mtch_mg": {"question": "Do the person's current feelings or circumstances match those that are known to have triggered any previous episodes of self harm?", "values": "scale"}, "sh_family_hist_mg": {"question": "Has there been any history of self_harm in the person's family?", "values": "nominal"}, "sh_ideation_mg": {"question": "Is the person having self_harming thoughts or fantasies?", "values": "filter-q"}, "sh_freq_ideatn_mg": {"question": "How often do the self_harming thoughts or fantasies occur?", "values": "nominal"}, "sh_strength_mg": {"question": "How persistent, intrusive, and intense are the self_harming thoughts?", "values": "scale"}, "hto_mg": {"question": "In your judgement, what is the risk that the person will cause harm to people/animals or damage property?", "values": "scale"}, "hto_specific_mg": {"question": "Do you have reason to be concerned about the person's risk of harm to others or destructive behaviour?", "values": "layer"}, "hto_past_curr_ep_mg": {"question": "Has the person ever engaged in episodes of harm to people/animals or damage to property (fire setting, vandalism, etc)? If yes, the questions about them should be answered with reference to the attempts in general rather than any specific one, unless otherwise stated.", "values": "filter-q"}, "hto_phys_sex_mg": {"question": "Has the person ever carried out any physical or sexual assaults?", "values": "filter-q"}, "hto_any_violent_mg": {"question": "Were any of the episodes physical assaults/abuse?", "values": "filter-q"}, "hto_violent_mg": {"question": "How serious was the most severe physical assault or abuse?", "values": "scale"}, "hto_recent_violent_eps_mg": {"question": "When was the most recent episode of assault/physical abuse?", "values": "date-week"}, "hto_violent_prev_freq_mg": {"question": "How frequent are the physical assaults?", "values": "nominal"}, "hto_first_time_violent_ep_mg": {"question": "When was the first episode of assault/physical abuse?", "values": "date-month"}, "hto_any_sex_asslt_mg": {"question": "Were any of the previous assaults rape or some other form of sexual abuse?", "values": "filter-q"}, "hto_sex_asslt_mg": {"question": "Select the most serious form of sexual assault by the person?", "values": "nominal"}, "hto_recent_sexual_eps_mg": {"question": "When was the most recent episode of sexual assault?", "values": "date-week"}, "hto_sexual_prev_freq_mg": {"question": "How frequent are the episodes of sexual assault?", "values": "nominal"}, "hto_first_time_sexual_ep_mg": {"question": "When was the first episode of sexual assault?", "values": "date-month"}, "hto_weapons_hist_mg": {"question": "Did any previous episodes of harm to others involve weapons (eg guns, knives)?", "values": "nominal"}, "hto_emotional_eps_mg": {"question": "Has the person ever emotionally abused other people (including racial abuse)?", "values": "filter-q"}, "hto_emotional_ep_mg": {"question": "How serious was the emotional abuse?", "values": "scale"}, "hto_recent_emotional_eps_mg": {"question": "When was the most recent episode of emotional abuse?", "values": "date-week"}, "hto_emotional_prev_freq_mg": {"question": "How frequent are the episodes of emotional abuse?", "values": "nominal"}, "hto_first_time_emotional_ep_mg": {"question": "When was the first episode of emotional abuse?", "values": "date-month"}, "hto_any_dest_prprty_mg": {"question": "Has the person ever engaged in deliberate damage to property (excluding fire setting)?", "values": "filter-q"}, "hto_dest_prprty_mg": {"question": "How serious was the damage to property?", "values": "scale"}, "hto_recent_destructive_eps_mg": {"question": "When was the most recent deliberate damage to property?", "values": "date-week"}, "hto_destructive_prev_freq_mg": {"question": "How frequent are the episodes of damage to property?", "values": "nominal"}, "hto_first_time_destructive_ep_mg": {"question": "When was the first deliberate damage to property?", "values": "date-month"}, "hto_any_fire_setting_mg": {"question": "Has the person ever engaged in fire setting behaviour?", "values": "filter-q"}, "hto_fire_setting_mg": {"question": "How serious were the acts of fire setting?", "values": "scale"}, "hto_recent_fire_setting_eps_mg": {"question": "When was the most recent episode of fire setting?", "values": "date-week"}, "hto_fire_setting_prev_freq_mg": {"question": "How frequent are the fire_setting episodes?", "values": "nominal"}, "hto_first_time_fire_setting_ep_mg": {"question": "When was the first episode of fire setting?", "values": "date-month"}, "hto_any_to_anmls_mg": {"question": "Has the person ever abused animals?", "values": "filter-q"}, "hto_to_anmls_mg": {"question": "How serious was the animal abuse?", "values": "scale"}, "hto_recent_animal_eps_mg": {"question": "When was the most recent episode of animal abuse?", "values": "date-week"}, "hto_animal_prev_freq_mg": {"question": "How frequent are the episodes of animal abuse?", "values": "nominal"}, "hto_first_time_animal_ep_mg": {"question": "When was the first episode of animal abuse?", "values": "date-month"}, "hto_targets_mg": {"question": "Are there any particular groups of people, rather than complete strangers, that the person is known to have targeted for harm?  If yes, select all those that apply.", "values": "filter-q"}, "carers_family_mg": {"question": "Has anyone been harmed within the domestic setting?", "values": "nominal"}, "shared_accom_neighbours_mg": {"question": "Have any neighbours or people sharing your living space been harmed?", "values": "nominal"}, "friends_colleagues_mg": {"question": "Have any friends or colleagues been harmed?", "values": "nominal"}, "health_workers_mg": {"question": "Have any health workers been harmed?", "values": "nominal"}, "authority_figs_mg": {"question": "Have any authority figures been harmed?", "values": "nominal"}, "ethnic_mg": {"question": "Has anyone from a different ethnic background been harmed?", "values": "nominal"}, "hto_curr_persp_ep_mg": {"question": "Does the person believe there was nothing wrong with causing harm or damage?", "values": "scale"}, "hto_intention_mg": {"question": "Do you believe the person has an intention/plan to cause harm or damage?", "values": "layer"}, "hto_means_plan_mg": {"question": "Does the person have the means and know_how to carry out the plan for harm or damage?", "values": "scale"}, "hto_steps_plan_mg": {"question": "Has the person taken steps towards implementing the plan to harm or damage (eg made threats, monitored the victim)?", "values": "scale"}, "hto_intent_peop_mg": {"question": "Are the person's intentions directed towards people?", "values": "filter-q"}, "hto_targets_id_mg": {"question": "Has the person got any particular victims (specific individuals) in mind for harming?", "values": "nominal"}, "app_harm_dam_mg": {"question": "Does the person's appearance (not body language or behaviour) cause you concern about risk of harm or damage (eg sweating, blood, state of clothes)?", "values": "scale"}, "hto_religious_mg": {"question": "What effect do the person's spiritual/religious values or beliefs have on the risk of harm or damage?", "values": "nominal"}, "pot_trig_hto_mg": {"question": "Do you have reason to be concerned about anything that could trigger harm or damage?", "values": "layer"}, "hto_pot_trig_mg": {"question": "Is the person exposed to feelings or circumstances that could trigger episodes of harm or damage?", "values": "scale"}, "hto_pot_trig_mtch_mg": {"question": "Do the person's current feelings or circumstances match those that are known to have triggered any previous harm or damage?", "values": "scale"}, "gen_violent_purs_mg": {"question": "Does the person have an interest in pursuits related to violence (eg weapons, violent videos or computer games)?", "values": "scale"}, "hto_fam_hist_mg": {"question": "Is there a history of violence, abuse, or aggression in the person's family?", "values": "scale"}, "hto_ideation_vio_mg": {"question": "Is the person having thoughts or fantasies about harming people/animals or damaging property?", "values": "filter-q"}, "hto_hi_rsk_ideatn_mg": {"question": "Does the content of the person's thoughts or fantasies about harm or damage make it more likely he or she will do it?", "values": "scale"}, "hto_freq_ideatn_mg": {"question": "How often do the thoughts or fantasies about harm or damage occur?", "values": "nominal"}, "hto_strgth_ideatn_mg": {"question": "How persistent, intrusive, or intense are the thoughts/fantasies of harm or damage?", "values": "scale"}, "hto_ideatn_link_mg": {"question": "Do the thoughts/fantasies of harm or damage relate to the people, events, and circumstances in the person's own world (ie the realism of the thoughts)?", "values": "scale"}, "risk_dep_mg": {"question": "In your judgement, does the person put any dependents at risk (consider both children and adults)?", "values": "scale"}, "dependents_specific_mg": {"question": "Do you have reason to be concerned about the person's risk to dependents?", "values": "layer"}, "child_prot_mg": {"question": "Are there any child protection issues?", "values": "nominal"}, "sn_mg": {"question": "In your judgement, to what extent is the person failing to look after him or herself?", "values": "scale"}, "vuln_su_mg": {"question": "In your judgement, how vulnerable is the person (consider physical, emotional, sexual, and financial vulnerability)?", "values": "scale"}, "vuln_specific_mg": {"question": "Do you have reason to be concerned about the person's vulnerability?", "values": "layer"}, "falls_mg": {"question": "Does the person have a history of falls or other accidents?", "values": "filter-q"}, "recent_falls_mg": {"question": "Have any of the falls or accidents occurred recently (within the last year approximately)?", "values": "filter-q"}, "falls_reasons_mg": {"question": "Are the reasons for the falls or accidents known (eg physical health problems, hazards in the home)?", "values": "nominal"}, "frailty_mg": {"question": "Has the person ever sustained a fragility fracture (broken bone after a minor bump or fall), e.g. wrist, hip, vertebra, humerus?", "values": "nominal"}, "vuln_app_behavr_mg": {"question": "Do you have reason to be concerned about appearance or behaviour issues that may be putting the person at risk (consider physical, emotional, sexual, and financial vulnerability)?", "values": "layer"}, "app_vuln_abuse_mg": {"question": "Does the person's appearance cause you concern about abuse by others (eg bruises, scratches, blood, state of clothes)?", "values": "scale"}, "sex_vuln_mg": {"question": "Does the person's behaviour make him or her vulnerable to sexual harrassment or abuse?", "values": "scale"}, "phys_vuln_mg": {"question": "Does the person's behaviour make him or her vulnerable to physical harrassment or abuse?", "values": "scale"}, "emot_vuln_mg": {"question": "Does the person's behaviour make him or her vulnerable to emotional harrassment or abuse?", "values": "scale"}, "finan_vuln_mg": {"question": "Does the person's behaviour make him or her vulnerable to financial abuse?", "values": "scale"}, "wandering_mg": {"question": "Does the person have a history of wandering behaviour?", "values": "nominal"}, "dis_conf_mg": {"question": "Is the person confused or disorientated as a result of recent changes in circumstances (eg hospital admission, new carer)?", "values": "scale"}, "indep_living_mg": {"question": "Do you have reason to be concerned about the person's ability to live independently?", "values": "layer"}, "carers_mg": {"question": "How much does the person depend on carers?", "values": "scale"}, "gen_liv_skills_mg": {"question": "Does the person lack the ability to look after daily living requirements (cooking, shopping, cleaning, etc)?", "values": "scale"}, "generic_mg": {"question": "These questions are not about specific risks but there are some that may help assess the patient if you have not already decided what to do. Do you wish to answer them now?", "values": ""}}
+{
+    "suic_mg": {
+        "question": "In your judgement, what is the risk that the person will attempt suicide?",
+        "values": "scale"
+    },
+    "sui_specific_mg": {
+        "question": "Do you have reason to be concerned about the person's risk of suicide?",
+        "values": "layer"
+    },
+    "suic_past_att_mg": {
+        "question": "Has the person ever made a suicide attempt? If yes, the questions about them should be answered with reference to the attempts in general rather than any specific one, unless otherwise stated.",
+        "values": "filter-q"
+    },
+    "suic_most_rec_mg": {
+        "question": "When was the most recent suicide attempt?",
+        "values": "date-week"
+    },
+    "suic_patt_att_mg": {
+        "question": "Has there been more than one suicide attempt?",
+        "values": "filter-q"
+    },
+    "suic_first_occ_mg": {
+        "question": "When was the first suicide attempt?",
+        "values": "date-week"
+    },
+    "suic_escalate_mg": {
+        "question": "How have the suicide attempts been changing in frequency over the last two years?",
+        "values": "nominal"
+    },
+    "suic_how_many_mg": {
+        "question": "Approximately how many suicide attempts have there been?",
+        "values": "integer"
+    },
+    "suic_note_prev_mg": {
+        "question": "Was a suicide note written for any previous or current suicide attempts?",
+        "values": "nominal"
+    },
+    "suic_discovery_mg": {
+        "question": "Did the person try to hide any suicide attempt, to make sure it was not stopped?",
+        "values": "scale"
+    },
+    "suic_lethality_mg": {
+        "question": "How lethal was the most serious method used by the person in any of the suicide attempts (i.e. how likely to succeed in killing the person without any intervention)?",
+        "values": "scale"
+    },
+    "suic_ser_succd_mg": {
+        "question": "Do you believe the person wanted the suicide attempts to succeed at the time?",
+        "values": "scale"
+    },
+    "suic_regret_mg": {
+        "question": "How much does the person fail to show any regret or remorse over having tried to complete suicide in the past?",
+        "values": "scale"
+    },
+    "suic_leth_insght_mg": {
+        "question": "Does the person lack awareness about how dangerous the suicide attempts were?",
+        "values": "scale"
+    },
+    "suic_curr_int_mg": {
+        "question": "Do you have reason to be concerned about the person's current intention to complete suicide?",
+        "values": "layer"
+    },
+    "suic_plans_mg": {
+        "question": "Does the person have any plans for making a future suicide attempt?",
+        "values": "filter-q"
+    },
+    "suic_plan_real_mg": {
+        "question": "Can the person easily carry out the suicide plan (consider realism of plan and access to means of putting it into action)?",
+        "values": "scale"
+    },
+    "suic_steps_takn_mg": {
+        "question": "Has the person taken steps towards carrying out the suicide plan?",
+        "values": "scale"
+    },
+    "suic_prosp_leth_mg": {
+        "question": "How likely is the chosen method to succeed?",
+        "values": "scale"
+    },
+    "suic_int_inform_mg": {
+        "question": "Has the person told anyone about an intention to complete suicide?",
+        "values": "nominal"
+    },
+    "suic_eol_prep_mg": {
+        "question": "Has the person made unexpected end_of_life preparations that cause you concern about suicide risk (eg written a will, sorted finances, put house in order, written suicide note)?",
+        "values": "scale"
+    },
+    "suic_s_h_behv_mg": {
+        "question": "Does the person have a pattern of self_harming that indicates suicidal intention?",
+        "values": "scale"
+    },
+    "suic_rel_belief_mg": {
+        "question": "What effect do the person's spiritual/religious values, beliefs, or attitudes to dying have on risk of suicide?",
+        "values": "nominal"
+    },
+    "suic_int_p_trig_mg": {
+        "question": "Do you have reason to be concerned about anything that could trigger suicide attempts?",
+        "values": "layer"
+    },
+    "suic_pot_trig_mg": {
+        "question": "Is the person exposed to feelings or circumstances that may trigger a suicide attempt?",
+        "values": "scale"
+    },
+    "suic_p_trig_mtch_mg": {
+        "question": "Do the person's current feelings or circumstances match those that are known to have triggered any previous suicide attempts?",
+        "values": "scale"
+    },
+    "suic_fam_hist_mg": {
+        "question": "Has there been any history of suicide attempts in the person's family?",
+        "values": "nominal"
+    },
+    "suic_ideation_mg": {
+        "question": "Is the person having suicidal thoughts or fantasies?",
+        "values": "filter-q"
+    },
+    "suic_id_control_mg": {
+        "question": "Does the person lack ability to control suicidal thoughts or fantasies?",
+        "values": "scale"
+    },
+    "suic_id_hi_risk_mg": {
+        "question": "Does the content of the suicidal thoughts or fantasies make it more likely the person will attempt suicide?",
+        "values": "scale"
+    },
+    "suic_id_freq_mg": {
+        "question": "How often do the suicidal thoughts or fantasies occur?",
+        "values": "nominal"
+    },
+    "suic_id_strngth_mg": {
+        "question": "How persistent, intrusive, or intense are the suicidal thoughts or fantasies?",
+        "values": "scale"
+    },
+    "gen_sh_cuts_mg": {
+        "question": "Does the person display evidence of recent self_harming injuries?",
+        "values": "scale"
+    },
+    "sn_appearnce_mg": {
+        "question": "Is the person showing signs of self_neglect?",
+        "values": "filter-q"
+    },
+    "sn_hair_clothes_mg": {
+        "question": "Do the person's hair and clothing indicate self_neglect?",
+        "values": "scale"
+    },
+    "sn_hygiene_mg": {
+        "question": "Does the person have poor personal hygiene (eg smell, dirty hair and nails)?",
+        "values": "scale"
+    },
+    "sn_recnt_app_chnge_mg": {
+        "question": "Has there been a recent change in appearance suggestive of self_neglect?",
+        "values": "scale"
+    },
+    "sn_skin_mg": {
+        "question": "To what extent does the person's skin (condition, lesions, injuries, etc) indicate self_neglect?",
+        "values": "scale"
+    },
+    "gen_feel_emot_mg": {
+        "question": "Do you have reason to be concerned about risks due to the person's feelings/emotions?",
+        "values": "layer"
+    },
+    "gen_mood_swings_mg": {
+        "question": "Does the person have sudden mood changes or swings?",
+        "values": "scale"
+    },
+    "gen_negative_self_mg": {
+        "question": "Does the person have negative feelings about him or herself (eg self_hatred, guilt, shame, humiliation)?",
+        "values": "scale"
+    },
+    "gen_plans_future_mg": {
+        "question": "Does the person lack any plans for the future?",
+        "values": "scale"
+    },
+    "gen_life_not_livng_mg": {
+        "question": "Does the person think life is not worth living?",
+        "values": "scale"
+    },
+    "gen_angry_emotns_mg": {
+        "question": "Is the person displaying anger?",
+        "values": "scale"
+    },
+    "gen_anx_emotns_mg": {
+        "question": "Is the person anxious or fearful?",
+        "values": "scale"
+    },
+    "gen_helpless_mg": {
+        "question": "Does the person feel helpless?",
+        "values": "scale"
+    },
+    "gen_sad_mg": {
+        "question": "Is the person feeling sad or low?",
+        "values": "scale"
+    },
+    "gen_distress_mg": {
+        "question": "Is the person distressed?",
+        "values": "scale"
+    },
+    "gen_jealous_mg": {
+        "question": "Is the person feeling jealous?",
+        "values": "scale"
+    },
+    "gen_self_worth_p_mg": {
+        "question": "Do you have reason to be concerned about risks due to the person's sense of self worth?",
+        "values": "layer"
+    },
+    "grandiosity_mg": {
+        "question": "Does the person feel special and able to control everything?",
+        "values": "scale"
+    },
+    "worthlessness_mg": {
+        "question": "Does the person regard him or herself as worthless?",
+        "values": "scale"
+    },
+    "gen_personality_mg": {
+        "question": "Do you have reason to be concerned about personality factors and their impact on risks?",
+        "values": "layer"
+    },
+    "gen_assertive_mg": {
+        "question": "How assertive is the person?",
+        "values": "nominal"
+    },
+    "gen_empathy_abil_mg": {
+        "question": "Does the person lack empathy?",
+        "values": "scale"
+    },
+    "gen_dependence_mg": {
+        "question": "Is the person overdependent (weak, over_reliant on others, easily influenced, unable to function independently)?",
+        "values": "scale"
+    },
+    "gen_controlling_mg": {
+        "question": "How organised is the person's general approach to life?",
+        "values": "nominal"
+    },
+    "gen_coping_abil_mg": {
+        "question": "Does the person lack the ability to cope with major life stresses?",
+        "values": "scale"
+    },
+    "gen_hostile_mg": {
+        "question": "How hostile is the person?",
+        "values": "scale"
+    },
+    "gen_impulse_mg": {
+        "question": "How impulsive is the person?",
+        "values": "scale"
+    },
+    "gen_reliable_mg": {
+        "question": "How unreliable is the person (eg untrustworthy or unpredictable)?",
+        "values": "scale"
+    },
+    "gen_pers_dis_mg": {
+        "question": "Does the person have a diagnosed personality disorder?",
+        "values": "nominal"
+    },
+    "ment_fac_mg": {
+        "question": "Is there any impaired cognitive function (thinking processes, memory, concentration) or dementia?",
+        "values": "filter-q"
+    },
+    "gen_impaird_cog_mg": {
+        "question": "What is the current level of impaired thinking processes and memory?",
+        "values": "nominal"
+    },
+    "gen_cog_think_mem_mg": {
+        "question": "Have the thinking processes and memory recently got worse?",
+        "values": "scale"
+    },
+    "gen_concentr_mg": {
+        "question": "Is the person able to concentrate?",
+        "values": "scale"
+    },
+    "gen_learn_disab_mg": {
+        "question": "Do you believe the person has learning disabilities?",
+        "values": "nominal"
+    },
+    "insight_resp_mg": {
+        "question": "Do you have reason to be concerned about the person's lack of insight and sense of responsibility?",
+        "values": "layer"
+    },
+    "gen_insght_behvr_mg": {
+        "question": "Does the person fail to understand the potential consequences of taking risks?",
+        "values": "scale"
+    },
+    "gen_resp_impct_oth_mg": {
+        "question": "Does the person lack any sense of responsibility for the outcomes of risk_taking behaviour?",
+        "values": "scale"
+    },
+    "gen_nd_hlp_diff_mg": {
+        "question": "Does the person lack insight about needing help with mental_health issues?",
+        "values": "scale"
+    },
+    "mental_health_mg": {
+        "question": "Does the person have any history of depression, mania, hallucinations, or delusions?",
+        "values": "filter-q"
+    },
+    "clin_depression_mg": {
+        "question": "Has the person ever been diagnosed with clinical depression?",
+        "values": "filter-q"
+    },
+    "gen_dep_stage_mg": {
+        "question": "Select the most appropriate label for the current depression status?",
+        "values": "nominal"
+    },
+    "gen_mntl_cur_sympt_mg": {
+        "question": "Is the person currently suffering from mania, hallucinations, or delusions?",
+        "values": "filter-q"
+    },
+    "gen_mania_mg": {
+        "question": "Is the person displaying manic or hypomanic behaviour (fast speech, excessive irritability, recklessness, impulsivity, etc)?",
+        "values": "scale"
+    },
+    "gen_voice_hal_mg": {
+        "question": "Does the person hear voices that are not present in reality?",
+        "values": "filter-q"
+    },
+    "gen_voice_dang_s_mg": {
+        "question": "How much do the voices urge the person to harm or endanger him/herself?",
+        "values": "scale"
+    },
+    "gen_voice_dang_o_mg": {
+        "question": "How much do the voices urge the person to harm/endanger other people?",
+        "values": "scale"
+    },
+    "gen_prob_act_voice_mg": {
+        "question": "Will the person act on the voices?",
+        "values": "scale"
+    },
+    "gen_paranoid_del_mg": {
+        "question": "Does the person suffer from delusions (ie clearly incorrect and illogical ideas about his or her life and circumstances)?",
+        "values": "filter-q"
+    },
+    "gen_paran_del_spec_mg": {
+        "question": "Is the person obsessed about the perceived bad behaviour of particular known people?",
+        "values": "scale"
+    },
+    "gen_paran_del_pers_mg": {
+        "question": "Is the person obsessed about being harmed or persecuted by particular known people?",
+        "values": "scale"
+    },
+    "gen_prob_act_par_del_mg": {
+        "question": "How likely is it that the person will act on any delusions?",
+        "values": "scale"
+    },
+    "gen_phys_hlth_prb_mg": {
+        "question": "Do you have reason to be concerned about risks due to any physical health problems?",
+        "values": "layer"
+    },
+    "gen_chronic_disease_mg": {
+        "question": "Does the person suffer from any chronic health conditions? If yes, select all those that apply.",
+        "values": "filter-q"
+    },
+    "tinnitus_mg": {
+        "question": "Is tinnitus one of the chronic health conditions?",
+        "values": "nominal"
+    },
+    "diabetes_mg": {
+        "question": "Is diabetes one of the chronic health conditions",
+        "values": "nominal"
+    },
+    "multiple_sclerosis_mg": {
+        "question": "Is multiple sclerosis one of the chronic health conditions?",
+        "values": "nominal"
+    },
+    "asthma_mg": {
+        "question": "Is asthma one of the chronic health conditions?",
+        "values": "nominal"
+    },
+    "heart_disease_mg": {
+        "question": "Is heart disease one of the chronic health conditions?",
+        "values": "nominal"
+    },
+    "kidney_disease_mg": {
+        "question": "Is kidney disease one of the chronic health conditions?",
+        "values": "nominal"
+    },
+    "lung_disease_mg": {
+        "question": "Is lung disease one of the chronic health conditions?",
+        "values": "nominal"
+    },
+    "arthritis_mg": {
+        "question": "Is arthritis one of the chronic health conditions?",
+        "values": "nominal"
+    },
+    "high_blood_pressure_mg": {
+        "question": "Is high blood pressure one of the chronic health conditions?",
+        "values": "nominal"
+    },
+    "other_mg": {
+        "question": "Are there any other chronic health conditions?",
+        "values": "nominal"
+    },
+    "gen_phys_hlth_deg_diag_mg": {
+        "question": "If the person has a life_threatening or degenerative illness (eg cancer, multiple sclerosis, Parkinson's, emphysema, HIV), when was it first diagnosed?",
+        "values": "date-month"
+    },
+    "gen_phys_hlth_pain_mg": {
+        "question": "If the person suffers from chronic or periodic pain, how bad is it?",
+        "values": "scale"
+    },
+    "gen_phys_hlth_disa_mg": {
+        "question": "Does the person suffer from problems that affect mobility and/or dexterity (eg eyesight, balance, disability due to disease or trauma)?",
+        "values": "scale"
+    },
+    "gen_com_imp_mg": {
+        "question": "Does the person have trouble communicating as a result of physical health problems (eg hearing, speech)?",
+        "values": "scale"
+    },
+    "gen_phys_hlth_det_mg": {
+        "question": "Has the person's physical health got worse over the last few months, including temporary or repeating problems?",
+        "values": "scale"
+    },
+    "gen_meds_therpy_mg": {
+        "question": "Do you have reason to be concerned about the person's concordance with health treatment?",
+        "values": "layer"
+    },
+    "gen_meds_concord_mg": {
+        "question": "Is the person failing to concord with medication or therapies, either deliberately or due to multiple medications, for example?",
+        "values": "scale"
+    },
+    "gen_serv_perc_supp_mg": {
+        "question": "Does the person think health or social care services are not supportive?",
+        "values": "scale"
+    },
+    "gen_med_perc_benft_mg": {
+        "question": "Does the person and/or carer think any medication/therapies are not working properly?",
+        "values": "scale"
+    },
+    "motive_eng_mg": {
+        "question": "Do you have reason to be concerned about the person's motivation and engagement with the world?",
+        "values": "layer"
+    },
+    "gen_phys_withd_mg": {
+        "question": "Is the person physically isolated from the world?",
+        "values": "scale"
+    },
+    "gen_mental_withd_mg": {
+        "question": "Has the person mentally disengaged or withdrawn from the world?",
+        "values": "scale"
+    },
+    "gen_motivation_mg": {
+        "question": "Does the person lack motivation in general life?",
+        "values": "scale"
+    },
+    "gen_listless_mg": {
+        "question": "Does the person appear listless or lacking energy and drives (eg loss of enthusiasm and libido)?",
+        "values": "scale"
+    },
+    "gen_soc_contxt_mg": {
+        "question": "Do you have reason to be concerned about risks due to the person's social context (relationships, living arrangements, finances, employment, any detrimental changes)?",
+        "values": "layer"
+    },
+    "gen_relatnshps_mg": {
+        "question": "Do you have reason to be concerned about risks due to the person's current relationships?",
+        "values": "layer"
+    },
+    "gen_net_relat_mg": {
+        "question": "Does the person lack a good network of relationships outside the home?",
+        "values": "scale"
+    },
+    "gen_relat_supp_mg": {
+        "question": "Does the person lack supportive relationships?",
+        "values": "scale"
+    },
+    "gen_relat_detr_mg": {
+        "question": "Does the person have detrimental relationships (eg bullied, over_protected) or ones with people who have antisocial behaviours or who take advantage of the person?",
+        "values": "scale"
+    },
+    "gen_relat_detr_chg_mg": {
+        "question": "Does the person think important relationships have changed for the worse or soon will do (eg divorce, separation, rows, carer's role, bereavement)?",
+        "values": "scale"
+    },
+    "gen_living_arr_mg": {
+        "question": "Do you have reason to be concerned about risks due to the person's living arrangements?",
+        "values": "layer"
+    },
+    "gen_move_freq_mg": {
+        "question": "How often does the person's living place change?",
+        "values": "nominal"
+    },
+    "gen_accom_loss_mg": {
+        "question": "Has the accommodation recently been taken away from the person or is it under threat of being taken away?",
+        "values": "nominal"
+    },
+    "gen_home_type_mg": {
+        "question": "What type of supported living does the person have?",
+        "values": "nominal"
+    },
+    "gen_isol_accom_mg": {
+        "question": "Is the person's accommodation isolated from other living abodes and resources?",
+        "values": "scale"
+    },
+    "gen_neigbrhd_rsky_mg": {
+        "question": "Does the neighbourhood or care environment increase the person's particular risks (eg violent, easy access to drugs and unhelpful temptations)?",
+        "values": "scale"
+    },
+    "gen_accom_hm_care_mg": {
+        "question": "Is the person's accommodation showing lack of care?",
+        "values": "scale"
+    },
+    "gen_accom_habitbl_mg": {
+        "question": "Does the person think the accommodation is unfit to live in?",
+        "values": "scale"
+    },
+    "gen_finance_empl_mg": {
+        "question": "Do you have reason to be concerned about risks due to the person's employment and/or finances?",
+        "values": "layer"
+    },
+    "gen_perc_debt_anx_mg": {
+        "question": "How anxious is the person about perceived levels of debt?",
+        "values": "scale"
+    },
+    "gen_poverty_mg": {
+        "question": "Does the person's income fail to cover the essential living costs of the household (food, rent, heating, etc)?",
+        "values": "scale"
+    },
+    "gen_job_chg_frq_mg": {
+        "question": "How unstable is the person's employment history (eg always changing, poor disciplinary record)?",
+        "values": "scale"
+    },
+    "gen_rec_bad_job_ch_mg": {
+        "question": "Does the person believe a recent or potential change in employment is detrimental (eg loss of job, retirement, work stress)?",
+        "values": "scale"
+    },
+    "gen_currnt_bhvr_mg": {
+        "question": "Do you have reason to be concerned about the person's general current behaviour (eg risk_taking, sleep patterns, daily activities, challenging behaviour)?",
+        "values": "layer"
+    },
+    "gen_rsk_behavr_mg": {
+        "question": "Does the person take reckless risks (eg with sexual behaviour, driving, gambling and other leisure pursuits)?",
+        "values": "scale"
+    },
+    "gen_unint_risk_behavr_mg": {
+        "question": "Does the person's behaviour lead to unintentional risks (eg fire or harm due to being careless, thoughtless or forgetful; self_injurious behaviour)?",
+        "values": "scale"
+    },
+    "gen_sleep_dist_mg": {
+        "question": "Does the person experience problems with sleeping?",
+        "values": "scale"
+    },
+    "gen_unusl_rec_bhvr_mg": {
+        "question": "Has the person been behaving out of character or unpredictably in recent weeks?",
+        "values": "scale"
+    },
+    "gen_chall_bhvr_mg": {
+        "question": "Does the person display challenging behaviour (eg antisocial, disruptive, resistance to advice, predatory, false accusations)",
+        "values": "scale"
+    },
+    "gen_day_struct_mg": {
+        "question": "Does the person's day lack any structure?",
+        "values": "scale"
+    },
+    "gen_day_actvty_lev_mg": {
+        "question": "What is the person's general level of activity?",
+        "values": "nominal"
+    },
+    "gen_diet_eating_mg": {
+        "question": "Does the person fail to eat a healthy diet?",
+        "values": "scale"
+    },
+    "gen_diet_weigt_ext_mg": {
+        "question": "Is the person's weight a cause of concern? Select the appropriate description.",
+        "values": "nominal"
+    },
+    "gen_diet_weigt_chg_mg": {
+        "question": "Has the person experienced weight change in recent months?",
+        "values": "scale"
+    },
+    "gen_diet_drink_mg": {
+        "question": "Does the person fail to have appropriate fluid intake (too much or too little)?",
+        "values": "scale"
+    },
+    "gen_subs_misuse_mg": {
+        "question": "Does the person have a history of misusing drugs or alcohol?",
+        "values": "filter-q"
+    },
+    "gen_alc_misuse_mg": {
+        "question": "Does alcohol currently have a bad effect on the person's life?",
+        "values": "scale"
+    },
+    "gen_drug_misuse_mg": {
+        "question": "Do drugs currently have a bad effect on the person's life?",
+        "values": "scale"
+    },
+    "adv_life_event_mg": {
+        "question": "Does the person have any adverse life events (eg suffered abuse, criminal justice proceedings, serious injury, detrimental upbringing/education, eating disorders)?",
+        "values": "filter-q"
+    },
+    "gen_life_abuse_mg": {
+        "question": "Has the person ever been the victim of any form of abuse (eg physical, sexual, financial, emotional)?",
+        "values": "filter-q"
+    },
+    "gen_life_sex_abuse_mg": {
+        "question": "Has the person ever been sexually abused?",
+        "values": "filter-q"
+    },
+    "gen_sex_abse_last_mg": {
+        "question": "When was the most recent episode of sexual abuse?",
+        "values": "date-year"
+    },
+    "gen_sex_abse_as_ch_mg": {
+        "question": "Was the first episode of sexual abuse during childhood or early adolescence?",
+        "values": "nominal"
+    },
+    "gen_phys_abse_mg": {
+        "question": "Has the person ever been physically abused?",
+        "values": "filter-q"
+    },
+    "gen_phys_abse_last_mg": {
+        "question": "When was the most recent episode of physical abuse?",
+        "values": "date-month"
+    },
+    "gen_phy_abse_as_ch_mg": {
+        "question": "Was the first episode of physical abuse during childhood or early adolescence?",
+        "values": "nominal"
+    },
+    "gen_emot_abse_mg": {
+        "question": "Has the person ever been emotionally abused due to, for example, race, religion, sexual orientation, appearance?",
+        "values": "filter-q"
+    },
+    "gen_emot_abse_last_mg": {
+        "question": "When was the most recent episode of emotional abuse?",
+        "values": "date-month"
+    },
+    "gen_emo_abse_as_ch_mg": {
+        "question": "Was the first episode of emotional abuse during childhood or early adolescence?",
+        "values": "nominal"
+    },
+    "gen_financial_abuse_mg": {
+        "question": "Has the person ever been financially abused?",
+        "values": "nominal"
+    },
+    "gen_forensic_proc_mg": {
+        "question": "Has the person ever faced serious criminal justice proceedings (court cases, custodial sentences, etc)?",
+        "values": "filter-q"
+    },
+    "gen_forensic_proc_curr_mg": {
+        "question": "Are the serious criminal justice proceedings current?",
+        "values": "nominal"
+    },
+    "gen_env_grew_up_mg": {
+        "question": "Did the person grow up in emotionally disturbed or disruptive environments?",
+        "values": "scale"
+    },
+    "gen_eating_dis_mg": {
+        "question": "Has the person suffered from eating disorders in the past?",
+        "values": "scale"
+    },
+    "gen_educ_expr_mg": {
+        "question": "Did the person have a bad time at school?",
+        "values": "scale"
+    },
+    "serious_injury_mg": {
+        "question": "Has the person ever had a serious injury?",
+        "values": "scale"
+    },
+    "gen_presentation_mg": {
+        "question": "Are you concerned about the person's behavioural presentation with respect to potential risks (eg verbal and physical behaviour, uneasy `gut' feeling in yourself)?",
+        "values": "filter-q"
+    },
+    "gen_engagement_mg": {
+        "question": "Are you concerned about the person's engagement with you during the assessment?",
+        "values": "filter-q"
+    },
+    "gen_rapport_mg": {
+        "question": "How difficult is it to have rapport with the person?",
+        "values": "scale"
+    },
+    "gen_responsve_mg": {
+        "question": "Is the person unwilling to communicate or respond to questions?",
+        "values": "scale"
+    },
+    "gen_gut_assmnt_mg": {
+        "question": "Do you have an uneasy 'gut' feeling about the person (eg about the person's honesty, something doesn't quite add up, something missing)?",
+        "values": "scale"
+    },
+    "gen_risk_verbal_mg": {
+        "question": "Are you concerned about verbal indicators of risk?",
+        "values": "filter-q"
+    },
+    "gen_risk_aggrsv_mg": {
+        "question": "How aggressive/hostile is the person's tone of voice?",
+        "values": "scale"
+    },
+    "gen_risk_upbeat_mg": {
+        "question": "How depressed and downbeat is the person's tone of voice?",
+        "values": "scale"
+    },
+    "gen_coherence_mg": {
+        "question": "Is the person failing to make sense (eg incoherent, irrational)?",
+        "values": "scale"
+    },
+    "gen_body_face_mg": {
+        "question": "Are you concerned about the person's body language and expression?",
+        "values": "filter-q"
+    },
+    "gen_distrss_b_lang_mg": {
+        "question": "Does the person's body language indicate distress?",
+        "values": "scale"
+    },
+    "gen_low_mood_mg": {
+        "question": "Do the person's movements, posture, and facial expression indicate a low, downbeat, or gloomy mood?",
+        "values": "scale"
+    },
+    "gen_threat_move_mg": {
+        "question": "How aggressive or threatening are the person's movements and posture?",
+        "values": "scale"
+    },
+    "gen_detached_mg": {
+        "question": "Does the person appear detached or preoccupied?",
+        "values": "scale"
+    },
+    "gen_avoid_eye_contact_mg": {
+        "question": "Does the person avoid eye contact?",
+        "values": "scale"
+    },
+    "gen_eye_movement_mg": {
+        "question": "How would you describe the person's general eye movement?",
+        "values": "nominal"
+    },
+    "gen_congruence_mg": {
+        "question": "How inconsistent are the person's physical, verbal, and emotional presentations (lack of congruence)?",
+        "values": "scale"
+    },
+    "gen_age_mg": {
+        "question": "Date of birth",
+        "values": "date-year"
+    },
+    "gen_gender_mg": {
+        "question": "Gender",
+        "values": "nominal"
+    },
+    "gen_marital_status_mg": {
+        "question": "Does the person have a partner?",
+        "values": "filter-q"
+    },
+    "partner_share_acc_mg": {
+        "question": "Does the person live with his or her partner?",
+        "values": "nominal"
+    },
+    "gen_accom_share_mg": {
+        "question": "Does the person share the living accommodation with anyone who is not the partner?",
+        "values": "filter-q"
+    },
+    "gen_accom_depndnts_mg": {
+        "question": "Does the person live with dependents (relatives or children)?",
+        "values": "filter-q"
+    },
+    "gen_accom_num_dep_mg": {
+        "question": "How many dependents does the person live with",
+        "values": "integer"
+    },
+    "gen_dep_ygnst_age_mg": {
+        "question": "What is the age of the youngest dependent?",
+        "values": "integer"
+    },
+    "gen_accm_share_nd_mg": {
+        "question": "How many non_dependents share the living accommodation",
+        "values": "integer"
+    },
+    "gen_ethnicity_mg": {
+        "question": "What is the person's ethnic group?",
+        "values": "nominal"
+    },
+    "mappa_mg": {
+        "question": "Does the person have any Multi_Agency Public Protection Arrangements (MAPPA)?",
+        "values": "nominal"
+    },
+    "sh_mg": {
+        "question": "In your judgement, what is the risk that the person will self_harm?",
+        "values": "scale"
+    },
+    "sh_specific_mg": {
+        "question": "Do you have reason to be concerned about the person's risk of self_harming?",
+        "values": "layer"
+    },
+    "sh_past_curr_ep_mg": {
+        "question": "Has the person ever engaged in self_harming behaviour? If yes, the questions about them should be answered with reference to the general episodes rather than any specific one, unless otherwise stated.",
+        "values": "filter-q"
+    },
+    "sh_most_rec_ep_mg": {
+        "question": "When was the most recent self_harm episode?",
+        "values": "date-day"
+    },
+    "sh_patt_of_eps_mg": {
+        "question": "Has there been more than one self_harm episode?",
+        "values": "filter-q"
+    },
+    "sh_first_time_ep_mg": {
+        "question": "When was the first self_harm episode?",
+        "values": "date-week"
+    },
+    "sh_freq_eps_mg": {
+        "question": "How often do the episodes of self_harm occur?",
+        "values": "nominal"
+    },
+    "sh_incrse_eps_mg": {
+        "question": "Have the self_harm episodes changed in frequency over the last year?",
+        "values": "nominal"
+    },
+    "sh_hlp_after_mg": {
+        "question": "Does the person try to hide any self_harming?",
+        "values": "scale"
+    },
+    "sh_lethality_mth_mg": {
+        "question": "In general, how likely is it that the chosen self_harm methods could lead to death?",
+        "values": "scale"
+    },
+    "sh_change_mth_mg": {
+        "question": "Have the self_harming methods suddenly changed?",
+        "values": "nominal"
+    },
+    "sh_for_hlp_diff_mg": {
+        "question": "How much are the self_harming episodes more than a cry for help (driven by the underlying problem rather than trying to get help with it)",
+        "values": "scale"
+    },
+    "sh_hlp_cope_diff_mg": {
+        "question": "Did the self_harm episodes help the person cope with difficulties?",
+        "values": "nominal"
+    },
+    "sh_pot_triggs_p_mg": {
+        "question": "Do you have reason to be concerned about anything that could trigger self_harm?",
+        "values": "layer"
+    },
+    "sh_pot_triggs_mg": {
+        "question": "Is the person exposed to feelings or circumstances that may trigger self_harming?",
+        "values": "scale"
+    },
+    "sh_pot_trigs_mtch_mg": {
+        "question": "Do the person's current feelings or circumstances match those that are known to have triggered any previous episodes of self harm?",
+        "values": "scale"
+    },
+    "sh_family_hist_mg": {
+        "question": "Has there been any history of self_harm in the person's family?",
+        "values": "nominal"
+    },
+    "sh_ideation_mg": {
+        "question": "Is the person having self_harming thoughts or fantasies?",
+        "values": "filter-q"
+    },
+    "sh_freq_ideatn_mg": {
+        "question": "How often do the self_harming thoughts or fantasies occur?",
+        "values": "nominal"
+    },
+    "sh_strength_mg": {
+        "question": "How persistent, intrusive, and intense are the self_harming thoughts?",
+        "values": "scale"
+    },
+    "hto_mg": {
+        "question": "In your judgement, what is the risk that the person will cause harm to people/animals or damage property?",
+        "values": "scale"
+    },
+    "hto_specific_mg": {
+        "question": "Do you have reason to be concerned about the person's risk of harm to others or destructive behaviour?",
+        "values": "layer"
+    },
+    "hto_past_curr_ep_mg": {
+        "question": "Has the person ever engaged in episodes of harm to people/animals or damage to property (fire setting, vandalism, etc)? If yes, the questions about them should be answered with reference to the attempts in general rather than any specific one, unless otherwise stated.",
+        "values": "filter-q"
+    },
+    "hto_phys_sex_mg": {
+        "question": "Has the person ever carried out any physical or sexual assaults?",
+        "values": "filter-q"
+    },
+    "hto_any_violent_mg": {
+        "question": "Were any of the episodes physical assaults/abuse?",
+        "values": "filter-q"
+    },
+    "hto_violent_mg": {
+        "question": "How serious was the most severe physical assault or abuse?",
+        "values": "scale"
+    },
+    "hto_recent_violent_eps_mg": {
+        "question": "When was the most recent episode of assault/physical abuse?",
+        "values": "date-week"
+    },
+    "hto_violent_prev_freq_mg": {
+        "question": "How frequent are the physical assaults?",
+        "values": "nominal"
+    },
+    "hto_first_time_violent_ep_mg": {
+        "question": "When was the first episode of assault/physical abuse?",
+        "values": "date-month"
+    },
+    "hto_any_sex_asslt_mg": {
+        "question": "Were any of the previous assaults rape or some other form of sexual abuse?",
+        "values": "filter-q"
+    },
+    "hto_sex_asslt_mg": {
+        "question": "Select the most serious form of sexual assault by the person?",
+        "values": "nominal"
+    },
+    "hto_recent_sexual_eps_mg": {
+        "question": "When was the most recent episode of sexual assault?",
+        "values": "date-week"
+    },
+    "hto_sexual_prev_freq_mg": {
+        "question": "How frequent are the episodes of sexual assault?",
+        "values": "nominal"
+    },
+    "hto_first_time_sexual_ep_mg": {
+        "question": "When was the first episode of sexual assault?",
+        "values": "date-month"
+    },
+    "hto_weapons_hist_mg": {
+        "question": "Did any previous episodes of harm to others involve weapons (eg guns, knives)?",
+        "values": "nominal"
+    },
+    "hto_emotional_eps_mg": {
+        "question": "Has the person ever emotionally abused other people (including racial abuse)?",
+        "values": "filter-q"
+    },
+    "hto_emotional_ep_mg": {
+        "question": "How serious was the emotional abuse?",
+        "values": "scale"
+    },
+    "hto_recent_emotional_eps_mg": {
+        "question": "When was the most recent episode of emotional abuse?",
+        "values": "date-week"
+    },
+    "hto_emotional_prev_freq_mg": {
+        "question": "How frequent are the episodes of emotional abuse?",
+        "values": "nominal"
+    },
+    "hto_first_time_emotional_ep_mg": {
+        "question": "When was the first episode of emotional abuse?",
+        "values": "date-month"
+    },
+    "hto_any_dest_prprty_mg": {
+        "question": "Has the person ever engaged in deliberate damage to property (excluding fire setting)?",
+        "values": "filter-q"
+    },
+    "hto_dest_prprty_mg": {
+        "question": "How serious was the damage to property?",
+        "values": "scale"
+    },
+    "hto_recent_destructive_eps_mg": {
+        "question": "When was the most recent deliberate damage to property?",
+        "values": "date-week"
+    },
+    "hto_destructive_prev_freq_mg": {
+        "question": "How frequent are the episodes of damage to property?",
+        "values": "nominal"
+    },
+    "hto_first_time_destructive_ep_mg": {
+        "question": "When was the first deliberate damage to property?",
+        "values": "date-month"
+    },
+    "hto_any_fire_setting_mg": {
+        "question": "Has the person ever engaged in fire setting behaviour?",
+        "values": "filter-q"
+    },
+    "hto_fire_setting_mg": {
+        "question": "How serious were the acts of fire setting?",
+        "values": "scale"
+    },
+    "hto_recent_fire_setting_eps_mg": {
+        "question": "When was the most recent episode of fire setting?",
+        "values": "date-week"
+    },
+    "hto_fire_setting_prev_freq_mg": {
+        "question": "How frequent are the fire_setting episodes?",
+        "values": "nominal"
+    },
+    "hto_first_time_fire_setting_ep_mg": {
+        "question": "When was the first episode of fire setting?",
+        "values": "date-month"
+    },
+    "hto_any_to_anmls_mg": {
+        "question": "Has the person ever abused animals?",
+        "values": "filter-q"
+    },
+    "hto_to_anmls_mg": {
+        "question": "How serious was the animal abuse?",
+        "values": "scale"
+    },
+    "hto_recent_animal_eps_mg": {
+        "question": "When was the most recent episode of animal abuse?",
+        "values": "date-week"
+    },
+    "hto_animal_prev_freq_mg": {
+        "question": "How frequent are the episodes of animal abuse?",
+        "values": "nominal"
+    },
+    "hto_first_time_animal_ep_mg": {
+        "question": "When was the first episode of animal abuse?",
+        "values": "date-month"
+    },
+    "hto_targets_mg": {
+        "question": "Are there any particular groups of people, rather than complete strangers, that the person is known to have targeted for harm?  If yes, select all those that apply.",
+        "values": "filter-q"
+    },
+    "carers_family_mg": {
+        "question": "Has anyone been harmed within the domestic setting?",
+        "values": "nominal"
+    },
+    "shared_accom_neighbours_mg": {
+        "question": "Have any neighbours or people sharing your living space been harmed?",
+        "values": "nominal"
+    },
+    "friends_colleagues_mg": {
+        "question": "Have any friends or colleagues been harmed?",
+        "values": "nominal"
+    },
+    "health_workers_mg": {
+        "question": "Have any health workers been harmed?",
+        "values": "nominal"
+    },
+    "authority_figs_mg": {
+        "question": "Have any authority figures been harmed?",
+        "values": "nominal"
+    },
+    "ethnic_mg": {
+        "question": "Has anyone from a different ethnic background been harmed?",
+        "values": "nominal"
+    },
+    "hto_curr_persp_ep_mg": {
+        "question": "Does the person believe there was nothing wrong with causing harm or damage?",
+        "values": "scale"
+    },
+    "hto_intention_mg": {
+        "question": "Do you believe the person has an intention/plan to cause harm or damage?",
+        "values": "layer"
+    },
+    "hto_means_plan_mg": {
+        "question": "Does the person have the means and know_how to carry out the plan for harm or damage?",
+        "values": "scale"
+    },
+    "hto_steps_plan_mg": {
+        "question": "Has the person taken steps towards implementing the plan to harm or damage (eg made threats, monitored the victim)?",
+        "values": "scale"
+    },
+    "hto_intent_peop_mg": {
+        "question": "Are the person's intentions directed towards people?",
+        "values": "filter-q"
+    },
+    "hto_targets_id_mg": {
+        "question": "Has the person got any particular victims (specific individuals) in mind for harming?",
+        "values": "nominal"
+    },
+    "app_harm_dam_mg": {
+        "question": "Does the person's appearance (not body language or behaviour) cause you concern about risk of harm or damage (eg sweating, blood, state of clothes)?",
+        "values": "scale"
+    },
+    "hto_religious_mg": {
+        "question": "What effect do the person's spiritual/religious values or beliefs have on the risk of harm or damage?",
+        "values": "nominal"
+    },
+    "pot_trig_hto_mg": {
+        "question": "Do you have reason to be concerned about anything that could trigger harm or damage?",
+        "values": "layer"
+    },
+    "hto_pot_trig_mg": {
+        "question": "Is the person exposed to feelings or circumstances that could trigger episodes of harm or damage?",
+        "values": "scale"
+    },
+    "hto_pot_trig_mtch_mg": {
+        "question": "Do the person's current feelings or circumstances match those that are known to have triggered any previous harm or damage?",
+        "values": "scale"
+    },
+    "gen_violent_purs_mg": {
+        "question": "Does the person have an interest in pursuits related to violence (eg weapons, violent videos or computer games)?",
+        "values": "scale"
+    },
+    "hto_fam_hist_mg": {
+        "question": "Is there a history of violence, abuse, or aggression in the person's family?",
+        "values": "scale"
+    },
+    "hto_ideation_vio_mg": {
+        "question": "Is the person having thoughts or fantasies about harming people/animals or damaging property?",
+        "values": "filter-q"
+    },
+    "hto_hi_rsk_ideatn_mg": {
+        "question": "Does the content of the person's thoughts or fantasies about harm or damage make it more likely he or she will do it?",
+        "values": "scale"
+    },
+    "hto_freq_ideatn_mg": {
+        "question": "How often do the thoughts or fantasies about harm or damage occur?",
+        "values": "nominal"
+    },
+    "hto_strgth_ideatn_mg": {
+        "question": "How persistent, intrusive, or intense are the thoughts/fantasies of harm or damage?",
+        "values": "scale"
+    },
+    "hto_ideatn_link_mg": {
+        "question": "Do the thoughts/fantasies of harm or damage relate to the people, events, and circumstances in the person's own world (ie the realism of the thoughts)?",
+        "values": "scale"
+    },
+    "risk_dep_mg": {
+        "question": "In your judgement, does the person put any dependents at risk (consider both children and adults)?",
+        "values": "scale"
+    },
+    "dependents_specific_mg": {
+        "question": "Do you have reason to be concerned about the person's risk to dependents?",
+        "values": "layer"
+    },
+    "child_prot_mg": {
+        "question": "Are there any child protection issues?",
+        "values": "nominal"
+    },
+    "sn_mg": {
+        "question": "In your judgement, to what extent is the person failing to look after him or herself?",
+        "values": "scale"
+    },
+    "vuln_su_mg": {
+        "question": "In your judgement, how vulnerable is the person (consider physical, emotional, sexual, and financial vulnerability)?",
+        "values": "scale"
+    },
+    "vuln_specific_mg": {
+        "question": "Do you have reason to be concerned about the person's vulnerability?",
+        "values": "layer"
+    },
+    "falls_mg": {
+        "question": "Does the person have a history of falls or other accidents?",
+        "values": "filter-q"
+    },
+    "recent_falls_mg": {
+        "question": "Have any of the falls or accidents occurred recently (within the last year approximately)?",
+        "values": "filter-q"
+    },
+    "falls_reasons_mg": {
+        "question": "Are the reasons for the falls or accidents known (eg physical health problems, hazards in the home)?",
+        "values": "nominal"
+    },
+    "frailty_mg": {
+        "question": "Has the person ever sustained a fragility fracture (broken bone after a minor bump or fall), e.g. wrist, hip, vertebra, humerus?",
+        "values": "nominal"
+    },
+    "vuln_app_behavr_mg": {
+        "question": "Do you have reason to be concerned about appearance or behaviour issues that may be putting the person at risk (consider physical, emotional, sexual, and financial vulnerability)?",
+        "values": "layer"
+    },
+    "app_vuln_abuse_mg": {
+        "question": "Does the person's appearance cause you concern about abuse by others (eg bruises, scratches, blood, state of clothes)?",
+        "values": "scale"
+    },
+    "sex_vuln_mg": {
+        "question": "Does the person's behaviour make him or her vulnerable to sexual harrassment or abuse?",
+        "values": "scale"
+    },
+    "phys_vuln_mg": {
+        "question": "Does the person's behaviour make him or her vulnerable to physical harrassment or abuse?",
+        "values": "scale"
+    },
+    "emot_vuln_mg": {
+        "question": "Does the person's behaviour make him or her vulnerable to emotional harrassment or abuse?",
+        "values": "scale"
+    },
+    "finan_vuln_mg": {
+        "question": "Does the person's behaviour make him or her vulnerable to financial abuse?",
+        "values": "scale"
+    },
+    "wandering_mg": {
+        "question": "Does the person have a history of wandering behaviour?",
+        "values": "nominal"
+    },
+    "dis_conf_mg": {
+        "question": "Is the person confused or disorientated as a result of recent changes in circumstances (eg hospital admission, new carer)?",
+        "values": "scale"
+    },
+    "indep_living_mg": {
+        "question": "Do you have reason to be concerned about the person's ability to live independently?",
+        "values": "layer"
+    },
+    "carers_mg": {
+        "question": "How much does the person depend on carers?",
+        "values": "scale"
+    },
+    "gen_liv_skills_mg": {
+        "question": "Does the person lack the ability to look after daily living requirements (cooking, shopping, cleaning, etc)?",
+        "values": "scale"
+    },
+    "generic_mg": {
+        "question": "These questions are not about specific risks but there are some that may help assess the patient if you have not already decided what to do. Do you wish to answer them now?",
+        "values": ""
+    }
+}
