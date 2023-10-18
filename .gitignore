@@ -1,2 +1,4 @@
-column_history.py
+column_list.py
+readme*.md
 .gitignore
+*.csv#
