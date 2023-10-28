@@ -73,9 +73,9 @@ def question_tree(question_queue, ASKED_QUESTION=[], level=0):
                 queue = add_child_questions(question, queue, QUESTION_MAPPER, QUESTION_CHILD_MAPPER)
 
             # going to next Level node
-            childe_branches = question_tree(queue, asked_question, level + 1)
-            if childe_branches:
-                parent_node.add_child_node(childe_branches)
+            child_branches = question_tree(queue, asked_question, level + 1)
+            if child_branches:
+                parent_node.add_child_node(child_branches)
             output.append(parent_node)
     return output
 
