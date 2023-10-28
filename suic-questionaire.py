@@ -53,11 +53,11 @@ subset = COMPLETE_DATASET
 
 def question_tree(question_queue):
     """
-    question_queue: List of String(Questions)
+        question_queue: List of String(Questions)
 
-    Final Output contain list of Root Level Question Tree
-        [ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
-        connected to them. Thus forming a Question Tree
+        Final Output contain list of Root Level Question Tree
+            [ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
+            connected to them. Thus forming a Question Tree
     """
 
     """
@@ -81,16 +81,16 @@ def question_tree(question_queue):
         """
         if not unique_choices:
             """
-            When uniques_choices is empty list
-            NOTE: we can't calculate score without unique_choices
-            Thats why creating Parent Node with worst score -> 1
+                When uniques_choices is empty list
+                NOTE: we can't calculate score without unique_choices
+                Thats why creating Parent Node with worst score -> 1
             """
             parent_node = NODE(question=question, score=1)
         else:
             """
-            If there are values in unique_choices then
-            we can calculate the score
-            then create the Parent Node with the calculated score
+                If there are values in unique_choices then
+                we can calculate the score
+                then create the Parent Node with the calculated score
             """
             score = get_utility_score(COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN)
             parent_node = NODE(question=question, score=round(score, 3))
@@ -98,12 +98,12 @@ def question_tree(question_queue):
         # Add Child Question
         if has_child(question, QUESTION_CHILD_MAPPER):
             """
-            If the question has child:
-                child_questions -> then getting the child list
-                child_branches -> Creating Child Nodes and Branches
-                Then adding Child Branches/Nodes into the Parent Node
+                If the question has child:
+                    child_questions -> then getting the child list
+                    child_branches -> Creating Child Nodes and Branches
+                    Then adding Child Branches/Nodes into the Parent Node
 
-                Thus forming a Tree
+                    Thus forming a Tree
             """
             child_questions = get_child_questions(question, QUESTION_CHILD_MAPPER)
             child_branches = question_tree(child_questions)
@@ -142,9 +142,9 @@ print("QUESTION TREES ARE SAVED INTO generated_output Folder")
 
 def get_best_question_node_from_question_queue(question_queue):
     """
-    question_queue -> List of Nodes
+        question_queue -> List of Nodes
 
-    Output -> Question Node (With Best Score)
+        Output -> Question Node (With Best Score)
     """
     # initialising Best Score and Best Node with None
     best_score = None
@@ -152,15 +152,15 @@ def get_best_question_node_from_question_queue(question_queue):
     for question_node in question_queue:
         if best_score == None:
             """
-            When best_score == None then first Node becomes best Score
+                When best_score == None then first Node becomes best Score
             """
             best_score = question_node.best
             best_node = question_node
         elif question_node.best < best_score:
             """
-            if find a better score then update
-            best_score and
-            best_node
+                if find a better score then update
+                best_score and
+                best_node
             """
             best_score = question_node.best
             best_node = question_node
