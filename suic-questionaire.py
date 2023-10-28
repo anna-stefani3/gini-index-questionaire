@@ -55,7 +55,7 @@ def question_recursion(question_queue, depth=4, ASKED_QUESTION=[], level=0):
         return None
     output = []
     for question in question_queue:
-        queue = [question] if level <= 0 else question_queue.copy()
+        queue = [question]
         asked_question = ASKED_QUESTION.copy()
         if question not in asked_question:
             queue.remove(question)
