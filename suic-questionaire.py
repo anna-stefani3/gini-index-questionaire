@@ -1,3 +1,6 @@
+import os
+os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+
 from node import NODE
 from helper import (
     load_json_file,
@@ -76,6 +79,7 @@ def question_tree(question_queue, ASKED_QUESTION=[], level=0):
             child_branches = question_tree(queue, asked_question, level + 1)
             if child_branches:
                 parent_node.add_child_node(child_branches)
+            parent_node.update_best_scores()
             output.append(parent_node)
     return output
 
@@ -94,9 +98,9 @@ data = question_tree(QUESTION_QUEUE, ASKED_QUESTION=[], level=0)
 Printing the Tree in Human understandable Form
 """
 for question in data:
-    question.print_()
+    question.visualize_tree()
 
-# printing best scores for the Root Questions using Tree
-for question in data:
-    best = question.get_best_score()
-    print(question.question, best)
+# # printing best scores for the Root Questions using Tree
+# for question in data:
+#     best = question.get_best_score()
+#     print(question.question, best)
