@@ -10,7 +10,7 @@ from helper import (
     get_question_choices_data,
     get_utility_score,
     has_child,
-    add_child_questions,
+    get_child_questions,
 )
 
 ### GLOBAL VARIABLES ###
@@ -43,45 +43,34 @@ dataset = get_cleaned_data(BASE_PATH, TARGET_COLUMN)
 COMPLETE_DATASET = convert_scale_columns_to_classes(dataset, QUESTION_MAPPER)
 
 # getting choices data for each column
-CHOICES_DATASET = get_question_choices_data(dataset)
+CHOICES_DATASET = get_question_choices_data(COMPLETE_DATASET)
 
 # Starting subset data with complete data then keep filtering out based on user answers
 subset = COMPLETE_DATASET
 
 
-def question_tree(question_queue, ASKED_QUESTION=[], level=0):
-    question_queue = [question for question in question_queue if question not in ASKED_QUESTION]
-
+def question_tree(question_queue):
     # question_queue is empty of subset is less that MIN_SAMPLE_THRESHOLD then return None
-    if len(question_queue) <= 0 or subset.shape[0] < MIN_SAMPLE_THRESHOLD:
+    if len(question_queue) <= 0:
         return None
     output = []
     for question in question_queue:
-        queue = [question]
-        asked_question = ASKED_QUESTION.copy()
-        if question not in asked_question:
-            queue.remove(question)
+        unique_choices = CHOICES_DATASET.get(question)
 
-            asked_question.append(question)
-            unique_choices = CHOICES_DATASET.get(question)
-
-            if not unique_choices:
-                continue
-
+        if not unique_choices:
+            parent_node = NODE(question, 1)
+        else:
             # getting score data for specific question
             score = get_utility_score(COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN)
-            parent_node = NODE(question, unique_choices, round(score, 3), queue, level)
+            parent_node = NODE(question, round(score, 3))
 
-            # Add Child Question
-            if has_child(question, QUESTION_CHILD_MAPPER):
-                queue = add_child_questions(question, queue, QUESTION_MAPPER, QUESTION_CHILD_MAPPER)
-
-            # going to next Level node
-            child_branches = question_tree(queue, asked_question, level + 1)
-            if child_branches:
-                parent_node.add_child_node(child_branches)
-            parent_node.update_best_scores()
-            output.append(parent_node)
+        # Add Child Question
+        if has_child(question, QUESTION_CHILD_MAPPER):
+            child_questions = get_child_questions(question, QUESTION_CHILD_MAPPER)
+            child_branches = question_tree(child_questions)
+            parent_node.add_child_node(child_branches)
+        parent_node.update_best_scores()
+        output.append(parent_node)
     return output
 
 
@@ -93,13 +82,15 @@ Final Output contain list of Root Level Question Tree
 [ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
 connected to them. Thus forming a Question Tree
 """
-data = question_tree(QUESTION_QUEUE, ASKED_QUESTION=[], level=0)
+data = question_tree(QUESTION_QUEUE)
 
 """
 Printing the Tree in Human understandable Form
 """
 for question in data:
     question.visualize_tree()
+
+print("QUESTION TREES ARE SAVED INTO generated_output Folder")
 
 
 """
@@ -108,14 +99,17 @@ question_queue -> List of Nodes
 Output -> Node (Contains Best Score)
 """
 def get_best_question_node_from_question_queue(question_queue):
-
-    # initialising with worst score possible
-    best_score = 1
-
-    # initialising with None
+    # initialising Best Score and Best Node with None
+    best_score = None
     best_node = None
     for question_node in question_queue:
-        if question_node.best < best_score:
+        if best_score == None:
+            """
+            When best_score == None then first Node becomes best Score
+            """
+            best_score = question_node.best
+            best_node = question_node
+        elif question_node.best < best_score:
             """
             if find a better score then update
             best_score and
