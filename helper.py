@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 
+
 # reading the question mapping data from json file
 def load_json_file(filename):
     with open(filename) as file:
@@ -8,7 +9,14 @@ def load_json_file(filename):
     return data
 
 
-def get_cleaned_data(base_path, dataset_name):
+def get_cleaned_data(base_path, target_column):
+    """
+    base_path: String -> base path for code and csv files
+    target_column: String -> contains the name of the target column in csv dataset
+
+    output is cleaned DataFrame where NA is replace with -1 value
+
+    """
     file_path = "Child/child-adolescent-suic.csv"
     # reading the csv file where we defined "\\N" as Missing Data
     data = pd.read_csv(base_path + file_path, na_values="\\N")
@@ -18,20 +26,25 @@ def get_cleaned_data(base_path, dataset_name):
     data = data.iloc[:, 4:]
 
     # droping all rows which has missing class (Risk Score)
-    data = data.dropna(subset=[dataset_name])
+    data = data.dropna(subset=[target_column])
 
     # dropping rows where all the values are Missing Value
     data.dropna(how="all")
 
-    # # replacing Missing Values with 0 constant number which will represent
+    # # replacing Missing Values with -1 constant number which will represent
     # "NO" as an answer for that question
-    data = data.fillna(0)  # there are various other methods we can implement for imputing the missing data
+    data = data.fillna(-1)  # there are various other methods we can implement for imputing the missing data
     return data
 
 
 ### UTIL FUNCTIONS ###
 # converts the scale data into classes "low", "medium", "high"
 def convert_to_low_medium_and_high_risk(label):
+    """
+    low -> 0 to 0.3
+    medium -> 0.4 to 0.6
+    high -> 0.7 to 1.0
+    """
     if label < 0.4:
         return "low"
     elif label < 0.7:
@@ -42,6 +55,10 @@ def convert_to_low_medium_and_high_risk(label):
 
 # converts all scale columns to class data
 def convert_scale_columns_to_classes(data, QUESTION_MAPPER):
+    """
+    Scale values columns (columns which contains values 0, 0.1, 0.2, 0.3 ........ 0.9, 1.0)
+    are converted to 'low', 'medium' and 'high' accordingly
+    """
     for column in data.columns:
         if QUESTION_MAPPER.get(column) and QUESTION_MAPPER[column]["values"] == "scale":
             data[column] = data[column].apply(convert_to_low_medium_and_high_risk)
@@ -50,6 +67,19 @@ def convert_scale_columns_to_classes(data, QUESTION_MAPPER):
 
 # gets the choices for each column name for the user to answer
 def get_question_choices_data(dataset):
+    """
+    generates the possible choices for given column names
+
+    Example Output is dictionary ->
+    key is a the column name and value is the list of all possible answers(choices).
+
+    {
+        "question 1" : [0 , 1],
+        "question 2" : [0 , 1],
+        "question 3" : [0 , 1],
+        "question 4" : ['low, 'medium', 'high']
+    }
+    """
     question_choices_data = {}
     for column in dataset.columns:
         unique_answers = list(dataset[column].unique())
@@ -60,6 +90,14 @@ def get_question_choices_data(dataset):
 
 # Calculated Gini Impurity for given List of Risk Labels
 def gini_measure_of_impurity(labels):
+    """
+    labels : list of string
+    example -> ['low', 'low', 'high', 'low', 'low', 'low', 'low', 'medium' ]
+
+    OUTPUT:
+    gini impurity score. this score ranges from 0 to 1.
+    Where 0 represent the best score and 1 represents the worst score
+    """
     total_count = len(labels)
     if total_count == 0:
         return 0
@@ -76,7 +114,20 @@ def gini_measure_of_impurity(labels):
 
 
 # Aggregating the Gini Scores for a Given Question
-def get_utility_score(dataset, question, unique_answers, DATASET_NAME):
+def get_utility_score(dataset, question, unique_answers, TARGET_COLUMN):
+    """
+    Initializes Utility Score with 0
+
+    For each unique answer for question:
+        1. getting target label or rows where [column value == answer]
+        2. calculating gini_score using the labels
+        3. calculating probability of that answer being being chosen
+        4. adding gini_impurity * (1 - probability) into utility score
+
+    gettting average_utility_score
+
+    returning average_utility_score
+    """
     # initializing total_utility_score = 0
     total_utility_score = 0
 
@@ -86,7 +137,7 @@ def get_utility_score(dataset, question, unique_answers, DATASET_NAME):
         answer_df = dataset[dataset[question] == answer]
 
         # Getting labels for previously selected rows
-        labels = answer_df[DATASET_NAME]
+        labels = answer_df[TARGET_COLUMN]
 
         # calculating Gini Impurity Score
         gini_impurity = gini_measure_of_impurity(list(labels.values))
@@ -108,65 +159,22 @@ def get_utility_score(dataset, question, unique_answers, DATASET_NAME):
         total_utility_score += gini_impurity * (1 - probability)
 
     # Aggregating or averaging the total_utility_score
-    aggregated_score = total_utility_score / len(unique_answers)
+    average_score = total_utility_score / len(unique_answers)
 
     # returning required output followed as question, gini_score, num of answers, answer choice
-    return {
-        "question": question,
-        "utility_score": aggregated_score,
-        "num_of_answers": len(unique_answers),
-        "answer_choices": unique_answers,
-    }
+    return average_score
 
 
 def has_child(question, QUESTION_CHILD_MAPPER):
-    # returns if the specific question has child questions or not
-    # returns only TRUE or FALSE
+    """
+    checks if a given question has child or not
+
+    Return Either True or False
+    """
     if QUESTION_CHILD_MAPPER[question]:
         return True
     else:
         return False
-
-
-def get_sorted_utility_scores_df(complete_dataset, choices_dataset, QUESTION_QUEUE):
-    # initializing scores as empty list
-    scores = []
-
-    # adding scores for each question in the QUESTION_QUEUE
-    for question in QUESTION_QUEUE:
-        if question in choices_dataset:
-            # getting Uniques Choices data from choices_dataset
-            unique_choices = choices_dataset[question]
-
-            # getting score data for specific question
-            score = get_utility_score(complete_dataset, question, unique_choices)
-
-            # appending score into scores list
-            scores.append(score)
-
-    # converting to Dataframe
-    scores_df = pd.DataFrame(scores)
-
-    # sorting scores_df in Ascending Order
-    sorted_scores_df = scores_df.sort_values(by="utility_score", ascending=True)
-    return sorted_scores_df
-
-
-def get_rejected_question_list(scores_df, gini_threshold):
-    # filtering from scores_df where score is greater than gini_threshold
-    rejected_df = scores_df[scores_df["utility_score"] > gini_threshold]
-
-    # getting the names of the columns only from filtered data
-    questions_list = list(rejected_df["question"])
-    # returning rejected questions List
-    return questions_list
-
-
-def remove_question(remove_list, QUESTION_QUEUE):
-    # looping through each column name in remove_list
-    for question in remove_list:
-        # removing specific question from QUESTION_QUEUE
-        QUESTION_QUEUE.remove(question)
 
 
 def add_child_questions(question, question_queue, QUESTION_MAPPER, QUESTION_CHILD_MAPPER):
