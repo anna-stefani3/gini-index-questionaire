@@ -1,4 +1,4 @@
-class TREE:
+class NODE:
     def __init__(self, question, choices, score, question_queue, level):
         # stores the Column Name
         self.question = question
@@ -51,6 +51,9 @@ class TREE:
         if self.children:
             for child in self.children:
                 child_best = child.get_best_score()
+                """
+                    Checking for lower score(best Score)
+                """
                 if child_best < best:
                     best = child_best
         return best
