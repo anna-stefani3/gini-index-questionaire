@@ -82,9 +82,16 @@ def get_question_choices_data(dataset):
     """
     question_choices_data = {}
     for column in dataset.columns:
+        # gets the unique answers list
         unique_answers = list(dataset[column].unique())
+
+        # removing -1 from uniques_answers list
+        unique_answers = [answer for answer in unique_answers if answer != -1]
+
+        # adding the choices for respective question into the dictionary
         question_choices_data[column] = unique_answers
 
+    # returns Dictionary
     return question_choices_data
 
 
