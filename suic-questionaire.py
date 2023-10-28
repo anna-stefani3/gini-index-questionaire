@@ -93,12 +93,15 @@ for question in data:
 print("QUESTION TREES ARE SAVED INTO generated_output Folder")
 
 
-"""
-question_queue -> List of Nodes
 
-Output -> Node (Contains Best Score)
-"""
+
+
 def get_best_question_node_from_question_queue(question_queue):
+    """
+    question_queue -> List of Nodes
+
+    Output -> Node (Contains Best Score)
+    """
     # initialising Best Score and Best Node with None
     best_score = None
     best_node = None
@@ -120,6 +123,7 @@ def get_best_question_node_from_question_queue(question_queue):
 
     # returning best node with best score
     return best_node
+
 
 """
 data is list of ROOT level Nodes
@@ -157,4 +161,4 @@ print(f"Total Number of columns: {len(ordered_questions)}\n")
 print("Top 20 Columns in Order of Importance")
 for i, question in enumerate(ordered_questions[:20]):
     # printing column names in order of importance
-    print(f"{i+1}) {ordered_questions[i]}")
+    print(f"{i+1}) {question} - {QUESTION_MAPPER.get(question, {}).get('question', 'Unavailable')}\n")
