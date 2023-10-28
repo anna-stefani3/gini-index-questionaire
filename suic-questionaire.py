@@ -1,4 +1,4 @@
-from tree import TREE
+from node import NODE
 from helper import (
     load_json_file,
     get_cleaned_data,
@@ -45,14 +45,11 @@ CHOICES_DATASET = get_question_choices_data(dataset)
 subset = COMPLETE_DATASET
 
 
-def question_recursion(question_queue, depth=4, ASKED_QUESTION=[], level=0):
+def question_tree(question_queue, ASKED_QUESTION=[], level=0):
     question_queue = [question for question in question_queue if question not in ASKED_QUESTION]
 
     # question_queue is empty of subset is less that MIN_SAMPLE_THRESHOLD then return None
     if len(question_queue) <= 0 or subset.shape[0] < MIN_SAMPLE_THRESHOLD:
-        return None
-    # if level is more than depth size then return None
-    elif level > depth:
         return None
     output = []
     for question in question_queue:
@@ -69,24 +66,33 @@ def question_recursion(question_queue, depth=4, ASKED_QUESTION=[], level=0):
 
             # getting score data for specific question
             score = get_utility_score(COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN)
-            parent_node = TREE(question, unique_choices, round(score["utility_score"], 3), queue, level)
+            parent_node = NODE(question, unique_choices, round(score, 3), queue, level)
 
             # Add Child Question
             if has_child(question, QUESTION_CHILD_MAPPER):
                 queue = add_child_questions(question, queue, QUESTION_MAPPER, QUESTION_CHILD_MAPPER)
 
             # going to next Level node
-            childe_branches = question_recursion(queue, depth, asked_question, level + 1)
+            childe_branches = question_tree(queue, asked_question, level + 1)
             if childe_branches:
                 parent_node.add_child_node(childe_branches)
             output.append(parent_node)
     return output
 
 
-# depth can be changed and played around like 3 or 4 or 5 or 6 and so on
-data = question_recursion(QUESTION_QUEUE, depth=4)
+"""
+Calling question tree to create the tree using recursion
 
-# printing the tree Like structure of the Questionaire Simulation via recursion
+Final Output contain list of Root Level Question Tree
+
+[ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
+connected to them. Thus forming a Question Tree
+"""
+data = question_tree(QUESTION_QUEUE, ASKED_QUESTION=[], level=0)
+
+"""
+Printing the Tree in Human understandable Form
+"""
 for question in data:
     question.print_()
 
