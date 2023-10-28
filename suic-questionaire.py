@@ -1,4 +1,5 @@
 import os
+
 os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
 
 from node import NODE
@@ -100,7 +101,66 @@ Printing the Tree in Human understandable Form
 for question in data:
     question.visualize_tree()
 
-# # printing best scores for the Root Questions using Tree
-# for question in data:
-#     best = question.get_best_score()
-#     print(question.question, best)
+
+"""
+question_queue -> List of Nodes
+
+Output -> Node (Contains Best Score)
+"""
+def get_best_question_node_from_question_queue(question_queue):
+
+    # initialising with worst score possible
+    best_score = 1
+
+    # initialising with None
+    best_node = None
+    for question_node in question_queue:
+        if question_node.best < best_score:
+            """
+            if find a better score then update
+            best_score and
+            best_node
+            """
+            best_score = question_node.best
+            best_node = question_node
+
+    # returning best node with best score
+    return best_node
+
+"""
+data is list of ROOT level Nodes
+
+question_queue is initialised with data.copy()
+"""
+question_queue = data.copy()
+
+# initialising ordered_questions as empty list
+ordered_questions = []
+
+"""
+Running the loop till question_queue becomes empty
+"""
+while question_queue:
+    best_question_node = get_best_question_node_from_question_queue(question_queue)
+
+    """
+    Adding the best question into ordered_questions
+    """
+    ordered_questions.append(best_question_node.question)
+
+    """
+    If best question node has children then add them into question_queue
+    """
+    if best_question_node.children:
+        question_queue.extend(best_question_node.children)
+
+    """
+    Removing Best Question Node from Question Queue
+    """
+    question_queue.remove(best_question_node)
+
+print(f"Total Number of columns: {len(ordered_questions)}\n")
+print("Top 20 Columns in Order of Importance")
+for i, question in enumerate(ordered_questions[:20]):
+    # printing column names in order of importance
+    print(f"{i+1}) {ordered_questions[i]}")
