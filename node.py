@@ -2,27 +2,18 @@ from graphviz import Digraph
 
 
 class NODE:
-    def __init__(self, question, choices, score, question_queue, level):
+    def __init__(self, question, score):
         # stores the Column Name
         self.question = question
 
         # stores the score for this Question
         self.score = score
 
-        # stores the choices for this Question
-        self.choices = choices
-
         # stores all child Node for this Node Question
         self.children = []
 
         # stores the best scores from all child and root Node
         self.best = None
-
-        # stores the question Queue that can be asked next level
-        self.question_queue = question_queue
-
-        # stores the level at which this node currently is
-        self.level = level
 
     def add_child_node(self, child_node):
         """
@@ -65,7 +56,7 @@ class NODE:
         """
         Used to Show the TREE Object in Readable Form
         """
-        return f"{self.question}___Score_{str(self.score)}___Best_{self.best}___{len(self.choices)}"
+        return f"{self.question}___{self.best}"
 
     def to_graphviz(self, parent=None, graph=None):
         if graph is None:
