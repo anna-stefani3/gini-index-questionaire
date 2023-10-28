@@ -178,13 +178,13 @@ def has_child(question, QUESTION_CHILD_MAPPER):
 
     Return Either True or False
     """
-    if QUESTION_CHILD_MAPPER[question]:
+    if QUESTION_CHILD_MAPPER.get(question):
         return True
     else:
         return False
 
 
-def add_child_questions(question, question_queue, QUESTION_MAPPER, QUESTION_CHILD_MAPPER):
+def get_child_questions(question, QUESTION_CHILD_MAPPER):
     """
     QUESTION_CHILD_MAPPER contains list of child question for a given question
     Data looks like this
@@ -198,15 +198,5 @@ def add_child_questions(question, question_queue, QUESTION_MAPPER, QUESTION_CHIL
     """
     # checking if column name exists in QUESTION_CHILD_MAPPER
     if QUESTION_CHILD_MAPPER.get(question):
-        # if exists then fetch the child columns
-        child_question = QUESTION_CHILD_MAPPER.get(question)
-        inserted = 0
-        # looping throught each column in the child list
-        for question in child_question:
-            # if child column exist in QUESTION_MAPPER
-            if QUESTION_MAPPER.get(question):
-                inserted += 1
-                # adding each child column into question_queue
-                question_queue.insert(0, question)
-    # print("      INSERTING ->" , inserted)
-    return question_queue
+        return QUESTION_CHILD_MAPPER.get(question)
+    return None
