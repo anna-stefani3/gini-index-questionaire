@@ -1,3 +1,6 @@
+from graphviz import Digraph
+
+
 class NODE:
     def __init__(self, question, choices, score, question_queue, level):
         # stores the Column Name
@@ -41,41 +44,45 @@ class NODE:
         else:
             self.children.append(child_node)
 
-    def get_best_score(self):
+    def update_best_scores(self):
         """
         Process:
             stores the current Node Score, then looks deep into all child node
             to get the best score among all root node or child nodes.
         """
-        best = self.score
+        self.best = self.score
         if self.children:
             for child in self.children:
-                child_best = child.get_best_score()
+                child_best = child.update_best_scores()
                 """
                     Checking for lower score(best Score)
                 """
-                if child_best < best:
-                    best = child_best
-        return best
+                if child_best < self.best:
+                    self.best = child_best
+        return self.best
 
     def __repr__(self):
         """
         Used to Show the TREE Object in Readable Form
         """
-        return (
-            f"Question: {self.question.ljust(25)} "
-            f"| Score : {str(self.score).ljust(5)} "
-            f"| Choices : {self.choices if len(self.choices) < 4 else len(self.choices)} "
-        )
+        return f"{self.question}___Score_{str(self.score)}___Best_{self.best}___{len(self.choices)}"
 
-    def print_(self):
-        """
-        Used to parse through all node and show the tree like structure of the Root Node
-        The tree like structure printed in console is from this function
-        """
-        spaces = " " * self.level * 24
-        prefix = spaces + "|___ "
-        print(prefix, self.__repr__())
-        if self.children:
-            for child in self.children:
-                child.print_()
+
+    def to_graphviz(self, parent=None, graph=None):
+        if graph is None:
+            graph = Digraph(format='png')
+            graph.node(self.__repr__())
+
+        if parent is not None:
+            graph.edge(parent.__repr__(), self.__repr__())
+
+        for child in self.children:
+            child.to_graphviz(self, graph)
+
+        return graph
+
+    def visualize_tree(self):
+        graph = self.to_graphviz()
+
+        # Render the graph to a file
+        graph.render(filename=self.question, format='png', cleanup=True)
