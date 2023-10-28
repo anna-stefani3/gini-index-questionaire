@@ -67,7 +67,6 @@ class NODE:
         """
         return f"{self.question}___Score_{str(self.score)}___Best_{self.best}___{len(self.choices)}"
 
-
     def to_graphviz(self, parent=None, graph=None):
         if graph is None:
             graph = Digraph(format='png')
@@ -85,4 +84,4 @@ class NODE:
         graph = self.to_graphviz()
 
         # Render the graph to a file
-        graph.render(filename=self.question, format='png', cleanup=True)
+        graph.render(filename="generated_output/" + self.question, format='png', cleanup=True)
