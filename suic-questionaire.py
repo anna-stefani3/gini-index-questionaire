@@ -13,6 +13,7 @@ from helper import (
 # Defining Threshold values
 MIN_SAMPLE_THRESHOLD = 100
 DATASET_NAME = "suic_mg"
+TARGET_COLUMN = "suic_mg"
 BASE_PATH = ""
 
 # getting question mapping for each column
@@ -32,7 +33,7 @@ for question in ROOT_QUESTIONS:
         QUESTION_QUEUE.append(question)
 
 # gets cleaned DataFrame from CSV File
-dataset = get_cleaned_data(BASE_PATH, DATASET_NAME)
+dataset = get_cleaned_data(BASE_PATH, TARGET_COLUMN)
 
 # converts all scale value columns into classes 'low', 'medium', 'high'
 COMPLETE_DATASET = convert_scale_columns_to_classes(dataset, QUESTION_MAPPER)
@@ -67,18 +68,18 @@ def question_recursion(question_queue, depth=4, ASKED_QUESTION=[], level=0):
                 continue
 
             # getting score data for specific question
-            score = get_utility_score(COMPLETE_DATASET, question, unique_choices, DATASET_NAME)
-            root = TREE(question, unique_choices, round(score["utility_score"], 3), queue, level)
+            score = get_utility_score(COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN)
+            parent_node = TREE(question, unique_choices, round(score["utility_score"], 3), queue, level)
 
             # Add Child Question
             if has_child(question, QUESTION_CHILD_MAPPER):
                 queue = add_child_questions(question, queue, QUESTION_MAPPER, QUESTION_CHILD_MAPPER)
 
             # going to next Level node
-            node = question_recursion(queue, depth, asked_question, level + 1)
-            if node:
-                root.add_child_node(node)
-            output.append(root)
+            childe_branches = question_recursion(queue, depth, asked_question, level + 1)
+            if childe_branches:
+                parent_node.add_child_node(childe_branches)
+            output.append(parent_node)
     return output
 
 
