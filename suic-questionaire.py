@@ -28,9 +28,11 @@ BACKUP_QUESTION_MAPPER = load_json_file(BASE_PATH + "questions_mapping.json")
 QUESTION_CHILD_MAPPER = load_json_file(BASE_PATH + "child_question_mapper.json")
 ROOT_QUESTIONS = QUESTION_CHILD_MAPPER[DATASET_NAME]
 
-# making sure to add only columns which are
-# available in QUESTION_MAPPER variable
-# otherwise ignoring them
+"""
+    making sure to add only columns which are
+    available in QUESTION_MAPPER variable
+    otherwise ignoring them
+"""
 QUESTION_QUEUE = []
 for question in ROOT_QUESTIONS:
     if question in QUESTION_MAPPER:
@@ -50,42 +52,87 @@ subset = COMPLETE_DATASET
 
 
 def question_tree(question_queue):
-    # question_queue is empty of subset is less that MIN_SAMPLE_THRESHOLD then return None
+    """
+    question_queue: List of String(Questions)
+
+    Final Output contain list of Root Level Question Tree
+        [ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
+        connected to them. Thus forming a Question Tree
+    """
+
+    """
+        Bounding Function:
+            If question_queue is empty then Return None
+    """
     if len(question_queue) <= 0:
         return None
+
+    # initializing output as empty list
     output = []
+
+    # creating Node (Tree) for each Root Level Question
     for question in question_queue:
+        # getting unique_choices for the current question
         unique_choices = CHOICES_DATASET.get(question)
 
+        """
+            unique_choices: represents the unique values available in CSV data
+            there are many column which has complete N/A data example
+        """
         if not unique_choices:
-            parent_node = NODE(question, 1)
+            """
+            When uniques_choices is empty list
+            NOTE: we can't calculate score without unique_choices
+            Thats why creating Parent Node with worst score -> 1
+            """
+            parent_node = NODE(question=question, score=1)
         else:
-            # getting score data for specific question
+            """
+            If there are values in unique_choices then
+            we can calculate the score
+            then create the Parent Node with the calculated score
+            """
             score = get_utility_score(COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN)
-            parent_node = NODE(question, round(score, 3))
+            parent_node = NODE(question=question, score=round(score, 3))
 
         # Add Child Question
         if has_child(question, QUESTION_CHILD_MAPPER):
+            """
+            If the question has child:
+                child_questions -> then getting the child list
+                child_branches -> Creating Child Nodes and Branches
+                Then adding Child Branches/Nodes into the Parent Node
+
+                Thus forming a Tree
+            """
             child_questions = get_child_questions(question, QUESTION_CHILD_MAPPER)
             child_branches = question_tree(child_questions)
             parent_node.add_child_node(child_branches)
+
+        """
+            As each node in tree are initialized with None Value
+            Calling update_best_scores to update the best score inside parent and all branch nodes
+        """
         parent_node.update_best_scores()
+
+        # adding Parent Node into the Output List
         output.append(parent_node)
+
+    # Returning the final output of -> List of Root Level Questions
     return output
 
 
 """
-Calling question tree to create the tree using recursion
+    Calling question tree to create the tree using recursion
 
-Final Output contain list of Root Level Question Tree
-
-[ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
-connected to them. Thus forming a Question Tree
+    Final Output contain list of Root Level Question Tree
+        [ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
+        connected to them. Thus forming a Question Tree
 """
 data = question_tree(QUESTION_QUEUE)
 
 """
-Printing the Tree in Human understandable Form
+    Printing the Tree in Human understandable Form
 """
 for question in data:
     question.visualize_tree()
@@ -93,14 +140,11 @@ for question in data:
 print("QUESTION TREES ARE SAVED INTO generated_output Folder")
 
 
-
-
-
 def get_best_question_node_from_question_queue(question_queue):
     """
     question_queue -> List of Nodes
 
-    Output -> Node (Contains Best Score)
+    Output -> Question Node (With Best Score)
     """
     # initialising Best Score and Best Node with None
     best_score = None
@@ -126,9 +170,9 @@ def get_best_question_node_from_question_queue(question_queue):
 
 
 """
-data is list of ROOT level Nodes
+    data is list of ROOT level Nodes
 
-question_queue is initialised with data.copy()
+    question_queue is initialised with data.copy()
 """
 question_queue = data.copy()
 
@@ -136,29 +180,29 @@ question_queue = data.copy()
 ordered_questions = []
 
 """
-Running the loop till question_queue becomes empty
+    Running the loop till question_queue becomes empty 
 """
 while question_queue:
     best_question_node = get_best_question_node_from_question_queue(question_queue)
 
     """
-    Adding the best question into ordered_questions
+        Adding the best question into ordered_questions
     """
     ordered_questions.append(best_question_node.question)
 
     """
-    If best question node has children then add them into question_queue
+        If best question node has children then add them into question_queue
     """
     if best_question_node.children:
         question_queue.extend(best_question_node.children)
 
     """
-    Removing Best Question Node from Question Queue
+        Removing Best Question Node from Question Queue
     """
     question_queue.remove(best_question_node)
 
 print(f"Total Number of columns: {len(ordered_questions)}\n")
-print("Top 20 Columns in Order of Importance")
-for i, question in enumerate(ordered_questions[:20]):
-    # printing column names in order of importance
+print("Top 15 Questions in Order of Importance")
+for i, question in enumerate(ordered_questions[:15]):
+    # printing questions in order of importance
     print(f"{i+1}) {question} - {QUESTION_MAPPER.get(question, {}).get('question', 'Unavailable')}\n")

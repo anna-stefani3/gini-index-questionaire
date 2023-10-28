@@ -11,10 +11,10 @@ def load_json_file(filename):
 
 def get_cleaned_data(base_path, target_column):
     """
-    base_path: String -> base path for code and csv files
-    target_column: String -> contains the name of the target column in csv dataset
+        base_path: String -> base path for code and csv files
+        target_column: String -> contains the name of the target column in csv dataset
 
-    output is cleaned DataFrame where NA is replace with -1 value
+        output is cleaned DataFrame where NA is replace with -1 value
 
     """
     file_path = "Child/child-adolescent-suic.csv"
@@ -41,9 +41,9 @@ def get_cleaned_data(base_path, target_column):
 # converts the scale data into classes "low", "medium", "high"
 def convert_to_low_medium_and_high_risk(label):
     """
-    low -> 0 to 0.3
-    medium -> 0.4 to 0.6
-    high -> 0.7 to 1.0
+        low -> 0 to 0.3
+        medium -> 0.4 to 0.6
+        high -> 0.7 to 1.0
     """
     if label < 0.4:
         return "low"
@@ -56,8 +56,8 @@ def convert_to_low_medium_and_high_risk(label):
 # converts all scale columns to class data
 def convert_scale_columns_to_classes(data, QUESTION_MAPPER):
     """
-    Scale values columns (columns which contains values 0, 0.1, 0.2, 0.3 ........ 0.9, 1.0)
-    are converted to 'low', 'medium' and 'high' accordingly
+        Scale values columns (columns which contains values 0, 0.1, 0.2, 0.3 ........ 0.9, 1.0)
+        are converted to 'low', 'medium' and 'high' accordingly
     """
     for column in data.columns:
         if QUESTION_MAPPER.get(column) and QUESTION_MAPPER[column]["values"] == "scale":
@@ -68,17 +68,17 @@ def convert_scale_columns_to_classes(data, QUESTION_MAPPER):
 # gets the choices for each column name for the user to answer
 def get_question_choices_data(dataset):
     """
-    generates the possible choices for given column names
+        generates the possible choices for given column names
 
-    Example Output is dictionary ->
-    key is a the column name and value is the list of all possible answers(choices).
+        Example Output is dictionary ->
+        key is a the column name and value is the list of all possible answers(choices).
 
-    {
-        "question 1" : [0 , 1],
-        "question 2" : [0 , 1],
-        "question 3" : [0 , 1],
-        "question 4" : ['low, 'medium', 'high']
-    }
+        {
+            "question 1" : [0 , 1],
+            "question 2" : [0 , 1],
+            "question 3" : [0 , 1],
+            "question 4" : ['low, 'medium', 'high']
+        }
     """
     question_choices_data = {}
     for column in dataset.columns:
@@ -98,12 +98,12 @@ def get_question_choices_data(dataset):
 # Calculated Gini Impurity for given List of Risk Labels
 def gini_measure_of_impurity(labels):
     """
-    labels : list of string
-    example -> ['low', 'low', 'high', 'low', 'low', 'low', 'low', 'medium' ]
+        labels : list of string
+        example -> ['low', 'low', 'high', 'low', 'low', 'low', 'low', 'medium' ]
 
-    OUTPUT:
-    gini impurity score. this score ranges from 0 to 1.
-    Where 0 represent the best score and 1 represents the worst score
+        OUTPUT:
+        gini impurity score. this score ranges from 0 to 1.
+        Where 0 represent the best score and 1 represents the worst score
     """
     total_count = len(labels)
     if total_count == 0:
@@ -123,17 +123,17 @@ def gini_measure_of_impurity(labels):
 # Aggregating the Gini Scores for a Given Question
 def get_utility_score(dataset, question, unique_answers, TARGET_COLUMN):
     """
-    Initializes Utility Score with 0
+        Initializes Utility Score with 0
 
-    For each unique answer for question:
-        1. getting target label or rows where [column value == answer]
-        2. calculating gini_score using the labels
-        3. calculating probability of that answer being being chosen
-        4. adding gini_impurity * (1 - probability) into utility score
+        For each unique answer for question:
+            1. getting target label or rows where [column value == answer]
+            2. calculating gini_score using the labels
+            3. calculating probability of that answer being being chosen
+            4. adding gini_impurity * (1 - probability) into utility score
 
-    gettting average_utility_score
+        gettting average_utility_score
 
-    returning average_utility_score
+        returning average_utility_score
     """
     # initializing total_utility_score = 0
     total_utility_score = 0
@@ -155,13 +155,13 @@ def get_utility_score(dataset, question, unique_answers, TARGET_COLUMN):
         # adding gini_impurity * (1 - probability) to total_utility_score
 
         """
-        using (1 - probability) so that gini score with high probability can be
-        multiplied with low number to increase the chances for that question to
-        be selected
+            using (1 - probability) so that gini score with high probability can be
+            multiplied with low number to increase the chances for that question to
+            be selected
 
-        as we want to reduce the score for high probability answers and vice versa
+            as we want to reduce the score for high probability answers and vice versa
 
-        as lower score means better question to be ask in gini score case
+            as lower score means better question to be ask in gini score case
         """
         total_utility_score += gini_impurity * (1 - probability)
 
@@ -174,9 +174,9 @@ def get_utility_score(dataset, question, unique_answers, TARGET_COLUMN):
 
 def has_child(question, QUESTION_CHILD_MAPPER):
     """
-    checks if a given question has child or not
+        checks if a given question has child or not
 
-    Return Either True or False
+        Return Either True or False
     """
     if QUESTION_CHILD_MAPPER.get(question):
         return True
@@ -186,15 +186,15 @@ def has_child(question, QUESTION_CHILD_MAPPER):
 
 def get_child_questions(question, QUESTION_CHILD_MAPPER):
     """
-    QUESTION_CHILD_MAPPER contains list of child question for a given question
-    Data looks like this
-    {
-        "column_1" : ["column_10", "column_15", "column_21"],
-        "column_2" : ["column_11", "column_18", "column_29", "column_51"],
-        "column_3" : None
-    }
+        QUESTION_CHILD_MAPPER contains list of child question for a given question
+        Data looks like this
+        {
+            "column_1" : ["column_10", "column_15", "column_21"],
+            "column_2" : ["column_11", "column_18", "column_29", "column_51"],
+            "column_3" : None
+        }
 
-    where None means there is no Child Question for "column_3"
+        where None means there is no Child Question for "column_3"
     """
     # checking if column name exists in QUESTION_CHILD_MAPPER
     if QUESTION_CHILD_MAPPER.get(question):

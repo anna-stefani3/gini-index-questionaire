@@ -17,18 +17,18 @@ class NODE:
 
     def add_child_node(self, child_node):
         """
-        input:
-        child_node -> TREE or Array[TREE]
+            input:
+            child_node -> TREE or Array[TREE]
 
-        output:
-        adds or extends the child node to this.children list
+            output:
+            adds or extends the child node to this.children list
 
-        example
-        when Node is TREE Append is used
-            then this.children from [Node1, Node2] becomes [Node1, Node2, Node3]
+            example
+            when Node is TREE Append is used
+                then this.children from [Node1, Node2] becomes [Node1, Node2, Node3]
 
-        When Node is [TREE] Extend is used
-            then this.children from [Node1, Node2] becomes [Node1, Node2, Node3]
+            When Node is [TREE] Extend is used
+                then this.children from [Node1, Node2] becomes [Node1, Node2, Node3]
         """
         if type(child_node) == list:
             self.children.extend(child_node)
@@ -37,9 +37,9 @@ class NODE:
 
     def update_best_scores(self):
         """
-        Process:
-            stores the current Node Score, then looks deep into all child node
-            to get the best score among all root node or child nodes.
+            Process:
+                stores the current Node Score, then looks deep into all child node
+                to get the best score among all root node or child nodes.
         """
         self.best = self.score
         if self.children:
@@ -54,7 +54,7 @@ class NODE:
 
     def __repr__(self):
         """
-        Used to Show the TREE Object in Readable Form
+            Used to Show the TREE Object in Readable Form
         """
         return f"{self.question}___{self.best}"
 
