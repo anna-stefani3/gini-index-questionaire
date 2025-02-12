@@ -1,6 +1,5 @@
-import os
-
-os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+# import os
+# os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
 
 from node import NODE
 from helper import (
@@ -11,6 +10,8 @@ from helper import (
     get_utility_score,
     has_child,
     get_child_questions,
+    get_best_question_node_from_question_queue,
+    get_previous_response,
 )
 
 ### GLOBAL VARIABLES ###
@@ -51,13 +52,17 @@ CHOICES_DATASET = get_question_choices_data(COMPLETE_DATASET)
 subset = COMPLETE_DATASET
 
 
+# Get the last row as a questionaire_response_history
+questionaire_response_history = COMPLETE_DATASET.iloc[-1].to_dict()
+
+
 def question_tree(question_queue):
     """
-        question_queue: List of String(Questions)
+    question_queue: List of String(Questions)
 
-        Final Output contain list of Root Level Question Tree
-            [ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
-            connected to them. Thus forming a Question Tree
+    Final Output contain list of Root Level Question Tree
+        [ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
+        connected to them. Thus forming a Question Tree
     """
 
     """
@@ -75,35 +80,37 @@ def question_tree(question_queue):
         # getting unique_choices for the current question
         unique_choices = CHOICES_DATASET.get(question)
 
+        previous_response = get_previous_response(questionaire_response_history, question)
+
         """
             unique_choices: represents the unique values available in CSV data
             there are many column which has complete N/A data example
         """
         if not unique_choices:
             """
-                When uniques_choices is empty list
-                NOTE: we can't calculate score without unique_choices
-                Thats why creating Parent Node with worst score -> 1
+            When uniques_choices is empty list
+            NOTE: we can't calculate score without unique_choices
+            Thats why creating Parent Node with worst score -> 1
             """
             parent_node = NODE(question=question, score=1)
         else:
             """
-                If there are values in unique_choices then
-                we can calculate the score
-                then create the Parent Node with the calculated score
+            If there are values in unique_choices then
+            we can calculate the score
+            then create the Parent Node with the calculated score
             """
-            score = get_utility_score(COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN)
+            score = get_utility_score(COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN, previous_response)
             parent_node = NODE(question=question, score=round(score, 3))
 
         # Add Child Question
         if has_child(question, QUESTION_CHILD_MAPPER):
             """
-                If the question has child:
-                    child_questions -> then getting the child list
-                    child_branches -> Creating Child Nodes and Branches
-                    Then adding Child Branches/Nodes into the Parent Node
+            If the question has child:
+                child_questions -> then getting the child list
+                child_branches -> Creating Child Nodes and Branches
+                Then adding Child Branches/Nodes into the Parent Node
 
-                    Thus forming a Tree
+                Thus forming a Tree
             """
             child_questions = get_child_questions(question, QUESTION_CHILD_MAPPER)
             child_branches = question_tree(child_questions)
@@ -130,43 +137,6 @@ def question_tree(question_queue):
         connected to them. Thus forming a Question Tree
 """
 data = question_tree(QUESTION_QUEUE)
-
-"""
-    Printing the Tree in Human understandable Form
-"""
-for question in data:
-    question.visualize_tree()
-
-print("QUESTION TREES ARE SAVED INTO generated_output Folder")
-
-
-def get_best_question_node_from_question_queue(question_queue):
-    """
-        question_queue -> List of Nodes
-
-        Output -> Question Node (With Best Score)
-    """
-    # initialising Best Score and Best Node with None
-    best_score = None
-    best_node = None
-    for question_node in question_queue:
-        if best_score == None:
-            """
-                When best_score == None then first Node becomes best Score
-            """
-            best_score = question_node.best
-            best_node = question_node
-        elif question_node.best < best_score:
-            """
-                if find a better score then update
-                best_score and
-                best_node
-            """
-            best_score = question_node.best
-            best_node = question_node
-
-    # returning best node with best score
-    return best_node
 
 
 """
