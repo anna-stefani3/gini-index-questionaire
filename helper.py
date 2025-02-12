@@ -124,7 +124,7 @@ def gini_measure_of_impurity(labels):
     return impurity
 
 
-def get_utility_score(dataset, question, unique_answers, TARGET_COLUMN, prev_response=1, bias_factor=0.25):
+def get_utility_score(dataset, question, unique_answers, TARGET_COLUMN, prev_response=None, bias_factor=0.25):
     """
     Calculates the utility score based on the gini impurity and adjusted probability of answers.
     """
