@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import json
 
 
@@ -99,71 +100,280 @@ def get_previous_response(questionaire_response_data: dict, question):
     return questionaire_response_data.get(question, None)
 
 
-# Calculated Gini Impurity for given List of Risk Labels
-def gini_measure_of_impurity(labels):
+def calculate_entropy(labels):
     """
-    labels : list of string
-    example -> ['low', 'low', 'high', 'low', 'low', 'low', 'low', 'medium' ]
+    Calculate the entropy of a list of class labels.
 
-    OUTPUT:
-    gini impurity score. this score ranges from 0 to 1.
-    Where 0 represent the best score and 1 represents the worst score
+    Entropy is a measure from information theory that quantifies the uncertainty or impurity in a dataset.
+    In the context of machine learning, it helps determine how mixed the class labels are.
+    A lower entropy indicates a purer dataset, while a higher entropy indicates more disorder.
+
+    Parameters:
+    - labels: list of str
+        A list containing class labels.
+        Example: ['low', 'low', 'high', 'low', 'low', 'low', 'low', 'medium']
+
+    Returns:
+    - float
+        The entropy value, ranging from 0 (pure, all elements are of the same class) to log2(n_classes)
+        (maximum impurity, elements are evenly distributed among classes).
     """
+    # Calculate the total number of labels
     total_count = len(labels)
+
+    # If there are no labels, the entropy is 0 because there's no uncertainty
     if total_count == 0:
         return 0
+
+    # Use numpy's unique function to find unique labels and their respective counts
+    _, counts = np.unique(labels, return_counts=True)
+
+    # Calculate the probability of each unique label
+    probabilities = counts / total_count
+
+    # Compute the entropy using the formula: -sum(p * log2(p)) for each unique label
+    entropy_value = -np.sum(probabilities * np.log2(probabilities))
+
+    return entropy_value
+
+
+def calculate_gini_impurity(labels):
+    """
+    Calculate the Gini impurity for a list of class labels.
+
+    Gini impurity measures the probability of incorrectly classifying a randomly chosen element
+    from the set if it was labeled according to the distribution of labels in the subset.
+    It ranges from 0 (pure, all elements are of the same class) to 1 (impure, elements are
+    evenly distributed among classes).
+
+    Parameters:
+    - labels: list of str
+        A list of class labels.
+        Example: ['low', 'low', 'high', 'low', 'low', 'low', 'low', 'medium']
+
+    Returns:
+    - float
+        Gini impurity score ranging from 0 (best, pure) to 1 (worst, impure).
+    """
+    # Total number of elements in the list
+    total_count = len(labels)
+
+    # If the list is empty, return 0 as the impurity
+    if total_count == 0:
+        return 0
+
+    # Initialize impurity to 1 (maximum impurity)
     impurity = 1
+
+    # Create a set of unique class labels from the input list
     unique_labels = set(labels)
 
-    # Here Labels Represent "high", "medium" and "low" Risk Label
-    # Thus Calculating the Gini Impurity based on Label
+    # Iterate over each unique label to calculate its probability
     for label in unique_labels:
+        # Count how many times the current label appears in the list
         label_count = labels.count(label)
+
+        # Calculate the probability of this label
         label_prob = label_count / total_count
+
+        # Subtract the squared probability from the impurity
         impurity -= label_prob**2
+
+    # Return the final Gini impurity score
     return impurity
 
 
-def get_utility_score(dataset, question, unique_answers, TARGET_COLUMN, prev_response=None, bias_factor=0.25):
+def get_normalised_weights(dataset, question, unique_answers, prev_response, bias_factor=0.25):
     """
-    Calculates the utility score based on the gini impurity and adjusted probability of answers.
+    Calculate normalized weights for each unique answer to a given question in the dataset,
+    applying a bias towards a previous response if provided.
+
+    Parameters:
+    - dataset: pandas.DataFrame
+        The dataset containing the data to be analyzed.
+    - question: str
+        The column name in the dataset representing the feature (question) of interest.
+    - unique_answers: list
+        A list of all possible unique values (answers) for the specified question.
+    - prev_response: str or None
+        The previous answer given, used to apply a bias. If None, no bias is applied.
+    - bias_factor: float, optional (default=0.25)
+        The factor by which to increase or decrease the weight of the previous response.
+        A higher value increases the influence of the previous response.
+
+    Returns:
+    - normalised_weights: dict
+        A dictionary where keys are unique answers and values are their corresponding normalized weights.
     """
-    total_utility_score = 0  # Initialize utility score
-    weighted_probs = {}  # Dictionary to store weighted probabilities of answers
+    # Initialize a dictionary to store the weighted counts of each answer
+    weighted_counts = {}
 
-    # Count occurrences of each unique answer in the dataset
-    answer_counts = {answer: (dataset[question] == answer).sum() for answer in unique_answers}
-
-    # Adjust probabilities by applying bias towards the previous response
+    # Iterate over each unique answer to calculate its weighted count
     for answer in unique_answers:
+        # Count how many times the current answer appears in the dataset for the specified question
+        count = (dataset[question] == answer).sum()
+
+        # Determine the weight to apply:
+        # - If the answer matches the previous response, increase its weight by the bias factor.
+        # - Otherwise, decrease its weight by the bias factor.
         if answer == prev_response:
-            weight = 1 + bias_factor  # Increase weight for previous response
+            weight = 1 + bias_factor  # Increase weight for the previous response
         else:
             weight = 1 - bias_factor  # Decrease weight for other responses
-        weighted_probs[answer] = int(weight * answer_counts[answer])
 
-    # Compute total weighted sum to normalize probabilities
-    total_weighted_sum = sum(weighted_probs.values())
+        # Calculate the weighted count for the current answer
+        weighted_count = weight * count
 
-    # Compute adjusted probabilities for each answer
-    adjusted_probabilities = {answer: weighted_probs[answer] / total_weighted_sum for answer in unique_answers}
+        # Store the weighted count in the dictionary
+        weighted_counts[answer] = weighted_count
 
-    # Iterate through each unique answer to compute utility score
+    # Calculate the total of all weighted counts to use for normalization
+    total_weighted_count = sum(weighted_counts.values())
+
+    # Initialize a dictionary to store the normalized weights
+    normalised_weights = {}
+
+    # Iterate over each unique answer to calculate its normalized weight
     for answer in unique_answers:
-        answer_df = dataset[dataset[question] == answer]  # Filter dataset for current answer
-        labels = answer_df[TARGET_COLUMN]  # Get target labels for current answer
-        gini_impurity = gini_measure_of_impurity(list(labels.values))  # Calculate gini impurity
+        # Avoid division by zero by checking if the total weighted count is greater than zero
+        if total_weighted_count > 0:
+            # Calculate the normalized weight as the weighted count divided by the total weighted count
+            normalized_weight = weighted_counts[answer] / total_weighted_count
+        else:
+            # If the total weighted count is zero, assign a normalized weight of zero
+            normalized_weight = 0
 
-        # Use adjusted probability instead of uniform probability
-        probability = adjusted_probabilities[answer]
+        # Store the normalized weight in the dictionary
+        normalised_weights[answer] = normalized_weight
 
-        # Compute contribution of this answer to total utility score
+    # Return the dictionary containing normalized weights for each unique answer
+    return normalised_weights
+
+
+def get_gini_score(dataset, question, unique_answers, target_column, prev_response=None):
+    """
+    Calculate the average Gini impurity score for a given feature (question) in the dataset.
+
+    Gini impurity measures the likelihood of incorrectly classifying a randomly chosen element
+    from the dataset if it was labeled according to the distribution of labels in the subset.
+    This function evaluates how well a particular feature separates the data concerning the target variable.
+
+    Parameters:
+    - dataset: pandas.DataFrame
+        The dataset containing the data to be analyzed.
+    - question: str
+        The column name in the dataset representing the feature to evaluate.
+    - unique_answers: list
+        A list of all possible unique values (answers) for the specified feature.
+    - target_column: str
+        The column name representing the target variable (the outcome or label).
+    - prev_response: str, optional
+        The previous answer given, used to adjust weights if applicable (default is None).
+
+    Returns:
+    - average_score: float
+        The average Gini impurity score across all unique answers for the specified feature.
+    """
+    # Initialize the total utility score to accumulate the weighted Gini impurities
+    total_utility_score = 0
+
+    # Obtain normalized weights for each unique answer, potentially adjusted based on previous responses
+    normalised_weights = get_normalised_weights(dataset, question, unique_answers, prev_response)
+
+    # Iterate over each unique answer to calculate its contribution to the total utility score
+    for answer in unique_answers:
+        # Filter the dataset to include only rows where the feature (question) matches the current answer
+        answer_df = dataset[dataset[question] == answer]
+
+        # Extract the target variable values (labels) for the filtered subset
+        labels = answer_df[target_column]
+
+        # Calculate the Gini impurity for the current subset of labels
+        gini_impurity = calculate_gini_impurity(list(labels.values))
+
+        # Retrieve the normalized weight for the current answer; default to 0 if not found
+        probability = normalised_weights.get(answer, 0)
+
+        # Adjust the Gini impurity by the complement of the probability (1 - probability)
+        # This reflects the weighted contribution of the current subset to the total impurity
         total_utility_score += gini_impurity * (1 - probability)
 
-    # Compute the final average utility score
+    # Calculate the average Gini impurity score by dividing the total utility score
+    # by the number of unique answers. This provides a normalized measure of impurity
+    # across all possible answers for the feature.
     average_score = total_utility_score / len(unique_answers)
 
+    # Return the computed average Gini impurity score
     return average_score
+
+
+def get_information_gain(dataset, question, unique_answers, target_column, prev_response=None):
+    """
+    Calculate the Information Gain for a specific question (feature) in a dataset.
+
+    Information Gain measures how much knowing the value of a feature reduces uncertainty about the target variable. It's a key concept in building decision trees, helping to determine which feature to split on at each step.
+
+    Parameters:
+    - dataset: pandas.DataFrame
+        The dataset containing all the data.
+    - question: str
+        The column name in the dataset representing the feature (question) we're evaluating.
+    - unique_answers: list
+        A list of all possible unique values (answers) for the feature in question.
+    - target_column: str
+        The column name in the dataset representing the target variable (what we're trying to predict).
+    - prev_response: (Optional) str
+        The previous answer given, used to adjust weights if applicable.
+
+    Returns:
+    - information_gain: float
+        The calculated Information Gain for the specified feature.
+    """
+    # Step 1: Calculate normalized weights for each unique answer.
+    # These weights represent the adjusted probabilities of each answer, potentially modified by prior responses.
+    normalised_weights = get_normalised_weights(dataset, question, unique_answers, prev_response)
+
+    # Step 2: Filter the dataset to include only rows where the feature's value is in unique_answers.
+    # This ensures we're focusing on relevant data for our calculations.
+    parent_df = dataset[dataset[question].isin(unique_answers)]
+
+    # Step 3: Extract the target variable values from the filtered dataset.
+    # These are the actual outcomes we're interested in predicting.
+    parent_labels = parent_df[target_column]
+
+    # Step 4: Calculate the entropy before any splitting.
+    # Entropy quantifies the uncertainty or impurity in the target variable.
+    # A higher entropy indicates more disorder, while a lower entropy indicates more order.
+    entropy_before_split = calculate_entropy(list(parent_labels.values))
+
+    # Initialize a variable to accumulate the entropy after splitting based on the feature.
+    entropy_after_split = 0
+
+    # Step 5: Iterate over each unique answer to evaluate how it affects the target variable's entropy.
+    for answer in unique_answers:
+        # a. Create a subset of the dataset where the feature equals the current answer.
+        answer_df = dataset[dataset[question] == answer]
+
+        # b. Extract the target variable values for this subset.
+        labels = answer_df[target_column]
+
+        # c. Calculate the entropy for this subset.
+        split_entropy = calculate_entropy(list(labels.values))
+
+        # d. Retrieve the normalized weight for the current answer.
+        # This weight reflects the adjusted probability of encountering this answer.
+        weight = normalised_weights.get(answer, 0)
+
+        # e. Accumulate the weighted entropy.
+        # By multiplying the subset's entropy by its weight, we account for its proportionate impact.
+        entropy_after_split += split_entropy * weight
+
+    # Step 6: Compute the Information Gain.
+    # This is done by subtracting the weighted post-split entropy from the pre-split entropy.
+    # A higher Information Gain indicates that the feature provides significant information about the target variable.
+    information_gain = entropy_before_split - entropy_after_split
+
+    return information_gain
 
 
 def has_child(question, QUESTION_CHILD_MAPPER):

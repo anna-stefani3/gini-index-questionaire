@@ -7,7 +7,8 @@ from helper import (
     get_cleaned_data,
     convert_scale_columns_to_classes,
     get_question_choices_data,
-    get_utility_score,
+    get_information_gain,
+    get_gini_score,
     has_child,
     get_child_questions,
     get_best_question_node_from_question_queue,
@@ -56,7 +57,7 @@ subset = COMPLETE_DATASET
 questionaire_response_history = COMPLETE_DATASET.iloc[-1].to_dict()
 
 
-def question_tree(question_queue):
+def question_tree(question_queue, scoring_method="information_gain"):
     """
     question_queue: List of String(Questions)
 
@@ -99,7 +100,12 @@ def question_tree(question_queue):
             we can calculate the score
             then create the Parent Node with the calculated score
             """
-            score = get_utility_score(COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN, previous_response)
+            if scoring_method == "information_gain":
+                score = get_information_gain(
+                    COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN, previous_response
+                )
+            else:
+                score = get_gini_score(COMPLETE_DATASET, question, unique_choices, TARGET_COLUMN, previous_response)
             parent_node = NODE(question=question, score=round(score, 3))
 
         # Add Child Question
@@ -113,7 +119,7 @@ def question_tree(question_queue):
                 Thus forming a Tree
             """
             child_questions = get_child_questions(question, QUESTION_CHILD_MAPPER)
-            child_branches = question_tree(child_questions)
+            child_branches = question_tree(child_questions, scoring_method)
             parent_node.add_child_node(child_branches)
 
         """
@@ -136,43 +142,46 @@ def question_tree(question_queue):
         [ Q1, Q2, Q3] -> where Q1, Q2 and Q3 represents Root Level Question Nodes which has chilren
         connected to them. Thus forming a Question Tree
 """
-data = question_tree(QUESTION_QUEUE)
-
+question_tree_based_on_information_gain = question_tree(QUESTION_QUEUE, scoring_method="information_gain")
+question_tree_based_on_gini_impurity = question_tree(QUESTION_QUEUE, scoring_method="gini_impurity")
 
 """
     data is list of ROOT level Nodes
-
     question_queue is initialised with data.copy()
 """
-question_queue = data.copy()
 
-# initialising ordered_questions as empty list
-ordered_questions = []
 
-"""
-    Running the loop till question_queue becomes empty 
-"""
-while question_queue:
-    best_question_node = get_best_question_node_from_question_queue(question_queue)
+def get_ordered_question_list(question_queue):
+    # initialising ordered_questions as empty list
+    ordered_questions = []
 
-    """
-        Adding the best question into ordered_questions
-    """
-    ordered_questions.append(best_question_node.question)
+    # Running the loop till question_queue becomes empty
 
-    """
-        If best question node has children then add them into question_queue
-    """
-    if best_question_node.children:
-        question_queue.extend(best_question_node.children)
+    while question_queue:
+        best_question_node = get_best_question_node_from_question_queue(question_queue)
 
-    """
-        Removing Best Question Node from Question Queue
-    """
-    question_queue.remove(best_question_node)
+        # Adding the best question into ordered_questions
+        ordered_questions.append(best_question_node.question)
 
-print(f"Total Number of columns: {len(ordered_questions)}\n")
+        # If best question node has children then add them into question_queue
+        if best_question_node.children:
+            question_queue.extend(best_question_node.children)
+
+        # Removing Best Question Node from Question Queue
+        question_queue.remove(best_question_node)
+    return ordered_questions
+
+
+information_gain_question_list = get_ordered_question_list(question_tree_based_on_information_gain)
+gini_impurity_question_list = get_ordered_question_list(question_tree_based_on_gini_impurity)
+
+
+print(f"Total Column Count [Information Gain]: {len(information_gain_question_list)}")
+print(f"Total Column Count [Gini Impurity   ]: {len(gini_impurity_question_list)}\n")
 print("Top 15 Questions in Order of Importance")
-for i, question in enumerate(ordered_questions[:15]):
+for i in range(15):
+    question_1 = information_gain_question_list[i]
+    question_2 = gini_impurity_question_list[i]
     # printing questions in order of importance
-    print(f"{i+1}) {question} - {QUESTION_MAPPER.get(question, {}).get('question', 'Unavailable')}\n")
+    print(f"{i+1}) {question_1} - {QUESTION_MAPPER.get(question_1, {}).get('question', 'Unavailable')}")
+    print(f"{i+1}) {question_2} - {QUESTION_MAPPER.get(question_2, {}).get('question', 'Unavailable')}\n\n")
