@@ -1,5 +1,6 @@
 # import os
 # os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+from pprint import pprint
 
 from node import NODE
 from helper import (
@@ -55,6 +56,9 @@ subset = COMPLETE_DATASET
 
 # Get the last row as a questionaire_response_history
 questionaire_response_history = COMPLETE_DATASET.iloc[-1].to_dict()
+
+print("PREVIOUS QUESTIONAIRE (Without Null Asnwers)")
+pprint({k: v for k, v in questionaire_response_history.items() if v != -1.0})
 
 
 def question_tree(question_queue, scoring_method="information_gain"):
