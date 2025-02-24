@@ -388,7 +388,7 @@ def has_child(question, QUESTION_CHILD_MAPPER):
         return False
 
 
-def get_child_questions(question, QUESTION_CHILD_MAPPER):
+def get_child_questions(question, QUESTION_CHILD_MAPPER, columns_in_dataset=None):
     """
     QUESTION_CHILD_MAPPER contains list of child question for a given question
     Data looks like this
@@ -401,35 +401,35 @@ def get_child_questions(question, QUESTION_CHILD_MAPPER):
     where None means there is no Child Question for "column_3"
     """
     # checking if column name exists in QUESTION_CHILD_MAPPER
-    if QUESTION_CHILD_MAPPER.get(question):
-        return QUESTION_CHILD_MAPPER.get(question)
-    return None
+    child_question = QUESTION_CHILD_MAPPER.get(question, None)
+    valid_questions = []
+    for column in child_question:
+        if column in columns_in_dataset:
+            valid_questions.append(column)
+    return valid_questions
 
 
-def get_best_question_node_from_question_queue(question_queue):
+def get_best_question_node_from_question_queue(question_queue, attribute="best_score", selection="min"):
     """
-    question_queue -> List of Nodes
+    Selects the best question node based on the given selection criteria and attribute.
 
-    Output -> Question Node (With Best Score)
+    Parameters:
+        question_queue (List[Node]): List of question nodes.
+        attribute (str): The attribute to use for comparison (e.g., "score", "best_score", "cumulative_score").
+        selection (str): Criteria for selection - "min" for the lowest value, "max" for the highest.
+
+    Returns:
+        Node: The node with the best value based on the selection criteria.
     """
-    # initialising Best Score and Best Node with None
-    best_score = None
-    best_node = None
-    for question_node in question_queue:
-        if best_score == None:
-            """
-            When best_score == None then first Node becomes best Score
-            """
-            best_score = question_node.best
-            best_node = question_node
-        elif question_node.best < best_score:
-            """
-            if find a better score then update
-            best_score and
-            best_node
-            """
-            best_score = question_node.best
-            best_node = question_node
+    if not question_queue:
+        return None  # No nodes to process
 
-    # returning best node with best score
-    return best_node
+    try:
+        if selection == "min":
+            return min(question_queue, key=lambda node: getattr(node, attribute, float("inf")), default=None)
+        elif selection == "max":
+            return max(question_queue, key=lambda node: getattr(node, attribute, float("-inf")), default=None)
+        else:
+            raise ValueError(f"Invalid selection type: {selection}. Choose 'min' or 'max'.")
+    except AttributeError:
+        raise ValueError(f"Invalid attribute: {attribute}. Ensure nodes have this attribute.")
