@@ -84,11 +84,11 @@ class Node:
         # Compute cumulative score recursively
         self.cumulative_score = self.score
         for child in self.children:
-            child.compute_scores(dataset) 
+            child.compute_scores(dataset)
             self.cumulative_score += self.transition_probabilities.get(child, 0) * child.cumulative_score
 
         # Compute normalized cumulative score in the same pass
-        self.normalized_cumulative_score = self.cumulative_score / max(len(self.children), 1)
+        self.normalized_cumulative_score = self.cumulative_score / self.level
 
     def update_all_nodes_with_cumulative(self, dataset: pd.DataFrame, selection="min"):
         """Computes transition probabilities, cumulative scores, and assigns levels."""

@@ -57,9 +57,6 @@ subset = COMPLETE_DATASET
 # Get the last row as a questionaire_response_history
 questionaire_response_history = COMPLETE_DATASET.iloc[-1].to_dict()
 
-# print("PREVIOUS QUESTIONAIRE (Without Null Asnwers)")
-# pprint({k: v for k, v in questionaire_response_history.items() if v != -1.0})
-
 
 def question_tree(column_queue, scoring_method="information_gain"):
     """
@@ -98,10 +95,8 @@ def question_tree(column_queue, scoring_method="information_gain"):
             NOTE: we can't calculate score without unique_choices
             Thats why creating Parent Node with worst score -> 1
             """
-            if scoring_method == "information_gain":
-                score = 0.0
-            else:
-                score = 1.0
+            # worst score is assigned according to scoring method
+            score = 1.0 if scoring_method == "gini" else 0.0
             parent_node = Node(question=complete_question, column=column, parent_node=None, score=score)
 
         else:
@@ -110,10 +105,10 @@ def question_tree(column_queue, scoring_method="information_gain"):
             we can calculate the score
             then create the Parent Node with the calculated score
             """
-            if scoring_method == "information_gain":
-                score = get_information_gain(COMPLETE_DATASET, column, unique_choices, TARGET_COLUMN, previous_response)
-            else:
+            if scoring_method == "gini":
                 score = get_gini_score(COMPLETE_DATASET, column, unique_choices, TARGET_COLUMN, previous_response)
+            else:
+                score = get_information_gain(COMPLETE_DATASET, column, unique_choices, TARGET_COLUMN, previous_response)
             parent_node = Node(question=complete_question, column=column, parent_node=None, score=round(score, 3))
 
         # Add Child Columns
@@ -143,7 +138,6 @@ def question_tree(column_queue, scoring_method="information_gain"):
     # Returning the final output of -> List of Root Level Questions
     return output
 
-
 """
     Calling question tree to create the tree using recursion
 
@@ -152,13 +146,11 @@ def question_tree(column_queue, scoring_method="information_gain"):
         connected to them. Thus forming a Question Tree
 """
 question_tree_based_on_information_gain = question_tree(QUESTION_QUEUE, scoring_method="information_gain")
-question_tree_based_on_gini_impurity = question_tree(QUESTION_QUEUE, scoring_method="gini_impurity")
+question_tree_based_on_gini_impurity = question_tree(QUESTION_QUEUE, scoring_method="gini")
 
 # updating all the score and cumulative score for information gain scoring method
-# question_tree_based_on_information_gain[0].update_levels()
 question_tree_based_on_information_gain[0].update_all_nodes_with_cumulative(COMPLETE_DATASET, selection="max")
-
-question_tree_based_on_information_gain[0].display()
+question_tree_based_on_gini_impurity[0].update_all_nodes_with_cumulative(COMPLETE_DATASET, selection="min")
 """
     data is list of ROOT level Nodes
     question_queue is initialised with data.copy()
