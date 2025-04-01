@@ -28,8 +28,8 @@ QUESTION_MAPPER = load_json_file(BASE_PATH + "question-data.json")
 BACKUP_QUESTION_MAPPER = load_json_file(BASE_PATH + "questions_mapping.json")
 
 # getting child columns for each column
-QUESTION_CHILD_MAPPER = load_json_file(BASE_PATH + "child_question_mapper.json")
-ROOT_QUESTIONS = QUESTION_CHILD_MAPPER[DATASET_NAME]
+PARENT_CHILD_MAPPER = load_json_file(BASE_PATH + "child_question_mapper.json")
+ROOT_QUESTIONS = PARENT_CHILD_MAPPER[DATASET_NAME]
 
 """
     making sure to add only columns which are
@@ -112,7 +112,7 @@ def question_tree(column_queue, scoring_method="information_gain"):
             parent_node = Node(question=complete_question, column=column, parent_node=None, score=round(score, 3))
 
         # Add Child Columns
-        if has_child(column, QUESTION_CHILD_MAPPER):
+        if has_child(column, PARENT_CHILD_MAPPER):
             """
             If the question has child:
                 child_questions -> then getting the child list
@@ -121,7 +121,7 @@ def question_tree(column_queue, scoring_method="information_gain"):
 
                 Thus forming a Tree
             """
-            child_columns = get_child_questions(column, QUESTION_CHILD_MAPPER, DATASET_COLUMNS)
+            child_columns = get_child_questions(column, PARENT_CHILD_MAPPER, DATASET_COLUMNS)
             if child_columns:
                 child_nodes = question_tree(child_columns, scoring_method)
                 parent_node.add_children(child_nodes)
@@ -138,6 +138,7 @@ def question_tree(column_queue, scoring_method="information_gain"):
     # Returning the final output of -> List of Root Level Questions
     return output
 
+
 """
     Calling question tree to create the tree using recursion
 
@@ -151,6 +152,10 @@ question_tree_based_on_gini_impurity = question_tree(QUESTION_QUEUE, scoring_met
 # updating all the score and cumulative score for information gain scoring method
 question_tree_based_on_information_gain[0].update_all_nodes_with_cumulative(COMPLETE_DATASET, selection="max")
 question_tree_based_on_gini_impurity[0].update_all_nodes_with_cumulative(COMPLETE_DATASET, selection="min")
+
+for child_node in question_tree_based_on_information_gain[0].children:
+    child_node.visualize_tree(attribute="normalized_cumulative_score", method="example")
+
 """
     data is list of ROOT level Nodes
     question_queue is initialised with data.copy()

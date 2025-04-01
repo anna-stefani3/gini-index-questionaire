@@ -1,6 +1,7 @@
 from typing import List, Optional
 import pandas as pd
 import numpy as np
+from graphviz import Digraph
 
 
 class Node:
@@ -77,7 +78,7 @@ class Node:
             parent_yes_count = (dataset[self.column] == 1.0).sum()
             for child in self.children:
                 child_yes_given_parent_yes = ((dataset[self.column] == 1.0) & (dataset[child.column] == 1.0)).sum()
-                self.transition_probabilities[child] = (
+                self.transition_probabilities[child.column] = (
                     (child_yes_given_parent_yes / parent_yes_count) if parent_yes_count > 0 else 0
                 )
 
@@ -85,7 +86,7 @@ class Node:
         self.cumulative_score = self.score
         for child in self.children:
             child.compute_scores(dataset)
-            self.cumulative_score += self.transition_probabilities.get(child, 0) * child.cumulative_score
+            self.cumulative_score += self.transition_probabilities.get(child.column, 0) * child.cumulative_score
 
         # Compute normalized cumulative score in the same pass
         self.normalized_cumulative_score = self.cumulative_score / self.level
@@ -100,7 +101,7 @@ class Node:
         self.compute_scores(dataset)
 
     def __repr__(self):
-        return f"{self.column}___LEVEL={self.level}___SCORE={self.score}___CUM={self.cumulative_score}___NORM_CUM={self.normalized_cumulative_score})"
+        return f"{self.column}___LEVEL={self.level}___IG={self.score}___CUM={self.cumulative_score}___NORM_CUM={self.normalized_cumulative_score})"
 
     def display(self):
         """Prints the tree structure in a hierarchical format."""
@@ -116,18 +117,34 @@ class Node:
 
         print_tree(self)
 
+    def node_display(self, attribute):
+        return f"{self.column}__IG={self.score:.3f}__CUM={self.cumulative_score:.3f}__NORM_CUM={getattr(self, attribute):.3f}"
 
-if __name__ == "__main__":
-    # Create nodes
-    A = Node(question="Q1", column="Node A", parent_node=None, score=1.0)
-    B = Node(question="Q2", column="Node B", parent_node=A, score=0.9)
-    C = Node(question="Q3", column="Node C", parent_node=A, score=0.8)
-    D = Node(question="Q4", column="Node D", parent_node=C, score=0.75)
-    E = Node(question="Q5", column="Node E", parent_node=C, score=0.2)
+    def to_graphviz(self, attribute, parent=None, graph=None):
+        if graph is None:
+            graph = Digraph(format="png")
+            graph.attr(rankdir="LR")  # Set horizontal
+            graph.node(self.node_display(attribute))
 
-    # Build tree structure
-    A.add_children([B, C])
-    C.add_children([D, E])
+        if parent is not None:
+            graph.edge(
+                parent.node_display(attribute),
+                self.node_display(attribute),
+                label=f"TP={parent.transition_probabilities[self.column]:.3f}",
+            )
 
-    A.update_all_nodes()
-    A.display()
+        for child in self.children:
+            child.to_graphviz(attribute=attribute, parent=self, graph=graph)
+
+        return graph
+
+    def visualize_tree(self, attribute, method):
+        graph = self.to_graphviz(attribute=attribute)
+
+        # Ensure output directory exists
+        output_dir = f"generated_output/{method}"
+        # os.makedirs(output_dir, exist_ok=True)
+
+        # Render the graph
+        graph.render(filename=f"{output_dir}/{self.column}", format="png", cleanup=True)
+
