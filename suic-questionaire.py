@@ -149,12 +149,14 @@ def question_tree(column_queue, scoring_method="information_gain"):
 question_tree_based_on_information_gain = question_tree(QUESTION_QUEUE, scoring_method="information_gain")
 question_tree_based_on_gini_impurity = question_tree(QUESTION_QUEUE, scoring_method="gini")
 
-# updating all the score and cumulative score for information gain scoring method
-question_tree_based_on_information_gain[0].update_all_nodes_with_cumulative(COMPLETE_DATASET, selection="max")
-question_tree_based_on_gini_impurity[0].update_all_nodes_with_cumulative(COMPLETE_DATASET, selection="min")
+global_counts = COMPLETE_DATASET[TARGET_COLUMN].value_counts().to_dict()
 
-for child_node in question_tree_based_on_information_gain[0].children:
-    child_node.visualize_tree(attribute="normalized_cumulative_score", method="example")
+# updating all the score and cumulative score for information gain scoring method
+question_tree_based_on_information_gain[0].update_all_nodes_with_cumulative(COMPLETE_DATASET, selection="max", target_column=TARGET_COLUMN, global_counts=global_counts)
+question_tree_based_on_gini_impurity[0].update_all_nodes_with_cumulative(COMPLETE_DATASET, selection="min", target_column=TARGET_COLUMN, global_counts=global_counts)
+
+# for child_node in question_tree_based_on_information_gain[0].children:
+#     child_node.visualize_tree(attribute="normalized_cumulative_score", method="example")
 
 """
     data is list of ROOT level Nodes
@@ -198,5 +200,21 @@ for i in range(1, 16):
     information_gain = information_gain_question_list[i]
     gini_impurity = gini_impurity_question_list[i]
     # printing questions in order of importance
-    print(f"{i}) {information_gain.column} - {information_gain.question}")
-    print(f"{i}) {gini_impurity.column} - {gini_impurity.question}\n\n")
+    information_gain_dict = {
+        "column": information_gain.column,
+        "question": information_gain.question,
+        "risk_class": information_gain.risk_class,
+        "accumulated_risk_distribution": information_gain.accumulated_risk_distribution,
+        "risk_confidence": information_gain.risk_confidence,
+    }
+    gini_impurity_dict = {
+        "column": gini_impurity.column,
+        "question": gini_impurity.question,
+        "risk_class": gini_impurity.risk_class,
+        "accumulated_risk_distribution": gini_impurity.accumulated_risk_distribution,
+        "risk_confidence": gini_impurity.risk_confidence,
+    }
+    print(i)
+    pprint(information_gain_dict)
+    pprint(gini_impurity_dict)
+    print("\n\n")

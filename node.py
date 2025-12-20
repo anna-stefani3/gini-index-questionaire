@@ -1,7 +1,7 @@
 from typing import List, Optional
 import pandas as pd
 import numpy as np
-from graphviz import Digraph
+# from graphviz import Digraph
 
 
 class Node:
@@ -20,6 +20,14 @@ class Node:
         self.transition_probabilities = {}
         self.cumulative_score: Optional[float] = None
         self.normalized_cumulative_score: Optional[float] = None
+
+        # NEW: risk info for this question
+        self.current_risk_distribution: tuple = ()
+        self.accumulated_risk_distribution: tuple = ()
+        self.risk_distribution: dict = {}
+        self.risk_class: Optional[str] = None
+        self.risk_confidence: Optional[float] = 0.0
+        self.final_risk_confidence: Optional[float] = 0.0
 
     def add_children(self, children: List["Node"]):
         """Adds multiple child nodes."""
@@ -70,7 +78,7 @@ class Node:
         max_height = self.max_height()
         self.assign_levels(max_height)
 
-    def compute_scores(self, dataset: pd.DataFrame):
+    def compute_scores(self, dataset: pd.DataFrame, target_column: str, global_counts: dict=None):
         """Computes transition probabilities, cumulative scores, and normalized cumulative scores in one traversal."""
 
         # Compute transition probabilities (Only applies to the current node)
@@ -85,20 +93,72 @@ class Node:
         # Compute cumulative score recursively
         self.cumulative_score = self.score
         for child in self.children:
-            child.compute_scores(dataset)
+            child.compute_scores(dataset, target_column, global_counts)
             self.cumulative_score += self.transition_probabilities.get(child.column, 0) * child.cumulative_score
 
         # Compute normalized cumulative score in the same pass
         self.normalized_cumulative_score = self.cumulative_score / self.level
 
-    def update_all_nodes_with_cumulative(self, dataset: pd.DataFrame, selection="min"):
+        # Compute risk distribution & dominant risk class using self.column as the target
+        if self.column in dataset.columns:
+            rows = dataset[dataset[self.column] != -1]
+            import ipdb
+            ipdb.set_trace()
+            counts = rows[target_column].value_counts(normalize=True).reindex(('low', 'medium', 'high'), fill_value=0).to_dict()
+            abs_counts = rows[target_column].value_counts().reindex(['low', 'medium', 'high'], fill_value=0).to_dict()
+            # sum as float
+            ratios = {}
+            for k in ('low', 'medium', 'high'):
+                g = global_counts.get(k, 0) if global_counts else 0
+                ratios[k] = (abs_counts.get(k, 0) / g) if g > 0 else 0.0
+            total = float(sum(counts.values()))
+
+            # normalize so values sum to 1 (handle total == 0)
+            if total > 0:
+                normalized = {k: round(counts[k] / total, 2) for k in counts}
+            else:
+                normalized = {k: 0.0 for k in counts}
+            exit()
+            # I want the counts to have max 2 decimal places
+            counts = {k: round(v, 2) for k, v in counts.items()}
+            self.current_risk_distribution = counts
+            self.risk_distribution = counts
+            self.set_accumulated_risk_distribution()
+            self.risk_class = max(self.accumulated_risk_distribution, key=self.accumulated_risk_distribution.get) if self.accumulated_risk_distribution else None
+            self.risk_confidence = max(self.accumulated_risk_distribution.values()) if self.accumulated_risk_distribution else 0.0
+        else:
+            self.current_risk_distribution = (0, 0, 0)
+            self.risk_distribution = {}
+            self.risk_class = None
+            self.risk_confidence = 0.0
+        
+    def set_accumulated_risk_distribution(self):
+        """Computes accumulated risk distribution from current node and its children."""
+        
+        """
+        Idea is to calculate the sum/2 for each class separately to get accumulated risk distribution
+        sum needs to be performed between current_risk_distribution and parent's accumulated_risk_distribution
+        In case there is no parent node then current_risk_distribution is the accumulated_risk_distribution
+        """
+        if not self.parent_node:
+            self.accumulated_risk_distribution = self.current_risk_distribution
+        else:
+            accumulated = {}
+            for key in set(self.current_risk_distribution.keys()).union(set(self.parent_node.accumulated_risk_distribution.keys())):
+                accumulated[key] = (
+                    self.current_risk_distribution.get(key, 0) + self.parent_node.accumulated_risk_distribution.get(key, 0)
+                ) / 2
+            self.accumulated_risk_distribution = accumulated
+
+    # update signature to accept target_column and pass it through
+    def update_all_nodes_with_cumulative(self, dataset: pd.DataFrame, target_column: str, selection="min", global_counts=None):
         """Computes transition probabilities, cumulative scores, and assigns levels."""
         max_height = self.max_height()
         self.assign_levels(max_height)
         self.update_best_scores(selection=selection)
 
         # # Compute transition probabilities and cumulative scores for each node
-        self.compute_scores(dataset)
+        self.compute_scores(dataset, target_column, global_counts)
 
     def __repr__(self):
         return f"{self.column}___LEVEL={self.level}___IG={self.score}___CUM={self.cumulative_score}___NORM_CUM={self.normalized_cumulative_score})"
@@ -120,31 +180,31 @@ class Node:
     def node_display(self, attribute):
         return f"{self.column}__IG={self.score:.3f}__CUM={self.cumulative_score:.3f}__NORM_CUM={getattr(self, attribute):.3f}"
 
-    def to_graphviz(self, attribute, parent=None, graph=None):
-        if graph is None:
-            graph = Digraph(format="png")
-            graph.attr(rankdir="LR")  # Set horizontal
-            graph.node(self.node_display(attribute))
+    # def to_graphviz(self, attribute, parent=None, graph=None):
+    #     if graph is None:
+    #         graph = Digraph(format="png")
+    #         graph.attr(rankdir="LR")  # Set horizontal
+    #         graph.node(self.node_display(attribute))
 
-        if parent is not None:
-            graph.edge(
-                parent.node_display(attribute),
-                self.node_display(attribute),
-                label=f"TP={parent.transition_probabilities[self.column]:.3f}",
-            )
+    #     if parent is not None:
+    #         graph.edge(
+    #             parent.node_display(attribute),
+    #             self.node_display(attribute),
+    #             label=f"TP={parent.transition_probabilities[self.column]:.3f}",
+    #         )
 
-        for child in self.children:
-            child.to_graphviz(attribute=attribute, parent=self, graph=graph)
+    #     for child in self.children:
+    #         child.to_graphviz(attribute=attribute, parent=self, graph=graph)
 
-        return graph
+    #     return graph
 
-    def visualize_tree(self, attribute, method):
-        graph = self.to_graphviz(attribute=attribute)
+    # def visualize_tree(self, attribute, method):
+    #     graph = self.to_graphviz(attribute=attribute)
 
-        # Ensure output directory exists
-        output_dir = f"generated_output/{method}"
-        # os.makedirs(output_dir, exist_ok=True)
+    #     # Ensure output directory exists
+    #     output_dir = f"generated_output/{method}"
+    #     # os.makedirs(output_dir, exist_ok=True)
 
-        # Render the graph
-        graph.render(filename=f"{output_dir}/{self.column}", format="png", cleanup=True)
+    #     # Render the graph
+    #     graph.render(filename=f"{output_dir}/{self.column}", format="png", cleanup=True)
 
