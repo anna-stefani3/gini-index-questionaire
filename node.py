@@ -7,7 +7,7 @@ import numpy as np
 class Node:
     """Represents a single node in a decision tree with transition probability and cumulative scoring."""
 
-    def __init__(self, question: str, column: str, parent_node: Optional["Node"] = None, score: float = 1.0):
+    def __init__(self, question: str, column: str, parent_node: Optional["Node"] = None, score: float = 1.0, previous_response: Optional[str] = None):
         self.question = question
         self.column = column
         self.parent_node = parent_node
@@ -22,6 +22,7 @@ class Node:
         self.normalized_cumulative_score: Optional[float] = None
 
         # NEW: risk info for this question
+        self.previous_response: Optional[str] = previous_response
         self.current_risk_distribution: tuple = ()
         self.accumulated_risk_distribution: tuple = ()
         self.risk_distribution: dict = {}
@@ -101,36 +102,37 @@ class Node:
 
         # Compute risk distribution & dominant risk class using self.column as the target
         if self.column in dataset.columns:
-            rows = dataset[dataset[self.column] != -1]
-            import ipdb
-            ipdb.set_trace()
-            counts = rows[target_column].value_counts(normalize=True).reindex(('low', 'medium', 'high'), fill_value=0).to_dict()
+            if self.previous_response is not None and self.previous_response != -1:
+                rows = dataset[dataset[self.column] == self.previous_response]
+            else:
+                rows = dataset[dataset[self.column] != -1]
+            percentage_counts = rows[target_column].value_counts(normalize=True).reindex(('low', 'medium', 'high'), fill_value=0).to_dict()
             abs_counts = rows[target_column].value_counts().reindex(['low', 'medium', 'high'], fill_value=0).to_dict()
             # sum as float
             ratios = {}
-            for k in ('low', 'medium', 'high'):
-                g = global_counts.get(k, 0) if global_counts else 0
-                ratios[k] = (abs_counts.get(k, 0) / g) if g > 0 else 0.0
-            total = float(sum(counts.values()))
+            for risk_class in ('low', 'medium', 'high'):
+                risk_class_count = global_counts.get(risk_class, 1)
+                ratios[risk_class] = (abs_counts.get(risk_class, 0) / risk_class_count)
+            total = float(sum(ratios.values()))
 
             # normalize so values sum to 1 (handle total == 0)
             if total > 0:
-                normalized = {k: round(counts[k] / total, 2) for k in counts}
+                normalized_percentage_counts = {risk_class: round(ratios[risk_class] / total, 2) for risk_class in ratios}
             else:
-                normalized = {k: 0.0 for k in counts}
-            exit()
-            # I want the counts to have max 2 decimal places
-            counts = {k: round(v, 2) for k, v in counts.items()}
-            self.current_risk_distribution = counts
-            self.risk_distribution = counts
+                normalized_percentage_counts = {risk_class: round(ratios[risk_class], 2) for risk_class in ratios}
+
+            self.current_risk_distribution = normalized_percentage_counts
+            self.risk_distribution = normalized_percentage_counts
             self.set_accumulated_risk_distribution()
             self.risk_class = max(self.accumulated_risk_distribution, key=self.accumulated_risk_distribution.get) if self.accumulated_risk_distribution else None
             self.risk_confidence = max(self.accumulated_risk_distribution.values()) if self.accumulated_risk_distribution else 0.0
+            self.final_risk_confidence = round(self.risk_confidence ** 0.4, 2)
         else:
-            self.current_risk_distribution = (0, 0, 0)
-            self.risk_distribution = {}
-            self.risk_class = None
+            self.current_risk_distribution = {"low": 0.0, "medium": 0.0, "high": 0.0}
+            self.accumulated_risk_distribution = {"low": 0.0, "medium": 0.0, "high": 0.0}
+            self.risk_class = "low"
             self.risk_confidence = 0.0
+            self.final_risk_confidence = 0.0
         
     def set_accumulated_risk_distribution(self):
         """Computes accumulated risk distribution from current node and its children."""

@@ -1,7 +1,7 @@
 # import os
 # os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
 from pprint import pprint
-
+import random
 from node import Node
 from helper import (
     load_json_file,
@@ -81,10 +81,14 @@ def question_tree(column_queue, scoring_method="information_gain"):
     for column in column_queue:
         # getting unique_choices for the current column
         unique_choices = CHOICES_DATASET.get(column)
-        complete_question = QUESTION_MAPPER.get(column, {}).get("question", "Unavailable")
+        complete_question = QUESTION_MAPPER.get(column, {}).get("question")
+        if not complete_question:
+            continue
 
         previous_response = get_previous_response(questionaire_response_history, column)
-
+        if previous_response is None or previous_response == -1:
+            previous_response =  random.choice([0.0 , 1.0]) if unique_choices else -1
+        previous_response = 1.0
         """
             unique_choices: represents the unique values available in CSV data
             there are many column which has complete N/A data example
@@ -97,7 +101,7 @@ def question_tree(column_queue, scoring_method="information_gain"):
             """
             # worst score is assigned according to scoring method
             score = 1.0 if scoring_method == "gini" else 0.0
-            parent_node = Node(question=complete_question, column=column, parent_node=None, score=score)
+            parent_node = Node(question=complete_question, column=column, parent_node=None, score=score, previous_response=previous_response)
 
         else:
             """
@@ -109,7 +113,7 @@ def question_tree(column_queue, scoring_method="information_gain"):
                 score = get_gini_score(COMPLETE_DATASET, column, unique_choices, TARGET_COLUMN, previous_response)
             else:
                 score = get_information_gain(COMPLETE_DATASET, column, unique_choices, TARGET_COLUMN, previous_response)
-            parent_node = Node(question=complete_question, column=column, parent_node=None, score=round(score, 3))
+            parent_node = Node(question=complete_question, column=column, parent_node=None, score=round(score, 3), previous_response=previous_response)
 
         # Add Child Columns
         if has_child(column, PARENT_CHILD_MAPPER):
@@ -201,20 +205,18 @@ for i in range(1, 16):
     gini_impurity = gini_impurity_question_list[i]
     # printing questions in order of importance
     information_gain_dict = {
-        "column": information_gain.column,
         "question": information_gain.question,
         "risk_class": information_gain.risk_class,
-        "accumulated_risk_distribution": information_gain.accumulated_risk_distribution,
-        "risk_confidence": information_gain.risk_confidence,
+        "risk_confidence": information_gain.final_risk_confidence,
+        "answer": information_gain.previous_response,
     }
     gini_impurity_dict = {
-        "column": gini_impurity.column,
         "question": gini_impurity.question,
         "risk_class": gini_impurity.risk_class,
-        "accumulated_risk_distribution": gini_impurity.accumulated_risk_distribution,
-        "risk_confidence": gini_impurity.risk_confidence,
+        "risk_confidence": gini_impurity.final_risk_confidence,
+        "answer": gini_impurity.previous_response,
     }
     print(i)
-    pprint(information_gain_dict)
-    pprint(gini_impurity_dict)
+    print(f'{information_gain_dict["question"]}\n{information_gain_dict["answer"]} -> Risk Class: {information_gain_dict["risk_class"]}, Confidence: {information_gain_dict["risk_confidence"]}')
+    print(f'{gini_impurity_dict["question"]}\n{gini_impurity_dict["answer"]} -> Risk Class: {gini_impurity_dict["risk_class"]}, Confidence: {gini_impurity_dict["risk_confidence"]}')
     print("\n\n")
